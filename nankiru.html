@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>何切る — 麻雀道場</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&family=Noto+Serif+JP:wght@400;700&family=Zen+Antique&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  :root{
+    --gold:#d4af37;--gold-dim:rgba(212,175,55,0.5);
+    --felt:#111a0a;--felt-mid:#1a2810;
+    --text-bright:rgba(255,255,255,0.88);--text-mid:rgba(255,255,255,0.5);--text-dim:rgba(255,255,255,0.28);
+    --sec-bg:rgba(255,255,255,0.04);--sec-border:rgba(212,175,55,0.18);
+    --correct:rgba(39,160,80,0.15);--correct-border:rgba(39,160,80,0.5);
+    --wrong:rgba(192,57,43,0.15);--wrong-border:rgba(192,57,43,0.5);
+    --acceptable:rgba(212,175,55,0.15);--acceptable-border:rgba(212,175,55,0.5);
+  }
+  html,body{min-height:100vh;background:var(--felt);color:var(--text-bright);font-family:'Noto Sans JP',sans-serif;font-size:14px;}
+  body{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.01) 0px,rgba(255,255,255,0.01) 1px,transparent 1px,transparent 12px),repeating-linear-gradient(-45deg,rgba(255,255,255,0.01) 0px,rgba(255,255,255,0.01) 1px,transparent 1px,transparent 12px),radial-gradient(ellipse 80% 50% at 50% 0%,var(--felt-mid) 0%,var(--felt) 60%);}
+
+  /* Nav */
+  .nav{display:flex;align-items:center;gap:12px;padding:16px 24px;border-bottom:0.5px solid rgba(212,175,55,0.12);justify-content:space-between;}
+  .nav-left{display:flex;align-items:center;gap:12px;}
+  .nav-back{color:var(--gold-dim);text-decoration:none;font-size:13px;transition:color 0.15s;}
+  .nav-back:hover{color:var(--gold);}
+  .nav-title{font-family:'Zen Antique',serif;font-size:16px;color:var(--gold);letter-spacing:0.12em;}
+  .nav-score{font-size:13px;color:var(--text-mid);background:var(--sec-bg);border:0.5px solid var(--sec-border);border-radius:20px;padding:4px 14px;}
+  .nav-score span{color:var(--gold);font-weight:500;}
+  .page{max-width:740px;margin:0 auto;padding:24px 20px 64px;}
+
+  /* Progress */
+  .progress-wrap{margin-bottom:20px;}
+  .progress-info{display:flex;justify-content:space-between;font-size:12px;color:var(--text-dim);margin-bottom:6px;}
+  .progress-bar{height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;}
+  .progress-fill{height:100%;background:var(--gold);border-radius:2px;transition:width 0.4s ease;}
+
+  /* Card */
+  .q-card{background:var(--sec-bg);border:0.5px solid var(--sec-border);border-radius:12px;padding:20px;margin-bottom:14px;animation:fadeIn 0.35s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .q-no{font-size:12px;color:var(--text-dim);margin-bottom:4px;}
+  .badge{display:inline-block;font-size:11px;padding:3px 10px;border-radius:12px;margin-bottom:10px;}
+  .badge-easy{background:rgba(39,160,80,0.15);color:rgba(100,210,130,0.9);border:0.5px solid rgba(39,160,80,0.35);}
+  .badge-mid{background:rgba(212,175,55,0.15);color:var(--gold);border:0.5px solid rgba(212,175,55,0.35);}
+  .badge-hard{background:rgba(192,57,43,0.15);color:rgba(220,100,80,0.9);border:0.5px solid rgba(192,57,43,0.35);}
+  .q-text{font-size:15px;font-weight:500;color:var(--text-bright);line-height:1.7;margin-bottom:14px;}
+
+  /* 共通牌 */
+  .tile-wrap{width:34px;height:46px;background:#f0ebe0;border-radius:3px;border-bottom:3px solid #b8a888;overflow:hidden;box-shadow:0 2px 4px rgba(0,0,0,0.4);flex-shrink:0;position:relative;}
+  .tile-wrap img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;}
+  .tile-wrap.tile-fallback{display:flex;align-items:center;justify-content:center;font-size:12px;font-family:'Noto Serif JP',serif;color:#1a1a1a;}
+  /* 横向き牌（鳴き用・河の横向き） */
+  .tile-wrap.tile-yoko{width:46px;height:34px;border-bottom:none;border-right:3px solid #b8a888;}
+
+  /* ── 場況ボード ── */
+  .board{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+  @media(max-width:500px){.board{grid-template-columns:1fr;}}
+  .board-cell{background:rgba(0,0,0,0.2);border:0.5px solid rgba(255,255,255,0.1);border-radius:8px;padding:10px 12px;}
+  .board-label{font-size:11px;color:var(--text-dim);margin-bottom:6px;letter-spacing:0.05em;}
+
+  /* ドラ表示 */
+  .dora-row{display:flex;gap:4px;flex-wrap:wrap;}
+
+  /* 場況テキスト行 */
+  .situation-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+  .sit-pill{padding:3px 10px;border-radius:20px;background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);color:var(--text-mid);font-size:12px;}
+  .sit-pill.accent{background:rgba(212,175,55,0.12);border-color:rgba(212,175,55,0.3);color:var(--gold);}
+  .sit-pill.danger{background:rgba(192,57,43,0.12);border-color:rgba(192,57,43,0.3);color:rgba(220,110,90,0.9);}
+
+  /* 河（捨て牌） */
+  .river-section{margin-bottom:14px;}
+  .river-title{font-size:11px;color:var(--text-dim);margin-bottom:6px;letter-spacing:0.05em;}
+  .river-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+  @media(max-width:500px){.river-grid{grid-template-columns:repeat(2,1fr);}}
+  .river-player{background:rgba(0,0,0,0.2);border:0.5px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px;}
+  .river-player-name{font-size:10px;color:var(--text-dim);margin-bottom:5px;}
+  .river-tiles{display:flex;flex-wrap:wrap;gap:3px;min-height:20px;}
+  /* 河の牌は少し小さめ */
+  .river-tiles .tile-wrap{width:24px;height:32px;border-bottom-width:2px;}
+  .river-tiles .tile-wrap.tile-yoko{width:32px;height:24px;border-right-width:2px;border-bottom:none;}
+  /* リーチ後の牌を薄く */
+  .tile-wrap.riichi-discard{opacity:0.5;}
+
+  /* ── 手牌（クリック選択） ── */
+  .hand-section{margin-bottom:6px;}
+  .hand-label{font-size:12px;color:var(--text-dim);margin-bottom:8px;}
+  .hand-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:6px;}
+  .h-tile{
+    width:40px;height:54px;
+    background:#f0ebe0;border-radius:3px;border-bottom:3px solid #b8a888;
+    overflow:hidden;cursor:pointer;position:relative;
+    box-shadow:0 2px 6px rgba(0,0,0,0.5);
+    transition:transform 0.12s,box-shadow 0.12s,border-color 0.12s;
+    flex-shrink:0;
+  }
+  .h-tile img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;}
+  .h-tile.tile-fallback{display:flex;align-items:center;justify-content:center;font-size:14px;font-family:'Noto Serif JP',serif;color:#1a1a1a;}
+  .h-tile:hover:not(.revealed){transform:translateY(-7px);box-shadow:0 8px 16px rgba(0,0,0,0.55);}
+  .h-tile.selected{transform:translateY(-12px);border-color:#d4af37;box-shadow:0 10px 20px rgba(212,175,55,0.45);}
+  .h-tile.revealed{cursor:default;}
+  .h-tile.correct-tile{border-color:rgba(39,160,80,0.85);box-shadow:0 0 0 2px rgba(39,160,80,0.45);}
+  .h-tile.acceptable-tile{border-color:rgba(212,175,55,0.85);box-shadow:0 0 0 2px rgba(212,175,55,0.45);}
+  .h-tile.wrong-tile{border-color:rgba(192,57,43,0.85);box-shadow:0 0 0 2px rgba(192,57,43,0.45);}
+  .tile-label-badge{position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);font-size:9px;white-space:nowrap;display:none;}
+  .label-best{color:rgba(39,160,80,0.9);}
+  .label-ok{color:rgba(212,175,55,0.9);}
+  .label-ng{color:rgba(192,57,43,0.75);}
+  .hand-hint{font-size:12px;color:var(--text-dim);margin-bottom:10px;min-height:16px;}
+
+  /* 凡例 */
+  .legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px;}
+  .legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-dim);}
+  .legend-dot{width:8px;height:8px;border-radius:50%;}
+
+  /* Buttons */
+  .action-btn{width:100%;padding:13px;font-size:14px;font-weight:500;font-family:'Noto Sans JP',sans-serif;border-radius:9px;cursor:pointer;letter-spacing:0.08em;transition:background 0.15s;margin-top:16px;}
+  .btn-submit{background:rgba(212,175,55,0.12);border:0.5px solid var(--gold-dim);color:var(--gold);}
+  .btn-submit:hover{background:rgba(212,175,55,0.22);}
+  .btn-submit:disabled{opacity:0.35;cursor:default;}
+  .btn-next{background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.2);color:var(--text-mid);display:none;}
+  .btn-next:hover{background:rgba(255,255,255,0.1);}
+
+  /* Feedback */
+  .feedback{margin-top:16px;border-radius:10px;padding:16px 18px;display:none;animation:fadeIn 0.3s ease;}
+  .feedback.correct-fb{background:var(--correct);border:0.5px solid var(--correct-border);}
+  .feedback.acceptable-fb{background:var(--acceptable);border:0.5px solid var(--acceptable-border);}
+  .feedback.wrong-fb{background:var(--wrong);border:0.5px solid var(--wrong-border);}
+  .fb-title{font-size:15px;font-weight:500;margin-bottom:8px;}
+  .fc{color:rgba(100,220,130,0.95);}
+  .fa{color:rgba(212,175,55,0.95);}
+  .fw{color:rgba(220,100,80,0.9);}
+  .fb-body{font-size:13px;color:var(--text-mid);line-height:1.85;}
+  .fb-best{font-size:13px;color:rgba(100,220,130,0.85);margin-top:6px;}
+
+  /* Result */
+  .result-screen{background:var(--sec-bg);border:0.5px solid var(--sec-border);border-radius:12px;padding:36px 24px;text-align:center;display:none;animation:fadeIn 0.4s ease;}
+  .res-title{font-family:'Zen Antique',serif;font-size:22px;color:var(--gold);letter-spacing:0.15em;margin-bottom:20px;}
+  .res-big{font-size:52px;font-weight:500;color:var(--gold);line-height:1;margin-bottom:6px;}
+  .res-denom{font-size:18px;color:var(--text-mid);margin-bottom:24px;}
+  .res-comment{font-size:14px;color:var(--text-mid);line-height:1.8;margin-bottom:28px;}
+  .retry-btn{padding:13px 40px;font-size:15px;font-weight:500;font-family:'Noto Sans JP',sans-serif;background:rgba(212,175,55,0.12);border:0.5px solid var(--gold-dim);border-radius:9px;cursor:pointer;color:var(--gold);letter-spacing:0.1em;transition:background 0.15s;margin-right:10px;}
+  .retry-btn:hover{background:rgba(212,175,55,0.22);}
+  .home-btn{padding:13px 40px;font-size:15px;font-weight:500;font-family:'Noto Sans JP',sans-serif;background:transparent;border:0.5px solid rgba(255,255,255,0.2);border-radius:9px;cursor:pointer;color:var(--text-mid);text-decoration:none;display:inline-block;transition:background 0.15s;}
+  .home-btn:hover{background:rgba(255,255,255,0.06);}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-left">
+    <a class="nav-back" href="index.html">← 道場へ戻る</a>
+    <span style="color:var(--text-dim)">|</span>
+    <span class="nav-title">何切る</span>
+  </div>
+  <div class="nav-score">正答 <span id="nav-correct">0</span> / <span id="nav-total">0</span></div>
+</nav>
+
+<div class="page">
+  <div class="progress-wrap">
+    <div class="progress-info"><span id="prog-label">問題 1 / 10</span><span id="prog-pct">0%</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+  </div>
+
+  <div id="quiz-area">
+    <div class="q-card" id="q-card">
+      <div class="q-no" id="q-no">Q1</div>
+      <div class="badge" id="q-badge">初級</div>
+      <div class="q-text" id="q-text"></div>
+
+      <!-- 場況ピル -->
+      <div class="situation-row" id="sit-row"></div>
+
+      <!-- ドラ＋場況ボード -->
+      <div class="board" id="board-wrap">
+        <div class="board-cell">
+          <div class="board-label">ドラ表示牌</div>
+          <div class="dora-row" id="dora-row"></div>
+        </div>
+        <div class="board-cell" id="board-info">
+          <div class="board-label">場況メモ</div>
+          <div id="board-notes" style="font-size:12px;color:var(--text-mid);line-height:1.7;"></div>
+        </div>
+      </div>
+
+      <!-- 河 -->
+      <div class="river-section">
+        <div class="river-title">捨て牌（河）</div>
+        <div class="river-grid" id="river-grid"></div>
+      </div>
+
+      <!-- 手牌 -->
+      <div class="hand-section">
+        <div class="hand-label">あなたの手牌（13枚）— 切る牌を1枚クリック</div>
+        <div class="hand-row" id="hand-row"></div>
+        <div class="hand-hint" id="hand-hint">▲ 牌をクリックして選択</div>
+      </div>
+
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:rgba(39,160,80,0.7)"></div>最善</div>
+        <div class="legend-item"><div class="legend-dot" style="background:rgba(212,175,55,0.7)"></div>準正解</div>
+        <div class="legend-item"><div class="legend-dot" style="background:rgba(192,57,43,0.6)"></div>不正解</div>
+      </div>
+
+      <button class="action-btn btn-submit" id="btn-submit" onclick="submitAnswer()" disabled>この牌を切る</button>
+      <button class="action-btn btn-next"   id="btn-next"   onclick="nextQuestion()">次の問題 →</button>
+
+      <div class="feedback" id="feedback">
+        <div class="fb-title" id="fb-title"></div>
+        <div class="fb-body"  id="fb-body"></div>
+        <div class="fb-best"  id="fb-best"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="result-screen" id="result-screen">
+    <div class="res-title">お疲れ様でした</div>
+    <div class="res-big" id="res-big">0</div>
+    <div class="res-denom" id="res-denom">/ 10 問正解</div>
+    <div class="res-comment" id="res-comment"></div>
+    <button class="retry-btn" onclick="startQuiz()">もう一度挑戦</button>
+    <a class="home-btn" href="index.html">道場トップへ</a>
+  </div>
+</div>
+
+<script>
+// tiles.js — 共通の牌画像ユーティリティ
+// 全ページからこのファイルを読み込んで使う
+
+const TILE_IMG_BASE = 'img/tiles/';
+
+// keyからファイル名を返す
+// key例: 'man1','pin5','sou3','ton','nan','sya','pei','haku','hatu','tyun','back'
+function tileFile(key) {
+  return TILE_IMG_BASE + key + '.png';
+}
+
+// 牌定義（suit, index→key）
+const SUIT_KEYS = {
+  man: ['man1','man2','man3','man4','man5','man6','man7','man8','man9'],
+  pin: ['pin1','pin2','pin3','pin4','pin5','pin6','pin7','pin8','pin9'],
+  sou: ['sou1','sou2','sou3','sou4','sou5','sou6','sou7','sou8','sou9'],
+  ji:  ['ton','nan','sya','pei','haku','hatu','tyun']
+};
+
+// 表示ラベル（フォールバック用）
+const TILE_LABEL = {
+  man1:'一',man2:'二',man3:'三',man4:'四',man5:'五',man6:'六',man7:'七',man8:'八',man9:'九',
+  pin1:'①',pin2:'②',pin3:'③',pin4:'④',pin5:'⑤',pin6:'⑥',pin7:'⑦',pin8:'⑧',pin9:'⑨',
+  sou1:'1s',sou2:'2s',sou3:'3s',sou4:'4s',sou5:'5s',sou6:'6s',sou7:'7s',sou8:'8s',sou9:'9s',
+  ton:'東',nan:'南',sya:'西',pei:'北',haku:'白',hatu:'發',tyun:'中',back:'？'
+};
+
+// aka(赤)バリアント
+const AKA_KEYS = { man5:'man5_aka', pin5:'pin5_aka', sou5:'sou5_aka' };
+
+/**
+ * <div class="tile-wrap"> を生成して返す
+ * @param {string} key   牌キー
+ * @param {boolean} aka  赤牌かどうか
+ * @param {boolean} yoko 横向きかどうか
+ * @param {string} extraClass 追加クラス
+ */
+function makeTileEl(key, aka=false, yoko=false, extraClass='') {
+  const wrap = document.createElement('div');
+  let cls = 'tile-wrap';
+  if (yoko) cls += ' tile-yoko';
+  if (extraClass) cls += ' ' + extraClass;
+  wrap.className = cls;
+  wrap.dataset.key = key;
+
+  const img = document.createElement('img');
+  let fileKey = key;
+  if (aka && AKA_KEYS[key]) fileKey = AKA_KEYS[key];
+  if (yoko) fileKey = fileKey + '_yoko';
+  img.src = tileFile(fileKey);
+  img.alt = TILE_LABEL[key] || key;
+  // 画像がなければフォールバックでラベル表示
+  img.onerror = function() {
+    wrap.textContent = TILE_LABEL[key] || key;
+    wrap.classList.add('tile-fallback');
+  };
+  wrap.appendChild(img);
+  return wrap;
+}
+
+</script>
+<script>
+/*
+問題データ構造:
+  difficulty : 'easy'|'mid'|'hard'
+  text       : 問題文
+  situation  : [{label, type}]  場況ピル ('normal'|'accent'|'danger')
+  dora       : ['man5',...]      ドラ表示牌のkeyリスト
+  boardNotes : '場況メモ文字列'
+  river      : [                 各家の河
+    { name:'自家', tiles:[{k:'man1', yoko:false, riichi:false}, ...] },
+    { name:'下家(右)', tiles:[...] },
+    { name:'対面', tiles:[...] },
+    { name:'上家(左)', tiles:[...] },
+  ]
+  hand       : [{k:'man1', aka:false}]  手牌13枚
+  best       : 'man1'               最善切り牌key（ユニークidxが必要な場合はhand配列のindex番号を使う）
+  bestIdx    : 0                    hand配列内の最善牌のindex（同じkeyが複数ある場合）
+  acceptable : [idx,...]            準正解のhandインデックス配列
+  explanation: '解説文'
+*/
+const QUESTIONS = [
+
+  /* ══ 初級 1 ══ */
+  {
+    difficulty:'easy',
+    text:'東1局東家（親）8巡目。リーチが入っていない序盤です。ブロックを整理して効率よく進めましょう。',
+    situation:[
+      {label:'東1局',type:'normal'},{label:'親（東家）',type:'normal'},
+      {label:'8巡目',type:'normal'},{label:'持ち点 25000',type:'normal'}
+    ],
+    dora:['pin2'],
+    boardNotes:'ドラは③（三筒）。三色や一通は見えない手格好。まず不要な字牌から整理。',
+    river:[
+      {name:'自家',    tiles:[]},
+      {name:'下家（右）',tiles:[{k:'sya',y:false,r:false},{k:'nan',y:false,r:false},{k:'hatu',y:false,r:false}]},
+      {name:'対面',    tiles:[{k:'pei',y:false,r:false},{k:'haku',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'tyun',y:false,r:false},{k:'ton',y:false,r:false}]}
+    ],
+    hand:[
+      {k:'man1',a:false},{k:'man2',a:false},{k:'man3',a:false},
+      {k:'pin4',a:false},{k:'pin5',a:false},{k:'pin6',a:false},
+      {k:'pin7',a:false},{k:'pin8',a:false},
+      {k:'sou2',a:false},{k:'sou3',a:false},
+      {k:'ton', a:false},{k:'nan', a:false},{k:'haku',a:false}
+    ],
+    bestIdx:11,
+    acceptable:[12],
+    explanation:'一二三・④〜⑧・2s3sの3ブロック＋東（自風・役牌）。南と白はどちらも役にならない孤立字牌。河に東・南・西・北・中が多く出ているためこれらは比較的安全牌でもある。自風の東は残しつつ南を切るのが最善。白も孤立のため準正解。'
+  },
+
+  /* ══ 初級 2 ══ */
+  {
+    difficulty:'easy',
+    text:'東2局南家（子）6巡目。タンヤオを狙っています。不要な端牌・字牌を整理してください。',
+    situation:[
+      {label:'東2局',type:'normal'},{label:'子（南家）',type:'normal'},
+      {label:'6巡目',type:'normal'},{label:'タンヤオ狙い',type:'accent'},
+      {label:'持ち点 28000',type:'normal'}
+    ],
+    dora:['man7'],
+    boardNotes:'ドラは八萬。六・七・八萬の順子が作れれば1翻増える。タンヤオ方針なら1・9・字牌を全て処理。',
+    river:[
+      {name:'自家',    tiles:[]},
+      {name:'下家（右）',tiles:[{k:'man1',y:false,r:false},{k:'ton',y:false,r:false}]},
+      {name:'対面',    tiles:[{k:'pin9',y:false,r:false},{k:'sou1',y:false,r:false},{k:'nan',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'pei',y:false,r:false},{k:'man9',y:false,r:false}]}
+    ],
+    hand:[
+      {k:'pin2',a:false},{k:'pin3',a:false},{k:'pin4',a:false},
+      {k:'pin5',a:false},{k:'pin6',a:false},
+      {k:'man3',a:false},{k:'man4',a:false},{k:'man5',a:false},
+      {k:'man6',a:false},{k:'man7',a:false},
+      {k:'man1',a:false},{k:'sou9',a:false},{k:'ton',a:false}
+    ],
+    bestIdx:10,
+    acceptable:[11,12],
+    explanation:'タンヤオは1・9・字牌が全て使えない。一萬（端牌・孤立）・9s（端牌・孤立）・東（字牌）が不要。一萬は②③④…とのつながりがなく完全孤立。9sも孤立だが1sが河に出ていないため若干安全牌として残す考えもある。東も字牌なので不要。一萬が最優先で最善。'
+  },
+
+  /* ══ 初級 3 ══ */
+  {
+    difficulty:'easy',
+    text:'東3局西家（子）4巡目。雀頭候補が余っています。孤立牌を整理してください。',
+    situation:[
+      {label:'東3局',type:'normal'},{label:'子（西家）',type:'normal'},
+      {label:'4巡目',type:'normal'},{label:'持ち点 22000',type:'normal'}
+    ],
+    dora:['sou5'],
+    boardNotes:'ドラは6索（五索の次）。索子の6s付近を引ければ好形。まず完全孤立字牌を処理。',
+    river:[
+      {name:'自家',    tiles:[]},
+      {name:'下家（右）',tiles:[{k:'haku',y:false,r:false}]},
+      {name:'対面',    tiles:[{k:'tyun',y:false,r:false},{k:'hatu',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'nan',y:false,r:false}]}
+    ],
+    hand:[
+      {k:'pin1',a:false},{k:'pin1',a:false},
+      {k:'pin5',a:false},{k:'pin5',a:false},
+      {k:'man3',a:false},{k:'man4',a:false},{k:'man5',a:false},
+      {k:'man6',a:false},{k:'man7',a:false},
+      {k:'sou2',a:false},{k:'sou3',a:false},{k:'sou4',a:false},
+      {k:'pei', a:false}
+    ],
+    bestIdx:12,
+    acceptable:[],
+    explanation:'①①・⑤⑤の対子2組・三〜七萬の5連形・2s3s4sの完成順子がある。北は完全孤立字牌。これを切れば対子2組のどちらかを雀頭に使いつつ4ブロックを維持できる。北一択。'
+  },
+
+  /* ══ 中級 1 ══ */
+  {
+    difficulty:'mid',
+    text:'東1局北家（子）11巡目。下家がリーチしています。役牌の対子を活かしながら安全に進めましょう。',
+    situation:[
+      {label:'東1局',type:'normal'},{label:'子（北家）',type:'normal'},
+      {label:'11巡目',type:'normal'},{label:'下家リーチ中',type:'danger'},
+      {label:'持ち点 24000',type:'normal'}
+    ],
+    dora:['man3'],
+    boardNotes:'ドラは四萬。下家が8巡目にリーチ。字牌（特に序盤から場に出ていた牌）が比較的安全。白は下家の河に1枚見えているため通りやすい。',
+    river:[
+      {name:'自家',    tiles:[]},
+      {name:'下家（右）\n★リーチ',tiles:[{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sou9',y:false,r:false},{k:'pin1',y:false,r:false},{k:'haku',y:false,r:false},{k:'pin8',y:true,r:true}]},
+      {name:'対面',    tiles:[{k:'sya',y:false,r:false},{k:'pei',y:false,r:false},{k:'man1',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'hatu',y:false,r:false},{k:'tyun',y:false,r:false},{k:'sou1',y:false,r:false}]}
+    ],
+    hand:[
+      {k:'tyun',a:false},{k:'tyun',a:false},
+      {k:'pin2',a:false},{k:'pin3',a:false},{k:'pin4',a:false},
+      {k:'pin6',a:false},{k:'pin7',a:false},{k:'pin8',a:false},
+      {k:'man3',a:false},{k:'man4',a:false},{k:'man5',a:false},
+      {k:'sou9',a:false},{k:'pei',a:false}
+    ],
+    bestIdx:13,
+    acceptable:[11],
+    explanation:'中の対子は鳴いても役になる貴重なブロック。下家のリーチに対して安全な牌を切りたい。北は下家の河に見えておらず危険だが孤立。9sは下家の河に既に出ているため通りやすい（スジでもある）。リーチへの安全度と手の価値を天秤にかけ、9sが最善。北も候補だが危険度が高い。'
+  },
+
+  /* ══ 中級 2 ══ */
+  {
+    difficulty:'mid',
+    text:'南1局東家（親）9巡目。七対子（チートイツ）を目指しています。最も対子になりやすい牌を残しましょう。',
+    situation:[
+      {label:'南1局',type:'normal'},{label:'親（東家）',type:'normal'},
+      {label:'9巡目',type:'normal'},{label:'チートイツ狙い',type:'accent'},
+      {label:'持ち点 30000',type:'normal'}
+    ],
+    dora:['pin6'],
+    boardNotes:'ドラは七筒。⑦⑦の対子が作れれば2翻増える。5対子まで揃っており残り2枚の孤立牌を処理する。',
+    river:[
+      {name:'自家',    tiles:[{k:'man2',y:false,r:false},{k:'sou3',y:false,r:false},{k:'man8',y:false,r:false},{k:'pin4',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'sou9',y:false,r:false},{k:'pin2',y:false,r:false},{k:'man5',y:false,r:false}]},
+      {name:'対面',    tiles:[{k:'man9',y:false,r:false},{k:'sou7',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'pin8',y:false,r:false},{k:'sou4',y:false,r:false},{k:'haku',y:false,r:false}]}
+    ],
+    hand:[
+      {k:'man1',a:false},{k:'man1',a:false},
+      {k:'pin3',a:false},{k:'pin3',a:false},
+      {k:'pin7',a:false},{k:'pin7',a:false},
+      {k:'ton', a:false},{k:'ton', a:false},
+      {k:'haku',a:false},{k:'haku',a:false},
+      {k:'sou2',a:false},
+      {k:'sou6',a:false},
+      {k:'sou9',a:false}
+    ],
+    bestIdx:12,
+    acceptable:[11,10],
+    explanation:'すでに5対子（一一・③③・⑦⑦・東東・白白）。残り3枚（2s・6s・9s）は全て孤立。9sは端牌で場に1枚出ており対子になりにくい。6sはドラ付近の中張牌でやや引ける可能性あり。2sも孤立だが中張牌。9s切りが最善。'
+  },
+
+  /* ══ 中級 3 ══ */
+  {
+    difficulty:'mid',
+    text:'東4局南家（子）12巡目。ドラを活かしつつテンパイを目指してください。（ドラ表示牌に注目）',
+    situation:[
+      {label:'東4局',type:'normal'},{label:'子（南家）',type:'normal'},
+      {label:'12巡目',type:'normal'},{label:'ドラ活用',type:'accent'},
+      {label:'持ち点 18000',type:'normal'}
+    ],
+    dora:['man4'],
+    boardNotes:'ドラは五萬。五萬2枚で2翻、対子にすれば雀頭にもなる。孤立字牌を処理してドラを手に残す。',
+    river:[
+      {name:'自家',    tiles:[{k:'ton',y:false,r:false},{k:'pei',y:false,r:false},{k:'sou1',y:false,r:false},{k:'pin1',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'nan',y:false,r:false},{k:'haku',y:false,r:false},{k:'pin9',y:false,r:false}]},
+      {name:'対面',    tiles:[{k:'sya',y:false,r:false},{k:'man1',y:false,r:false},{k:'tyun',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'hatu',y:false,r:false},{k:'sou9',y:false,r:false}]}
+    ],
+    hand:[
+      {k:'man5',a:false},{k:'man5',a:false},
+      {k:'man4',a:false},{k:'man6',a:false},
+      {k:'pin2',a:false},{k:'pin3',a:false},{k:'pin4',a:false},
+      {k:'pin7',a:false},{k:'pin8',a:false},{k:'pin9',a:false},
+      {k:'sou1',a:false},{k:'ton',a:false},{k:'nan',a:false}
+    ],
+    bestIdx:11,
+    acceptable:[12,10],
+    explanation:'五五（ドラ対子）＋四六のカンチャン形・②〜④・⑦⑧⑨が見える。1sは端牌孤立。東・南は字牌孤立。河に東・南がすでに多く出ており安全度も高い。東を切ってドラ周辺と筒子2ブロックを保つのが最善。南・1sも不要だが東が先。'
+  },
+
+  /* ══ 上級 1 ══ */
+  {
+    difficulty:'hard',
+    text:'南2局西家（子）14巡目。テンパイ取りか安全牌切りか。下家・対面が激しく攻めています。',
+    situation:[
+      {label:'南2局',type:'normal'},{label:'子（西家）',type:'normal'},
+      {label:'14巡目',type:'normal'},{label:'下家リーチ',type:'danger'},
+      {label:'対面テンパイ気配',type:'danger'},{label:'持ち点 16000',type:'normal'}
+    ],
+    dora:['sou3'],
+    boardNotes:'ドラは4索。手の中に4sがある。下家は8巡目リーチ。対面は9巡目から字牌を連打しており要注意。残り巡数が少なくオリも選択肢。',
+    river:[
+      {name:'自家',    tiles:[{k:'ton',y:false,r:false},{k:'pei',y:false,r:false},{k:'man1',y:false,r:false}]},
+      {name:'下家（右）\n★リーチ',tiles:[{k:'nan',y:false,r:false},{k:'haku',y:false,r:false},{k:'pin9',y:false,r:false},{k:'sou9',y:false,r:false},{k:'man1',y:true,r:true}]},
+      {name:'対面',    tiles:[{k:'man9',y:false,r:false},{k:'pin1',y:false,r:false},{k:'sya',y:false,r:false},{k:'hatu',y:false,r:false},{k:'tyun',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'sou1',y:false,r:false},{k:'man2',y:false,r:false}]}
+    ],
+    hand:[
+      {k:'man3',a:false},{k:'man4',a:false},{k:'man5',a:false},
+      {k:'pin4',a:false},{k:'pin5',a:false},{k:'pin6',a:false},
+      {k:'pin7',a:false},{k:'pin8',a:false},
+      {k:'sou2',a:false},{k:'sou3',a:false},{k:'sou4',a:false},
+      {k:'haku',a:false},{k:'nan',a:false}
+    ],
+    bestIdx:11,
+    acceptable:[12],
+    explanation:'白は下家の河に1枚見えており通りやすい安全牌。南も字牌だが下家の河に出ておらず若干危険。14巡目でドラ（4s）を含む手だがテンパイまで遠い。2人から攻められている状況では安全牌優先。白→南の順で切り、手を整えながら様子を見るのが正着。'
+  },
+
+  /* ══ 上級 2 ══ */
+  {
+    difficulty:'hard',
+    text:'東3局北家（子）7巡目。ホンイツ（混一色）を目指しています。どの牌から整理しますか？',
+    situation:[
+      {label:'東3局',type:'normal'},{label:'子（北家）',type:'normal'},
+      {label:'7巡目',type:'normal'},{label:'ホンイツ狙い',type:'accent'},
+      {label:'持ち点 21000',type:'normal'}
+    ],
+    dora:['pin4'],
+    boardNotes:'ドラは五筒だが、ホンイツ（筒子＋字牌）を狙うならピンズ以外を全て処理。まず他色の孤立牌から切る。',
+    river:[
+      {name:'自家',    tiles:[{k:'man5',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'ton',y:false,r:false},{k:'hatu',y:false,r:false}]},
+      {name:'対面',    tiles:[{k:'man3',y:false,r:false},{k:'sou8',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'nan',y:false,r:false}]}
+    ],
+    hand:[
+      {k:'pin1',a:false},{k:'pin2',a:false},{k:'pin3',a:false},
+      {k:'pin5',a:false},{k:'pin6',a:false},{k:'pin7',a:false},
+      {k:'pin9',a:false},{k:'pin9',a:false},
+      {k:'ton', a:false},{k:'haku',a:false},
+      {k:'man3',a:false},{k:'man7',a:false},
+      {k:'sou5',a:false}
+    ],
+    bestIdx:12,
+    acceptable:[10,11],
+    explanation:'筒子が8枚と豊富でホンイツが狙える。萬子（三萬・七萬）と5sが不要。5sは索子の孤立牌で完全無駄。三萬・七萬も処理必要だが、まず他色の孤立牌から切る原則により5sが最優先。三萬・七萬はどちらを切っても準正解。'
+  },
+
+  /* ══ 上級 3 ══ */
+  {
+    difficulty:'hard',
+    text:'東2局東家（親）10巡目。受け入れ枚数が最大になる1枚はどれですか？ブロック数を丁寧に数えましょう。',
+    situation:[
+      {label:'東2局',type:'normal'},{label:'親（東家）',type:'normal'},
+      {label:'10巡目',type:'normal'},{label:'受け入れ最大化',type:'accent'},
+      {label:'持ち点 27000',type:'normal'}
+    ],
+    dora:['pin7'],
+    boardNotes:'ドラは八筒。⑧⑧の対子が作れれば好形。三萬が2枚あり一萬が孤立気味。三萬を整理してより広い受け入れを確保する。',
+    river:[
+      {name:'自家',    tiles:[{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'haku',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'sya',y:false,r:false},{k:'pei',y:false,r:false}]},
+      {name:'対面',    tiles:[{k:'hatu',y:false,r:false},{k:'tyun',y:false,r:false},{k:'man9',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'sou1',y:false,r:false},{k:'pin1',y:false,r:false}]}
+    ],
+    hand:[
+      {k:'man1',a:false},{k:'man2',a:false},{k:'man3',a:false},
+      {k:'man3',a:false},{k:'man4',a:false},{k:'man5',a:false},
+      {k:'pin2',a:false},{k:'pin3',a:false},{k:'pin4',a:false},
+      {k:'pin5',a:false},{k:'pin6',a:false},
+      {k:'sou7',a:false},{k:'sou8',a:false}
+    ],
+    bestIdx:0,
+    acceptable:[1],
+    explanation:'一二三・三四五・②〜⑥・7s8sで4ブロック＋余り。三萬が2枚あり一萬は孤立に近い。一萬を切ると二三が残って両面（一or四待ち）の形が残せ、三三四五の柔軟な形も維持できる。受け入れ最大は一萬切り。二萬を切るとカンチャン（一三）になるので準正解。'
+  },
+
+  /* ══ 上級 4 ══ */
+  {
+    difficulty:'hard',
+    text:'南3局南家（子）13巡目。一向聴（イーシャンテン）です。最もよい待ちになるテンパイ取りを選んでください。',
+    situation:[
+      {label:'南3局',type:'normal'},{label:'子（南家）',type:'normal'},
+      {label:'13巡目',type:'normal'},{label:'イーシャンテン',type:'accent'},
+      {label:'持ち点 14000',type:'danger'},{label:'ラス目',type:'danger'}
+    ],
+    dora:['sou1'],
+    boardNotes:'ドラは2索。2sが手の中に1枚。ラス目のためテンパイを優先して点数を稼ぎたい局面。白は孤立しており完全に不要。',
+    river:[
+      {name:'自家',    tiles:[{k:'ton',y:false,r:false},{k:'pei',y:false,r:false},{k:'man9',y:false,r:false},{k:'sou9',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'haku',y:false,r:false},{k:'nan',y:false,r:false},{k:'pin1',y:false,r:false},{k:'man1',y:false,r:false}]},
+      {name:'対面',    tiles:[{k:'hatu',y:false,r:false},{k:'tyun',y:false,r:false},{k:'sou8',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'sya',y:false,r:false},{k:'pin9',y:false,r:false},{k:'man2',y:false,r:false}]}
+    ],
+    hand:[
+      {k:'pin2',a:false},{k:'pin3',a:false},{k:'pin4',a:false},
+      {k:'pin5',a:false},{k:'pin6',a:false},{k:'pin7',a:false},
+      {k:'man3',a:false},{k:'man4',a:false},{k:'man5',a:false},
+      {k:'man6',a:false},{k:'man7',a:false},
+      {k:'sou2',a:false},
+      {k:'haku',a:false}
+    ],
+    bestIdx:12,
+    acceptable:[],
+    explanation:'②〜⑦（6連形）・三〜七萬（5連形）・2s（ドラ孤立）。白は完全孤立字牌。白を切れば6連形と5連形でテンパイに備えられる。6連形は内側を雀頭にすれば③〜⑥どれでも両面テンパイが取れる良形。ラス目のため早くテンパイを取りに行くべき。白一択。'
+  }
+];
+
+/* ── エンジン ── */
+let qList=[], qIdx=0, correctCount=0, selectedIdx=null, answered=false;
+
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function startQuiz(){
+  qList=shuffle(QUESTIONS); qIdx=0; correctCount=0;
+  document.getElementById('nav-correct').textContent=0;
+  document.getElementById('nav-total').textContent=0;
+  document.getElementById('result-screen').style.display='none';
+  document.getElementById('quiz-area').style.display='block';
+  showQuestion();
+}
+
+function showQuestion(){
+  const q=qList[qIdx]; answered=false; selectedIdx=null;
+  const pct=Math.round(qIdx/qList.length*100);
+  document.getElementById('prog-label').textContent='問題 '+(qIdx+1)+' / '+qList.length;
+  document.getElementById('prog-pct').textContent=pct+'%';
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('q-no').textContent='Q'+(qIdx+1);
+
+  const dm={easy:['初級','badge-easy'],mid:['中級','badge-mid'],hard:['上級','badge-hard']};
+  const badge=document.getElementById('q-badge');
+  badge.textContent=dm[q.difficulty][0]; badge.className='badge '+dm[q.difficulty][1];
+  document.getElementById('q-text').textContent=q.text;
+
+  // 場況ピル
+  document.getElementById('sit-row').innerHTML=q.situation.map(s=>'<span class="sit-pill'+(s.type==='accent'?' accent':s.type==='danger'?' danger':'')+'">'+s.label+'</span>').join('');
+
+  // ドラ
+  const doraRow=document.getElementById('dora-row');
+  doraRow.innerHTML='';
+  q.dora.forEach(k=>{
+    const w=makeTileEl(k); w.style.cursor='default'; doraRow.appendChild(w);
+  });
+
+  // 場況メモ
+  document.getElementById('board-notes').textContent=q.boardNotes;
+
+  // 河
+  const riverGrid=document.getElementById('river-grid');
+  riverGrid.innerHTML='';
+  q.river.forEach(player=>{
+    const cell=document.createElement('div');
+    cell.className='river-player';
+    const nameDiv=document.createElement('div');
+    nameDiv.className='river-player-name';
+    nameDiv.textContent=player.name;
+    cell.appendChild(nameDiv);
+    const tilesDiv=document.createElement('div');
+    tilesDiv.className='river-tiles';
+    player.tiles.forEach(t=>{
+      const w=makeTileEl(t.k,false,t.y);
+      w.style.cursor='default';
+      if(t.r) w.classList.add('riichi-discard');
+      tilesDiv.appendChild(w);
+    });
+    cell.appendChild(tilesDiv);
+    riverGrid.appendChild(cell);
+  });
+
+  // 手牌
+  const handRow=document.getElementById('hand-row');
+  handRow.innerHTML='';
+  q.hand.forEach((t,i)=>{
+    const el=document.createElement('div');
+    el.className='h-tile';
+    const img=document.createElement('img');
+    img.src=tileFile(t.a&&AKA_KEYS[t.k]?AKA_KEYS[t.k]:t.k);
+    img.alt=TILE_LABEL[t.k]||t.k;
+    img.onerror=function(){el.textContent=TILE_LABEL[t.k]||t.k;el.classList.add('tile-fallback');};
+    el.appendChild(img);
+    const lbl=document.createElement('span');
+    lbl.className='tile-label-badge'; lbl.id='lbl-'+i;
+    el.appendChild(lbl);
+    el.dataset.idx=i;
+    el.onclick=()=>selectTile(el,i,q);
+    handRow.appendChild(el);
+  });
+
+  document.getElementById('hand-hint').textContent='▲ 牌をクリックして選択';
+  document.getElementById('btn-submit').disabled=true;
+  document.getElementById('btn-submit').style.display='block';
+  document.getElementById('btn-next').style.display='none';
+  const fb=document.getElementById('feedback');
+  fb.style.display='none'; fb.className='feedback';
+
+  const card=document.getElementById('q-card');
+  card.style.animation='none'; void card.offsetWidth; card.style.animation='fadeIn 0.35s ease';
+}
+
+function selectTile(el,idx,q){
+  if(answered)return;
+  document.querySelectorAll('.h-tile').forEach(t=>t.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedIdx=idx;
+  document.getElementById('hand-hint').textContent='「'+( TILE_LABEL[q.hand[idx].k]||q.hand[idx].k)+'」を選択中';
+  document.getElementById('btn-submit').disabled=false;
+}
+
+function submitAnswer(){
+  if(selectedIdx===null||answered)return;
+  answered=true;
+  const q=qList[qIdx];
+  const isBest=selectedIdx===q.bestIdx;
+  const isAcceptable=q.acceptable.includes(selectedIdx);
+  if(isBest)correctCount++;
+
+  document.getElementById('nav-correct').textContent=correctCount;
+  document.getElementById('nav-total').textContent=qIdx+1;
+
+  document.querySelectorAll('.h-tile').forEach(el=>{
+    const i=parseInt(el.dataset.idx);
+    el.classList.remove('selected'); el.classList.add('revealed');
+    const lbl=document.getElementById('lbl-'+i);
+    if(i===q.bestIdx){el.classList.add('correct-tile');lbl.textContent='最善';lbl.className='tile-label-badge label-best';lbl.style.display='block';}
+    else if(q.acceptable.includes(i)){el.classList.add('acceptable-tile');lbl.textContent='準正解';lbl.className='tile-label-badge label-ok';lbl.style.display='block';}
+    else if(i===selectedIdx){el.classList.add('wrong-tile');lbl.textContent='選択';lbl.className='tile-label-badge label-ng';lbl.style.display='block';}
+  });
+
+  const fb=document.getElementById('feedback');
+  fb.style.display='block';
+  let fbCls,titleCls,titleTxt;
+  if(isBest){fbCls='correct-fb';titleCls='fc';titleTxt='✓ 最善手！';}
+  else if(isAcceptable){fbCls='acceptable-fb';titleCls='fa';titleTxt='△ 準正解';}
+  else{fbCls='wrong-fb';titleCls='fw';titleTxt='✗ 不正解';}
+  fb.className='feedback '+fbCls;
+  const ftEl=document.getElementById('fb-title');
+  ftEl.className='fb-title '+titleCls; ftEl.textContent=titleTxt;
+  document.getElementById('fb-body').textContent=q.explanation;
+  const bestKey=q.hand[q.bestIdx].k;
+  document.getElementById('fb-best').textContent=isBest?'':('最善手: '+(TILE_LABEL[bestKey]||bestKey)+' を切る');
+
+  document.getElementById('btn-submit').style.display='none';
+  const nb=document.getElementById('btn-next');
+  nb.style.display='block';
+  nb.textContent=(qIdx+1<qList.length)?'次の問題 →':'結果を見る';
+}
+
+function nextQuestion(){qIdx++;if(qIdx>=qList.length)showResult();else showQuestion();}
+function showResult(){
+  document.getElementById('quiz-area').style.display='none';
+  const rs=document.getElementById('result-screen'); rs.style.display='block';
+  document.getElementById('res-big').textContent=correctCount;
+  document.getElementById('res-denom').textContent='/ '+qList.length+' 問最善手';
+  const pct=Math.round(correctCount/qList.length*100);
+  let c='';
+  if(pct>=90)c='素晴らしい！牌効率と状況判断が身についています。実戦でも安定した一打が打てるでしょう。';
+  else if(pct>=70)c='よくできました！守備判断や受け入れ枚数をもう少し意識してみましょう。';
+  else if(pct>=50)c='もう少しです。「孤立字牌から切る」「リーチに安全牌を切る」基本を確認してみましょう。';
+  else c='基礎から復習しましょう。孤立牌・端牌・字牌の優先順位と、河からの安全牌の読み方を確認してください。';
+  document.getElementById('res-comment').textContent=c;
+}
+
+startQuiz();
+</script>
+</body>
+</html>

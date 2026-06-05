@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>点数計算 — 麻雀道場</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&family=Noto+Serif+JP:wght@400;700&family=Zen+Antique&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  :root {
+    --gold:#d4af37; --gold-dim:rgba(212,175,55,0.5); --gold-faint:rgba(212,175,55,0.13);
+    --felt:#111a0a; --felt-mid:#1a2810;
+    --text-bright:rgba(255,255,255,0.88); --text-mid:rgba(255,255,255,0.5); --text-dim:rgba(255,255,255,0.28);
+    --sec-bg:rgba(255,255,255,0.04); --sec-border:rgba(212,175,55,0.18);
+    --input-bg:rgba(255,255,255,0.06); --input-border:rgba(255,255,255,0.15);
+  }
+  html,body { min-height:100vh; background:var(--felt); color:var(--text-bright); font-family:'Noto Sans JP',sans-serif; font-size:14px; }
+  body { background-image: repeating-linear-gradient(45deg,rgba(255,255,255,0.01) 0px,rgba(255,255,255,0.01) 1px,transparent 1px,transparent 12px), repeating-linear-gradient(-45deg,rgba(255,255,255,0.01) 0px,rgba(255,255,255,0.01) 1px,transparent 1px,transparent 12px), radial-gradient(ellipse 80% 50% at 50% 0%,var(--felt-mid) 0%,var(--felt) 60%); }
+
+  .nav { display:flex; align-items:center; gap:12px; padding:16px 24px; border-bottom:0.5px solid rgba(212,175,55,0.12); }
+  .nav-back { color:var(--gold-dim); text-decoration:none; font-size:13px; letter-spacing:0.05em; transition:color 0.15s; }
+  .nav-back:hover { color:var(--gold); }
+  .nav-title { font-family:'Zen Antique',serif; font-size:16px; color:var(--gold); letter-spacing:0.12em; }
+
+  .page { max-width:720px; margin:0 auto; padding:24px 20px 64px; }
+
+  .sec { background:var(--sec-bg); border:0.5px solid var(--sec-border); border-radius:12px; padding:18px 20px; margin-bottom:12px; }
+  .sec-title { font-size:13px; font-weight:500; color:var(--gold-dim); margin-bottom:14px; display:flex; align-items:center; gap:7px; letter-spacing:0.05em; }
+  .sec-title span.cnt { font-size:11px; color:var(--text-dim); font-weight:400; }
+  .suit-label { font-size:11px; color:var(--text-dim); margin-bottom:5px; letter-spacing:0.05em; }
+  .tile-grid { display:flex; flex-wrap:wrap; gap:4px; margin-bottom:10px; }
+
+  /* ── 共通牌スタイル ── */
+  .tile-wrap {
+    width:34px; height:46px;
+    background:#f0ebe0;
+    border-radius:3px; border-bottom:3px solid #b8a888;
+    overflow:hidden; cursor:pointer;
+    box-shadow:0 2px 4px rgba(0,0,0,0.4);
+    transition:transform 0.12s, background 0.12s;
+    flex-shrink:0;
+  }
+  .tile-wrap img { width:100%; height:100%; object-fit:cover; display:block; pointer-events:none; }
+  .tile-wrap.tile-fallback { display:flex; align-items:center; justify-content:center; font-size:13px; font-family:'Noto Serif JP',serif; color:#1a1a1a; }
+  .tile-wrap:hover { transform:translateY(-3px); background:#fff8f0; }
+
+  /* パレット（選択クリック） */
+  .pal-tile { }
+  .pal-tile:hover { transform:translateY(-3px); }
+
+  /* 手牌エリア */
+  .hand-area { min-height:58px; background:rgba(0,0,0,0.25); border:0.5px solid var(--input-border); border-radius:8px; padding:8px 10px; display:flex; flex-wrap:wrap; gap:4px; align-items:flex-end; }
+  .hand-placeholder { font-size:12px; color:var(--text-dim); align-self:center; }
+  .hand-tile:hover { transform:translateY(-2px); border-color:#e24b4a; border-bottom-color:#e24b4a; }
+
+  .err-msg { font-size:12px; color:#e24b4a; margin-top:6px; min-height:18px; }
+
+  .row { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:10px; }
+  .row:last-child { margin-bottom:0; }
+  .lbl { font-size:13px; color:var(--text-mid); min-width:60px; }
+
+  .rbtn { padding:5px 14px; border-radius:7px; font-size:12px; font-family:'Noto Sans JP',sans-serif; border:0.5px solid rgba(255,255,255,0.2); cursor:pointer; background:transparent; color:var(--text-mid); transition:background 0.12s, border-color 0.12s, color 0.12s; }
+  .rbtn:hover { background:rgba(255,255,255,0.06); }
+  .rbtn.on { background:rgba(212,175,55,0.15); border-color:var(--gold-dim); color:var(--gold); }
+  .chip { padding:5px 13px; border-radius:20px; font-size:12px; font-family:'Noto Sans JP',sans-serif; border:0.5px solid rgba(255,255,255,0.15); cursor:pointer; background:transparent; color:var(--text-mid); transition:background 0.12s, border-color 0.12s, color 0.12s; }
+  .chip:hover { background:rgba(255,255,255,0.06); }
+  .chip.on { background:rgba(212,175,55,0.15); border-color:var(--gold-dim); color:var(--gold); }
+  .chip.danger-on { background:rgba(192,57,43,0.18); border-color:rgba(192,57,43,0.5); color:rgba(220,100,80,0.9); }
+
+  .calc-btn { width:100%; padding:14px; font-size:15px; font-weight:500; font-family:'Noto Sans JP',sans-serif; background:rgba(212,175,55,0.12); border:0.5px solid var(--gold-dim); border-radius:10px; cursor:pointer; color:var(--gold); letter-spacing:0.08em; transition:background 0.15s; margin-bottom:12px; }
+  .calc-btn:hover { background:rgba(212,175,55,0.22); }
+
+  .result-sec { background:var(--sec-bg); border:0.5px solid var(--sec-border); border-radius:12px; padding:20px; display:none; }
+  .result-score { text-align:center; padding:20px; background:rgba(0,0,0,0.2); border-radius:8px; margin-bottom:14px; }
+  .score-num { font-size:42px; font-weight:500; color:var(--gold); letter-spacing:0.04em; }
+  .score-sub { font-size:13px; color:var(--text-mid); margin-top:5px; }
+  .yaku-wrap { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:14px; }
+  .yaku-tag { font-size:11px; padding:3px 10px; border-radius:14px; background:rgba(212,175,55,0.13); color:rgba(212,175,55,0.8); border:0.5px solid rgba(212,175,55,0.25); }
+  .breakdown { border:0.5px solid var(--sec-border); border-radius:8px; overflow:hidden; }
+  .bd-row { display:flex; justify-content:space-between; padding:8px 14px; font-size:13px; border-bottom:0.5px solid rgba(212,175,55,0.08); }
+  .bd-row:last-child { border-bottom:none; }
+  .bd-key { color:var(--text-mid); }
+  .bd-val { font-weight:500; color:var(--text-bright); }
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a class="nav-back" href="index.html">← 道場へ戻る</a>
+  <span style="color:var(--text-dim)">|</span>
+  <span class="nav-title">点数計算</span>
+</nav>
+<div class="page">
+  <div class="sec">
+    <div class="sec-title">手牌を選ぶ <span class="cnt" id="hand-count">（0 / 14枚）</span></div>
+    <div class="suit-label">萬子（マンズ）</div>
+    <div class="tile-grid" id="pal-man"></div>
+    <div class="suit-label">筒子（ピンズ）</div>
+    <div class="tile-grid" id="pal-pin"></div>
+    <div class="suit-label">索子（ソウズ）</div>
+    <div class="tile-grid" id="pal-sou"></div>
+    <div class="suit-label">字牌</div>
+    <div class="tile-grid" id="pal-ji"></div>
+    <div style="font-size:11px;color:var(--text-dim);margin-bottom:8px">※ 追加した牌をクリックすると削除できます</div>
+    <div class="hand-area" id="hand-area"><span class="hand-placeholder">牌をクリックして追加</span></div>
+    <div class="err-msg" id="err-msg"></div>
+  </div>
+  <div class="sec">
+    <div class="sec-title">あがり条件</div>
+    <div class="row"><span class="lbl">あがり方</span>
+      <button class="rbtn on" id="btn-tsumo" onclick="setTsumo(true)">ツモ</button>
+      <button class="rbtn" id="btn-ron" onclick="setTsumo(false)">ロン</button>
+    </div>
+    <div class="row"><span class="lbl">自風</span><div id="jikaze-group" style="display:flex;gap:6px;flex-wrap:wrap"></div></div>
+    <div class="row"><span class="lbl">場風</span><div id="bakaze-group" style="display:flex;gap:6px;flex-wrap:wrap"></div></div>
+    <div class="row" style="margin-top:6px">
+      <span class="lbl" style="width:100%;min-width:unset;margin-bottom:6px">役・特殊条件</span>
+      <div style="display:flex;flex-wrap:wrap;gap:6px" id="chip-wrap"></div>
+    </div>
+  </div>
+  <button class="calc-btn" onclick="calculate()">点数を計算する</button>
+  <div class="result-sec" id="result-sec">
+    <div class="sec-title">計算結果</div>
+    <div class="result-score">
+      <div class="score-num" id="res-score">—</div>
+      <div class="score-sub" id="res-label"></div>
+    </div>
+    <div class="yaku-wrap" id="res-yaku"></div>
+    <div class="breakdown" id="res-breakdown"></div>
+  </div>
+</div>
+<script>
+// tiles.js — 共通の牌画像ユーティリティ
+// 全ページからこのファイルを読み込んで使う
+
+const TILE_IMG_BASE = 'img/tiles/';
+
+// keyからファイル名を返す
+// key例: 'man1','pin5','sou3','ton','nan','sya','pei','haku','hatu','tyun','back'
+function tileFile(key) {
+  return TILE_IMG_BASE + key + '.png';
+}
+
+// 牌定義（suit, index→key）
+const SUIT_KEYS = {
+  man: ['man1','man2','man3','man4','man5','man6','man7','man8','man9'],
+  pin: ['pin1','pin2','pin3','pin4','pin5','pin6','pin7','pin8','pin9'],
+  sou: ['sou1','sou2','sou3','sou4','sou5','sou6','sou7','sou8','sou9'],
+  ji:  ['ton','nan','sya','pei','haku','hatu','tyun']
+};
+
+// 表示ラベル（フォールバック用）
+const TILE_LABEL = {
+  man1:'一',man2:'二',man3:'三',man4:'四',man5:'五',man6:'六',man7:'七',man8:'八',man9:'九',
+  pin1:'①',pin2:'②',pin3:'③',pin4:'④',pin5:'⑤',pin6:'⑥',pin7:'⑦',pin8:'⑧',pin9:'⑨',
+  sou1:'1s',sou2:'2s',sou3:'3s',sou4:'4s',sou5:'5s',sou6:'6s',sou7:'7s',sou8:'8s',sou9:'9s',
+  ton:'東',nan:'南',sya:'西',pei:'北',haku:'白',hatu:'發',tyun:'中',back:'？'
+};
+
+// aka(赤)バリアント
+const AKA_KEYS = { man5:'man5_aka', pin5:'pin5_aka', sou5:'sou5_aka' };
+
+/**
+ * <div class="tile-wrap"> を生成して返す
+ * @param {string} key   牌キー
+ * @param {boolean} aka  赤牌かどうか
+ * @param {boolean} yoko 横向きかどうか
+ * @param {string} extraClass 追加クラス
+ */
+function makeTileEl(key, aka=false, yoko=false, extraClass='') {
+  const wrap = document.createElement('div');
+  let cls = 'tile-wrap';
+  if (yoko) cls += ' tile-yoko';
+  if (extraClass) cls += ' ' + extraClass;
+  wrap.className = cls;
+  wrap.dataset.key = key;
+
+  const img = document.createElement('img');
+  let fileKey = key;
+  if (aka && AKA_KEYS[key]) fileKey = AKA_KEYS[key];
+  if (yoko) fileKey = fileKey + '_yoko';
+  img.src = tileFile(fileKey);
+  img.alt = TILE_LABEL[key] || key;
+  // 画像がなければフォールバックでラベル表示
+  img.onerror = function() {
+    wrap.textContent = TILE_LABEL[key] || key;
+    wrap.classList.add('tile-fallback');
+  };
+  wrap.appendChild(img);
+  return wrap;
+}
+
+</script>
+<script>
+const SUITS_DEF = {
+  man: { keys:['man1','man2','man3','man4','man5','man6','man7','man8','man9'] },
+  pin: { keys:['pin1','pin2','pin3','pin4','pin5','pin6','pin7','pin8','pin9'] },
+  sou: { keys:['sou1','sou2','sou3','sou4','sou5','sou6','sou7','sou8','sou9'] },
+  ji:  { keys:['ton','nan','sya','pei','haku','hatu','tyun'] }
+};
+
+let hand=[], isTsumo=true, jikaze=1, bakaze=1;
+const CHIPS=[
+  {key:'riichi',label:'立直',type:'normal'},{key:'ippatsu',label:'一発',type:'normal'},
+  {key:'tanyao',label:'断么九',type:'normal'},{key:'pinfu',label:'平和',type:'normal'},
+  {key:'iipeiko',label:'一盃口',type:'normal'},{key:'haku',label:'白',type:'normal'},
+  {key:'hatsu',label:'發',type:'normal'},{key:'chun',label:'中',type:'normal'},
+  {key:'menzen',label:'門前清',type:'normal'},{key:'chiitoitsu',label:'七対子',type:'danger'},
+];
+let chipState={};
+CHIPS.forEach(c=>chipState[c.key]=false);
+
+function buildPal(id,suit){
+  const el=document.getElementById(id);
+  SUITS_DEF[suit].keys.forEach(k=>{
+    const w=makeTileEl(k,false,false,'pal-tile');
+    w.onclick=()=>addTile({suit,key:k});
+    el.appendChild(w);
+  });
+}
+['man','pin','sou','ji'].forEach(s=>buildPal('pal-'+s,s));
+
+['東','南','西','北'].forEach((w,i)=>{
+  ['jikaze-group','bakaze-group'].forEach((gid,gi)=>{
+    const b=document.createElement('button');
+    b.className='rbtn'+(i===0?' on':'');
+    b.dataset.val=i+1; b.textContent=w;
+    b.onclick=()=>{if(gi===0)setJikaze(i+1);else setBakaze(i+1);};
+    document.getElementById(gid).appendChild(b);
+  });
+});
+
+const cw=document.getElementById('chip-wrap');
+CHIPS.forEach(c=>{
+  const b=document.createElement('button');
+  b.className='chip'; b.id='chip-'+c.key; b.textContent=c.label;
+  b.onclick=()=>toggleChip(c.key,c.type);
+  cw.appendChild(b);
+});
+
+function addTile(tile){
+  const err=document.getElementById('err-msg');
+  if(hand.length>=14){err.textContent='手牌は最大14枚です';return;}
+  const cnt=hand.filter(t=>t.key===tile.key).length;
+  if(cnt>=4){err.textContent=TILE_LABEL[tile.key]+'は4枚までです';return;}
+  err.textContent='';
+  hand.push({...tile});
+  renderHand();
+}
+function removeTile(i){hand.splice(i,1);renderHand();}
+function renderHand(){
+  const area=document.getElementById('hand-area');
+  document.getElementById('hand-count').textContent='（'+hand.length+' / 14枚）';
+  if(!hand.length){area.innerHTML='<span class="hand-placeholder">牌をクリックして追加</span>';return;}
+  area.innerHTML='';
+  const order={man:0,pin:1,sou:2,ji:3};
+  const SUIT_OF={};
+  Object.entries(SUITS_DEF).forEach(([s,d])=>d.keys.forEach((k,i)=>SUIT_OF[k]={suit:s,idx:i}));
+  const sorted=hand.map((t,i)=>({...t,origIdx:i})).sort((a,b)=>{
+    const sa=SUIT_OF[a.key]||{suit:'ji',idx:99}, sb=SUIT_OF[b.key]||{suit:'ji',idx:99};
+    return (order[sa.suit]-order[sb.suit])||sa.idx-sb.idx;
+  });
+  sorted.forEach(t=>{
+    const w=makeTileEl(t.key,false,false,'hand-tile');
+    w.title='クリックで削除';
+    w.onclick=()=>removeTile(t.origIdx);
+    area.appendChild(w);
+  });
+}
+function setTsumo(v){isTsumo=v;document.getElementById('btn-tsumo').className='rbtn'+(v?' on':'');document.getElementById('btn-ron').className='rbtn'+(!v?' on':'');}
+function setJikaze(v){jikaze=v;document.querySelectorAll('#jikaze-group .rbtn').forEach(b=>b.className='rbtn'+(parseInt(b.dataset.val)===v?' on':''));}
+function setBakaze(v){bakaze=v;document.querySelectorAll('#bakaze-group .rbtn').forEach(b=>b.className='rbtn'+(parseInt(b.dataset.val)===v?' on':''));}
+function toggleChip(key,type){
+  chipState[key]=!chipState[key];
+  const el=document.getElementById('chip-'+key);
+  el.className=type==='danger'?'chip'+(chipState[key]?' danger-on':''):'chip'+(chipState[key]?' on':'');
+}
+function calcScore(han,fu,isOya,isTsumo){
+  if(han>=13)return{score:isOya?48000:32000,label:'役満'};
+  if(han>=11)return{score:isOya?36000:24000,label:'三倍満'};
+  if(han>=8) return{score:isOya?24000:16000,label:'倍満'};
+  if(han>=6) return{score:isOya?18000:12000,label:'跳満'};
+  if(han>=5||(han===4&&fu>=30)||(han===3&&fu>=70))return{score:isOya?12000:8000,label:'満貫'};
+  const base=fu*Math.pow(2,han+2);
+  let score,label;
+  if(isTsumo){
+    if(isOya){const p=Math.ceil(base*2/100)*100;score=p*3;label='ツモ（全員 '+p.toLocaleString()+' 点）';}
+    else{const ko=Math.ceil(base/100)*100,oya=Math.ceil(base*2/100)*100;score=ko*2+oya;label='ツモ（子 '+ko.toLocaleString()+'・親 '+oya.toLocaleString()+'）';}
+  }else{score=isOya?Math.ceil(base*6/100)*100:Math.ceil(base*4/100)*100;label='ロン';}
+  return{score,label};
+}
+function calculate(){
+  const err=document.getElementById('err-msg');
+  if(hand.length<13){err.textContent='最低13枚必要です';return;}
+  err.textContent='';
+  let han=0,fu=30,yaku=[];
+  if(chipState.chiitoitsu){han+=2;fu=25;yaku.push({name:'七対子',han:2});}
+  else{
+    if(chipState.tanyao){han+=1;yaku.push({name:'断么九',han:1});}
+    if(chipState.pinfu){han+=1;fu=20;yaku.push({name:'平和',han:1});}
+    if(chipState.iipeiko){han+=1;yaku.push({name:'一盃口',han:1});}
+    if(chipState.haku){han+=1;yaku.push({name:'白',han:1});}
+    if(chipState.hatsu){han+=1;yaku.push({name:'發',han:1});}
+    if(chipState.chun){han+=1;yaku.push({name:'中',han:1});}
+  }
+  if(chipState.riichi){han+=1;yaku.push({name:'立直',han:1});}
+  if(chipState.ippatsu){han+=1;yaku.push({name:'一発',han:1});}
+  if(isTsumo&&!chipState.pinfu&&!chipState.chiitoitsu){han+=1;yaku.push({name:'門前清自摸和',han:1});}
+  if(!yaku.length){err.textContent='役がありません';return;}
+  const isOya=jikaze===bakaze;
+  const{score,label}=calcScore(han,fu,isOya,isTsumo);
+  const sec=document.getElementById('result-sec');
+  sec.style.display='block';
+  document.getElementById('res-score').textContent=score.toLocaleString()+'点';
+  document.getElementById('res-label').textContent=label+(isOya?' （親）':' （子）');
+  document.getElementById('res-yaku').innerHTML=yaku.map(y=>'<span class="yaku-tag">'+y.name+' '+y.han+'翻</span>').join('');
+  const winds=['東','南','西','北'];
+  document.getElementById('res-breakdown').innerHTML=[['符',fu+'符'],['翻',han+'翻'],['あがり方',isTsumo?'ツモ':'ロン'],['自風',winds[jikaze-1]],['場風',winds[bakaze-1]],['親/子',isOya?'親':'子']].map(([k,v])=>'<div class="bd-row"><span class="bd-key">'+k+'</span><span class="bd-val">'+v+'</span></div>').join('');
+  sec.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+</script>
+</body>
+</html>
