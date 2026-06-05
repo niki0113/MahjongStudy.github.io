@@ -275,10 +275,6 @@ function makeTileEl(key, aka=false, yoko=false, extraClass='') {
   img.src = tileFile(fileKey);
   img.alt = TILE_LABEL[key] || key;
   // 画像がなければフォールバックでラベル表示
-  img.onerror = function() {
-    wrap.textContent = TILE_LABEL[key] || key;
-    wrap.classList.add('tile-fallback');
-  };
   wrap.appendChild(img);
   return wrap;
 }
@@ -672,7 +668,6 @@ function showQuestion(){
     const img=document.createElement('img');
     img.src=tileFile(t.a&&AKA_KEYS[t.k]?AKA_KEYS[t.k]:t.k);
     img.alt=TILE_LABEL[t.k]||t.k;
-    img.onerror=function(){el.textContent=TILE_LABEL[t.k]||t.k;el.classList.add('tile-fallback');};
     el.appendChild(img);
     const lbl=document.createElement('span');
     lbl.className='tile-label-badge'; lbl.id='lbl-'+i;

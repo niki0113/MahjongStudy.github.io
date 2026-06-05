@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<!-- saved from url=(0044)file:///C:/Users/shoum/Downloads/quiz_1.html -->
-<html lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>点数クイズ — 麻雀道場</title>
-<link rel="preconnect" href="https://fonts.googleapis.com/">
-<link href="./quiz_files/css2" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&family=Noto+Serif+JP:wght@400;700&family=Zen+Antique&display=swap" rel="stylesheet">
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
   :root{
@@ -18,7 +18,6 @@
   }
   html,body{min-height:100vh;background:var(--felt);color:var(--text-bright);font-family:'Noto Sans JP',sans-serif;font-size:14px;}
   body{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.01) 0px,rgba(255,255,255,0.01) 1px,transparent 1px,transparent 12px),repeating-linear-gradient(-45deg,rgba(255,255,255,0.01) 0px,rgba(255,255,255,0.01) 1px,transparent 1px,transparent 12px),radial-gradient(ellipse 80% 50% at 50% 0%,var(--felt-mid) 0%,var(--felt) 60%);}
-
   .nav{display:flex;align-items:center;gap:12px;padding:16px 24px;border-bottom:0.5px solid rgba(212,175,55,0.12);justify-content:space-between;}
   .nav-left{display:flex;align-items:center;gap:12px;}
   .nav-back{color:var(--gold-dim);text-decoration:none;font-size:13px;transition:color 0.15s;}
@@ -26,85 +25,57 @@
   .nav-title{font-family:'Zen Antique',serif;font-size:16px;color:var(--gold);letter-spacing:0.12em;}
   .nav-score{font-size:13px;color:var(--text-mid);background:var(--sec-bg);border:0.5px solid var(--sec-border);border-radius:20px;padding:4px 14px;}
   .nav-score span{color:var(--gold);font-weight:500;}
-
   .page{max-width:700px;margin:0 auto;padding:24px 20px 64px;}
   .progress-wrap{margin-bottom:20px;}
   .progress-info{display:flex;justify-content:space-between;font-size:12px;color:var(--text-dim);margin-bottom:6px;}
   .progress-bar{height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;}
   .progress-fill{height:100%;background:var(--gold);border-radius:2px;transition:width 0.4s ease;}
-
   .badge{display:inline-block;font-size:11px;padding:3px 10px;border-radius:12px;margin-bottom:10px;}
   .badge-easy{background:rgba(39,160,80,0.15);color:rgba(100,210,130,0.9);border:0.5px solid rgba(39,160,80,0.35);}
   .badge-mid{background:rgba(212,175,55,0.15);color:var(--gold);border:0.5px solid rgba(212,175,55,0.35);}
   .badge-hard{background:rgba(192,57,43,0.15);color:rgba(220,100,80,0.9);border:0.5px solid rgba(192,57,43,0.35);}
-
   .q-card{background:var(--sec-bg);border:0.5px solid var(--sec-border);border-radius:12px;padding:22px;margin-bottom:14px;animation:fadeIn 0.35s ease;}
   @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
   .q-no{font-size:12px;color:var(--text-dim);margin-bottom:6px;}
   .q-text{font-size:15px;font-weight:500;color:var(--text-bright);line-height:1.7;margin-bottom:14px;}
-
-  /* ── 手牌＋あがり牌表示 ── */
-  .hand-area{
-    display:flex;
-    align-items:flex-end;
-    flex-wrap:wrap;
-    gap:4px;
-    margin-bottom:8px;
-    padding:10px 12px;
-    background:rgba(0,0,0,0.18);
-    border:0.5px solid rgba(255,255,255,0.08);
-    border-radius:8px;
-  }
-  /* 手牌とあがり牌の間の縦線 */
-  .hand-sep{
-    width:1.5px;
-    height:46px;
-    background:rgba(212,175,55,0.4);
-    margin:0 4px;
-    flex-shrink:0;
-    align-self:center;
-  }
-  /* あがり方ラベル */
-  .agari-label-wrap{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:3px;
-    flex-shrink:0;
-  }
-  .agari-label{
-    font-size:10px;
-    color:var(--gold-dim);
-    letter-spacing:0.05em;
-    white-space:nowrap;
-  }
-
-  /* 共通牌スタイル */
+  /* 手牌＋あがり牌 */
+  .hand-area{display:flex;align-items:flex-end;flex-wrap:wrap;gap:4px;margin-bottom:8px;padding:10px 12px;background:rgba(0,0,0,0.18);border:0.5px solid rgba(255,255,255,0.08);border-radius:8px;}
+  .hand-sep{width:1.5px;height:46px;background:rgba(212,175,55,0.4);margin:0 4px;flex-shrink:0;align-self:center;}
+  .agari-label-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0;}
+  .agari-label{font-size:10px;color:var(--gold-dim);letter-spacing:0.05em;white-space:nowrap;}
   .tile-wrap{width:34px;height:46px;background:#f0ebe0;border-radius:3px;border-bottom:3px solid #b8a888;overflow:hidden;box-shadow:0 2px 4px rgba(0,0,0,0.4);flex-shrink:0;}
   .tile-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
   .tile-wrap.tile-fallback{display:flex;align-items:center;justify-content:center;font-size:12px;font-family:'Noto Serif JP',serif;color:#1a1a1a;}
-  /* あがり牌は少し浮かせて金縁 */
-  .tile-wrap.agari-tile{
-    border-bottom-color:#d4af37;
-    box-shadow:0 0 0 1.5px rgba(212,175,55,0.6), 0 4px 8px rgba(0,0,0,0.5);
-    transform:translateY(-4px);
-  }
-
-  .hand-note{font-size:11px;color:var(--text-dim);margin-bottom:14px;}
-
-  .cond-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+  .tile-wrap.agari-tile{border-bottom-color:#d4af37;box-shadow:0 0 0 1.5px rgba(212,175,55,0.6),0 4px 8px rgba(0,0,0,0.5);transform:translateY(-4px);}
+  .hand-note{font-size:11px;color:var(--text-dim);margin-bottom:10px;}
+  .cond-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
   .cond-pill{padding:3px 10px;border-radius:20px;background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);color:var(--text-mid);font-size:12px;}
   .cond-pill.accent{background:rgba(212,175,55,0.12);border-color:rgba(212,175,55,0.3);color:var(--gold);}
-
-  .choices{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  /* 上級: 符・翻選択UI */
+  .fuhan-wrap{display:none;gap:14px;margin-bottom:12px;flex-wrap:wrap;background:rgba(0,0,0,0.18);border:0.5px solid rgba(212,175,55,0.12);border-radius:8px;padding:12px 14px;}
+  .fuhan-wrap.show{display:flex;}
+  .fuhan-group{flex:1;min-width:120px;}
+  .fuhan-label{font-size:11px;color:var(--text-dim);margin-bottom:6px;letter-spacing:0.03em;}
+  .fuhan-choices{display:flex;flex-wrap:wrap;gap:5px;}
+  .fuhan-btn{padding:5px 11px;border-radius:6px;font-size:12px;font-family:'Noto Sans JP',sans-serif;border:0.5px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.05);color:var(--text-mid);cursor:pointer;transition:background 0.1s,border-color 0.1s,color 0.1s;}
+  .fuhan-btn:hover:not(:disabled){background:rgba(255,255,255,0.1);}
+  .fuhan-btn.selected{background:rgba(212,175,55,0.18);border-color:var(--gold-dim);color:var(--gold);}
+  .fuhan-btn.correct-sel{background:rgba(39,160,80,0.2);border-color:rgba(39,160,80,0.5);color:rgba(100,220,130,0.95);}
+  .fuhan-btn.wrong-sel{background:rgba(192,57,43,0.2);border-color:rgba(192,57,43,0.5);color:rgba(220,100,80,0.9);}
+  .fuhan-btn:disabled{cursor:default;}
+  .fuhan-note{font-size:11px;margin-top:5px;min-height:14px;}
+  .submit-btn{width:100%;padding:11px;font-size:13px;font-weight:500;font-family:'Noto Sans JP',sans-serif;background:rgba(212,175,55,0.12);border:0.5px solid var(--gold-dim);border-radius:8px;cursor:pointer;color:var(--gold);letter-spacing:0.06em;transition:background 0.15s;margin-bottom:10px;display:none;}
+  .submit-btn:hover{background:rgba(212,175,55,0.22);}
+  .submit-btn:disabled{opacity:0.4;cursor:default;}
+  /* 点数選択肢 */
+  .choices{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:0;}
   @media(max-width:460px){.choices{grid-template-columns:1fr;}}
   .choice-btn{padding:14px 10px;border-radius:8px;font-size:15px;font-weight:500;font-family:'Noto Sans JP',sans-serif;border:0.5px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.05);color:var(--text-bright);cursor:pointer;letter-spacing:0.05em;transition:background 0.12s,border-color 0.12s,transform 0.08s;}
   .choice-btn:hover:not(:disabled){background:rgba(212,175,55,0.12);border-color:var(--gold-dim);}
   .choice-btn:active:not(:disabled){transform:scale(0.97);}
   .choice-btn.correct{background:var(--correct);border-color:var(--correct-border);color:rgba(100,220,130,0.95);}
   .choice-btn.wrong{background:var(--wrong);border-color:var(--wrong-border);color:rgba(220,100,80,0.9);}
-  .choice-btn:disabled{cursor:default;}
-
+  .choice-btn:disabled{cursor:default;opacity:0.5;}
   .feedback{margin-top:14px;border-radius:10px;padding:16px 18px;animation:fadeIn 0.3s ease;display:none;}
   .feedback.correct-fb{background:rgba(39,160,80,0.1);border:0.5px solid rgba(39,160,80,0.3);}
   .feedback.wrong-fb{background:rgba(192,57,43,0.1);border:0.5px solid rgba(192,57,43,0.3);}
@@ -113,10 +84,8 @@
   .fb-wrong{color:rgba(220,100,80,0.9);}
   .fb-note{font-size:14px;color:var(--gold);margin:6px 0;font-weight:500;}
   .fb-body{font-size:13px;color:var(--text-mid);line-height:1.8;}
-
   .next-btn{width:100%;margin-top:12px;padding:13px;font-size:14px;font-weight:500;font-family:'Noto Sans JP',sans-serif;background:rgba(212,175,55,0.12);border:0.5px solid var(--gold-dim);border-radius:9px;cursor:pointer;color:var(--gold);letter-spacing:0.08em;transition:background 0.15s;display:none;}
   .next-btn:hover{background:rgba(212,175,55,0.22);}
-
   .result-screen{background:var(--sec-bg);border:0.5px solid var(--sec-border);border-radius:12px;padding:36px 24px;text-align:center;display:none;animation:fadeIn 0.4s ease;}
   .res-title{font-family:'Zen Antique',serif;font-size:22px;color:var(--gold);letter-spacing:0.15em;margin-bottom:20px;}
   .res-big{font-size:52px;font-weight:500;color:var(--gold);line-height:1;margin-bottom:6px;}
@@ -131,7 +100,7 @@
 <body>
 <nav class="nav">
   <div class="nav-left">
-    <a class="nav-back" href="file:///C:/Users/shoum/Downloads/index.html">← 道場へ戻る</a>
+    <a class="nav-back" href="index.html">← 道場へ戻る</a>
     <span style="color:var(--text-dim)">|</span>
     <span class="nav-title">点数クイズ</span>
   </div>
@@ -142,259 +111,387 @@
     <div class="progress-info"><span id="prog-label">問題 1 / 15</span><span id="prog-pct">0%</span></div>
     <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
   </div>
-  <div id="quiz-area" style="display: block;">
-    <div class="q-card" id="q-card" style="animation: 0.35s ease 0s 1 normal none running fadeIn;">
+  <div id="quiz-area">
+    <div class="q-card" id="q-card">
       <div class="q-no" id="q-no">Q1</div>
-      <div class="badge badge-mid" id="q-badge">中級</div>
-      <div class="q-text" id="q-text">東場北家（子）、立直1翻＋一発1翻＋白1翻＋ドラ1翻、計4翻30符でロンあがり。点数は？</div>
+      <div class="badge" id="q-badge">初級</div>
+      <div class="q-text" id="q-text"></div>
       <!-- 手牌＋あがり牌 -->
-      <div class="hand-area" id="q-hand"><div class="tile-wrap tile-fallback" data-key="pin3">③</div><div class="tile-wrap tile-fallback" data-key="pin4">④</div><div class="tile-wrap tile-fallback" data-key="pin5">⑤</div><div class="tile-wrap tile-fallback" data-key="pin6">⑥</div><div class="tile-wrap tile-fallback" data-key="pin7">⑦</div><div class="tile-wrap tile-fallback" data-key="pin8">⑧</div><div class="tile-wrap tile-fallback" data-key="haku">白</div><div class="tile-wrap tile-fallback" data-key="haku">白</div><div class="tile-wrap tile-fallback" data-key="haku">白</div><div class="tile-wrap tile-fallback" data-key="man3">三</div><div class="tile-wrap tile-fallback" data-key="man4">四</div><div class="tile-wrap tile-fallback" data-key="man5">五</div><div class="tile-wrap tile-fallback" data-key="pin2">②</div><div class="hand-sep"></div><div class="agari-label-wrap"><span class="agari-label">ロン</span><div class="tile-wrap agari-tile tile-fallback" data-key="pin2">②</div></div></div>
-      <div class="hand-note" id="q-hand-note">待ち: 単騎待ち（②）</div>
-      <div class="cond-row" id="q-cond"><span class="cond-pill">東場</span><span class="cond-pill">子（北家）</span><span class="cond-pill">ロン</span><span class="cond-pill accent">4翻30符</span><span class="cond-pill">立直＋一発＋白＋ドラ</span><span class="cond-pill">単騎待ち+2符</span></div>
-      <div class="choices" id="q-choices"><button class="choice-btn" data-val="7700">7,700点</button><button class="choice-btn" data-val="5200">5,200点</button><button class="choice-btn" data-val="12000">12,000点</button><button class="choice-btn" data-val="8000">8,000点</button></div>
-      <div class="feedback" id="q-feedback" style="display: none;">
+      <div class="hand-area" id="q-hand"></div>
+      <div class="hand-note" id="q-hand-note"></div>
+      <div class="cond-row" id="q-cond"></div>
+      <!-- 上級のみ: 符・翻選択 -->
+      <div class="fuhan-wrap" id="fuhan-wrap">
+        <div class="fuhan-group">
+          <div class="fuhan-label">① 符数を選んでください</div>
+          <div class="fuhan-choices" id="fu-choices"></div>
+          <div class="fuhan-note" id="fu-note"></div>
+        </div>
+        <div class="fuhan-group">
+          <div class="fuhan-label">② 翻数を選んでください</div>
+          <div class="fuhan-choices" id="han-choices"></div>
+          <div class="fuhan-note" id="han-note"></div>
+        </div>
+      </div>
+      <button class="submit-btn" id="submit-btn" onclick="submitFuHan()" disabled>符・翻を確定して点数を選ぶ</button>
+      <!-- 点数選択肢 -->
+      <div class="choices" id="q-choices"></div>
+      <div class="feedback" id="q-feedback">
         <div class="fb-title" id="fb-title"></div>
         <div class="fb-note" id="fb-note"></div>
         <div class="fb-body" id="fb-body"></div>
       </div>
-      <button class="next-btn" id="next-btn" onclick="nextQuestion()" style="display: none;">次の問題 →</button>
+      <button class="next-btn" id="next-btn" onclick="nextQuestion()">次の問題 →</button>
     </div>
   </div>
-  <div class="result-screen" id="result-screen" style="display: none;">
+  <div class="result-screen" id="result-screen">
     <div class="res-title">お疲れ様でした</div>
     <div class="res-big" id="res-big">0</div>
     <div class="res-denom" id="res-denom">/ 15 問正解</div>
     <div class="res-comment" id="res-comment"></div>
     <button class="retry-btn" onclick="startQuiz()">もう一度挑戦</button>
-    <a class="home-btn" href="file:///C:/Users/shoum/Downloads/index.html">道場トップへ</a>
+    <a class="home-btn" href="index.html">道場トップへ</a>
   </div>
 </div>
 
 <script>
-// ── tiles.js インライン ──
-const TILE_IMG_BASE='img/tiles/';
-function tileFile(key){return TILE_IMG_BASE+key+'.png';}
-const SUIT_KEYS={man:['man1','man2','man3','man4','man5','man6','man7','man8','man9'],pin:['pin1','pin2','pin3','pin4','pin5','pin6','pin7','pin8','pin9'],sou:['sou1','sou2','sou3','sou4','sou5','sou6','sou7','sou8','sou9'],ji:['ton','nan','sya','pei','haku','hatu','tyun']};
-const TILE_LABEL={man1:'一',man2:'二',man3:'三',man4:'四',man5:'五',man6:'六',man7:'七',man8:'八',man9:'九',pin1:'①',pin2:'②',pin3:'③',pin4:'④',pin5:'⑤',pin6:'⑥',pin7:'⑦',pin8:'⑧',pin9:'⑨',sou1:'1s',sou2:'2s',sou3:'3s',sou4:'4s',sou5:'5s',sou6:'6s',sou7:'7s',sou8:'8s',sou9:'9s',ton:'東',nan:'南',sya:'西',pei:'北',haku:'白',hatu:'發',tyun:'中',back:'？'};
-const AKA_KEYS={man5:'man5_aka',pin5:'pin5_aka',sou5:'sou5_aka'};
-function makeTileEl(key,aka=false,yoko=false,extraClass=''){
-  const wrap=document.createElement('div');
-  let cls='tile-wrap';
-  if(yoko)cls+=' tile-yoko';
-  if(extraClass)cls+=' '+extraClass;
-  wrap.className=cls; wrap.dataset.key=key;
-  const img=document.createElement('img');
-  let fileKey=key;
-  if(aka&&AKA_KEYS[key])fileKey=AKA_KEYS[key];
-  if(yoko)fileKey=fileKey+'_yoko';
-  img.src=tileFile(fileKey); img.alt=TILE_LABEL[key]||key;
-  img.onerror=function(){wrap.textContent=TILE_LABEL[key]||key;wrap.classList.add('tile-fallback');};
+// tiles.js — 共通の牌画像ユーティリティ
+// 全ページからこのファイルを読み込んで使う
+
+const TILE_IMG_BASE = 'img/tiles/';
+
+// keyからファイル名を返す
+// key例: 'man1','pin5','sou3','ton','nan','sya','pei','haku','hatu','tyun','back'
+function tileFile(key) {
+  return TILE_IMG_BASE + key + '.png';
+}
+
+// 牌定義（suit, index→key）
+const SUIT_KEYS = {
+  man: ['man1','man2','man3','man4','man5','man6','man7','man8','man9'],
+  pin: ['pin1','pin2','pin3','pin4','pin5','pin6','pin7','pin8','pin9'],
+  sou: ['sou1','sou2','sou3','sou4','sou5','sou6','sou7','sou8','sou9'],
+  ji:  ['ton','nan','sya','pei','haku','hatu','tyun']
+};
+
+// 表示ラベル（フォールバック用）
+const TILE_LABEL = {
+  man1:'一',man2:'二',man3:'三',man4:'四',man5:'五',man6:'六',man7:'七',man8:'八',man9:'九',
+  pin1:'①',pin2:'②',pin3:'③',pin4:'④',pin5:'⑤',pin6:'⑥',pin7:'⑦',pin8:'⑧',pin9:'⑨',
+  sou1:'1s',sou2:'2s',sou3:'3s',sou4:'4s',sou5:'5s',sou6:'6s',sou7:'7s',sou8:'8s',sou9:'9s',
+  ton:'東',nan:'南',sya:'西',pei:'北',haku:'白',hatu:'發',tyun:'中',back:'？'
+};
+
+// aka(赤)バリアント
+const AKA_KEYS = { man5:'man5_aka', pin5:'pin5_aka', sou5:'sou5_aka' };
+
+/**
+ * <div class="tile-wrap"> を生成して返す
+ * @param {string} key   牌キー
+ * @param {boolean} aka  赤牌かどうか
+ * @param {boolean} yoko 横向きかどうか
+ * @param {string} extraClass 追加クラス
+ */
+function makeTileEl(key, aka=false, yoko=false, extraClass='') {
+  const wrap = document.createElement('div');
+  let cls = 'tile-wrap';
+  if (yoko) cls += ' tile-yoko';
+  if (extraClass) cls += ' ' + extraClass;
+  wrap.className = cls;
+  wrap.dataset.key = key;
+
+  const img = document.createElement('img');
+  let fileKey = key;
+  if (aka && AKA_KEYS[key]) fileKey = AKA_KEYS[key];
+  if (yoko) fileKey = fileKey + '_yoko';
+  img.src = tileFile(fileKey);
+  img.alt = TILE_LABEL[key] || key;
+  // 画像がなければフォールバックでラベル表示
   wrap.appendChild(img);
   return wrap;
 }
-</script>
 
+</script>
 <script>
-/*
-  問題データ:
-    hand  : 手牌13枚のkeyリスト（あがり牌を除く）
-    agari : あがり牌1枚のkey
-    agariType : 'ron'（ロン）| 'tsumo'（ツモ）
-    machi : 待ちの種類テキスト（符計算の根拠として表示）
-    fu    : 符数（数値）
-    han   : 翻数（数値）
-    conds : 条件ピル [{label, accent:bool}]
-*/
 const QUESTIONS=[
 
-  /* ══════ 初級 ══════ */
+  //──────────── 初級 ────────────
 
-  // Q1: 1翻30符 子ロン（両面待ち→0符、基本30符）
+  // Q1: 立直のみ 1翻30符 子ロン（両面待ち→符加算なし）
+  // 手牌: ①②③④⑤⑥一二三七八 雀頭⑤⑤ ロン九萬（七八萬の両面）
+  // 役: 立直1 / 符: 両面待ち0+ロン10+雀頭0+順子0+順子0+順子0+順子0 → 20+10=30符
   {difficulty:'easy',
-   text:'東場西家（子）、立直のみ1翻30符でロンあがり。点数はいくら？',
+   text:'東場西家（子）、ロンあがり。立直のみ。何翻何符？点数はいくら？',
    hand:['pin1','pin2','pin3','pin4','pin5','pin6','man1','man2','man3','man7','man8','pin5','pin5'],
    agari:'man9', agariType:'ron',
-   machi:'両面待ち（八・九萬）',
+   machi:'両面待ち（七・九萬）',
    fu:30, han:1,
    conds:[{label:'東場'},{label:'子（西家）'},{label:'ロン'},{label:'1翻30符',accent:true},{label:'立直のみ'},{label:'両面待ち'}],
    answer:1000,choices:[1000,2000,1500,500],
    answerNote:'1翻30符 → 子ロン1000点',
-   explanation:'基本点 = 30 × 2^(1+2) = 240点。子ロンは×4 = 960 → 切り上げ1000点。両面待ちのロンは符の加算なし（0符）。30符はベースの符数。'},
+   explanation:'役: 立直1翻のみ。符: 基本符30（平和なしロン）。両面待ちは待ち符0。基本点=30×2^3=240。子ロン×4=960→切り上げ1000点。'},
 
-  // Q2: 2翻30符 子ロン（両面待ち）
+  // Q2: 立直+中 2翻30符 子ロン（単騎待ち+2符だが中刻子+12符で40→繰り上げ…）
+  // 手牌: ②③④⑤⑥⑦三四五 中中中 雀頭①① ロン①（単騎）
+  // 符計算: 基本30+中刻子(中=三元牌)明刻4→実は16符…でも単騎は+2。
+  // → 30+16+2=48→50符になってしまう。2翻50符=子ロン3200点
+  // 問題として成り立たせるため、中の刻子をなくして別構成にする
+  // 修正: 立直+中 2翻の手を「役牌刻子+雀頭なしの別形」で作る
+  // 手牌: ②③④⑤⑥⑦三四五六七 中中中 ロン八萬（六〜八の両面） 30符2翻
+  // 符: 基本30+中明刻16+両面0 = 46→50符 → これも50符になる
+  // 平和なし・役牌刻子ありは必ず符が膨らむ。シンプルに「白刻子+立直」で符計算しやすい手に変更
+  // 手牌: ②③④⑤⑥⑦三四五 白白白 ②② ロン②（単騎）
+  // 符: 基本30+白刻子ロン8+単騎2=40符 立直1+白1=2翻
+  // → 2翻40符 子ロン = 基本点640×4=2560→2600点
+  // ※ 単純な2翻30符の例を作るには「役牌刻子なし・単騎なし」が必要
+  // 手牌: 一二三 四五六 七八九 ②③④ ⑤⑤ ロン⑤（単騎） 立直+断么九は不可（1・9あり）
+  // → 断么九なしで立直+発で: ②③④⑤⑥⑦ 三四五 發發發 ③③ ロン③（単騎）
+  // 符: 基本30+發刻子ロン8+単騎2=40符 → 40符2翻
+  // シンプルな30符2翻ロンを作るには「順子4面子+中張雀頭+両面待ち」が必要だが役牌刻子がないと役が立直だけ
+  // → 立直+タンヤオ(断么九) 2翻30符: ②③④⑤⑥⑦三四五六七 ③③ ロン④（両面③〜⑤ or ②〜④）
+  // 待ち: ②③の両面(①か④) or ⑦八の両面... ③③雀頭で④を引けば単騎ではなく両面③④→②か⑤待ち
+  // 手牌: ②③④ ⑤⑥⑦ 三四五 六七八 ③③ ロン②（②③の両面①か②→いや両面は隣の牌）
+  // ②③が順子候補なら待ちは①か④。③③が雀頭。
+  // 全部断么九の順子+雀頭③③+両面待ち → 平和も成立してしまう！（断么九+立直+平和）
+  // だから「符数の勉強」として30符2翻にするには雀頭を役牌にするか刻子を入れる必要がある
+  // 七対子25符2翻をそのままQ2にする
   {difficulty:'easy',
-   text:'東場北家（子）、立直1翻＋中1翻、計2翻30符でロンあがり。点数はいくら？',
-   hand:['pin2','pin3','pin4','pin5','pin6','pin7','man3','man4','man5','tyun','tyun','tyun','pin1'],
-   agari:'pin1', agariType:'ron',
-   machi:'単騎待ち（①）',
-   fu:30, han:2,
-   conds:[{label:'東場'},{label:'子（北家）'},{label:'ロン'},{label:'2翻30符',accent:true},{label:'立直（1翻）＋中（1翻）'},{label:'単騎待ち+2符'}],
-   answer:2000,choices:[2000,3900,1000,2600],
-   answerNote:'2翻30符 → 子ロン2000点',
-   explanation:'基本点 = 30 × 2^(2+2) = 480点。子ロンは×4 = 1920 → 切り上げ2000点。単騎待ちは+2符だが雀頭①①は符なしのため合計30符。'},
-
-  // Q3: 2翻40符 子ロン（カンチャン待ち+2符→40符）
-  {difficulty:'easy',
-   text:'東場南家（子）、立直1翻＋断么九1翻、計2翻40符でロンあがり。点数はいくら？',
-   hand:['pin2','pin2','pin2','pin3','pin5','pin6','pin7','pin8','man3','man4','man5','pin5','pin5'],
-   agari:'pin4', agariType:'ron',
-   machi:'カンチャン待ち（③〜⑤）',
-   fu:40, han:2,
-   conds:[{label:'東場'},{label:'子（南家）'},{label:'ロン'},{label:'2翻40符',accent:true},{label:'立直（1翻）＋断么九（1翻）'},{label:'カンチャン待ち+2符'}],
-   answer:2600,choices:[2600,2000,3900,5200],
-   answerNote:'2翻40符 → 子ロン2600点',
-   explanation:'基本点 = 40 × 2^(2+2) = 640点。子ロンは×4 = 2560 → 切り上げ2600点。カンチャン待ちは+2符のため、30符ベースから40符に切り上がっています。'},
-
-  // Q4: 3翻30符 子ロン（両面待ち）
-  {difficulty:'easy',
-   text:'東場西家（子）、立直1翻＋一発1翻＋白1翻、計3翻30符でロンあがり。点数はいくら？',
-   hand:['man1','man2','man3','pin4','pin5','pin6','haku','haku','haku','man7','man8','pin9','pin9'],
-   agari:'man9', agariType:'ron',
-   machi:'両面待ち（七・九萬）',
-   fu:30, han:3,
-   conds:[{label:'東場'},{label:'子（西家）'},{label:'ロン'},{label:'3翻30符',accent:true},{label:'立直＋一発＋白'},{label:'両面待ち'}],
-   answer:3900,choices:[3900,2600,5200,7700],
-   answerNote:'3翻30符 → 子ロン3900点',
-   explanation:'基本点 = 30 × 2^(3+2) = 960点。子ロンは×4 = 3840 → 切り上げ3900点。'},
-
-  // Q5: 七対子 2翻25符 子ロン（単騎待ち）
-  {difficulty:'easy',
-   text:'東場南家（子）、七対子のみ2翻25符（固定）でロンあがり。点数はいくら？',
-   hand:['man1','man1','man3','man3','pin5','pin5','pin7','pin7','sou2','sou2','ton','ton','haku'],
+   text:'東場南家（子）、ロンあがり。七対子のみ。何翻何符？点数はいくら？',
+   hand:['man2','man2','man4','man4','pin3','pin3','pin6','pin6','sou3','sou3','sou7','sou7','haku'],
    agari:'haku', agariType:'ron',
    machi:'単騎待ち（白）',
    fu:25, han:2,
-   conds:[{label:'東場'},{label:'子（南家）'},{label:'ロン'},{label:'2翻25符（七対子固定）',accent:true},{label:'単騎待ち'}],
+   conds:[{label:'東場'},{label:'子（南家）'},{label:'ロン'},{label:'2翻25符（七対子固定）',accent:true},{label:'七対子'},{label:'単騎待ち'}],
    answer:1600,choices:[1600,3200,2000,2400],
    answerNote:'七対子 25符2翻 → 子ロン1600点',
-   explanation:'七対子は符の計算によらず25符固定。2翻。基本点 = 25 × 2^(2+2) = 400点。子ロンは×4 = 1600点。'},
+   explanation:'七対子は符の計算によらず25符固定・2翻。基本点=25×16=400。子ロン×4=1600点。'},
 
-  // Q6: 2翻30符 親ロン（両面待ち）
+  // Q3: 立直+断么九+平和 3翻20符 子ロン（平和ロンは30符固定）
+  // 手牌: ③④⑤ ⑥⑦⑧ 三四五 六七八 ②② ロン②（両面①②…いや②②が雀頭なので①③待ち？）
+  // 雀頭②②で待ちは何？→残り順子4つで13枚+あがり1枚=14枚
+  // ③④⑤ ⑥⑦⑧ 三四五 六七八 = 12枚 + 雀頭②② = 14枚 → これで完成形（テンパイでない）
+  // 正しくは13枚の手牌からあがり牌1枚でテンパイ形
+  // 手牌(13枚): ③④⑤ ⑥⑦⑧ 三四五 六七 ②② ロン八萬（六七八の両面待ち六or八→六八萬の両面）
+  // 役: 立直1+断么九1+平和1=3翻 符: 平和ロン→30符固定
+  // → 3翻30符 子ロン = 基本点960×4=3840→3900点
   {difficulty:'easy',
-   text:'東場東家（親）、立直1翻＋断么九1翻、計2翻30符でロンあがり。親の点数はいくら？',
-   hand:['pin2','pin3','pin4','pin5','pin6','pin7','man3','man4','man5','man6','man7','pin2','pin2'],
+   text:'東場西家（子）、ロンあがり。立直・断么九・平和の3翻。符はいくつ？点数はいくら？',
+   hand:['pin3','pin4','pin5','pin6','pin7','pin8','man3','man4','man5','man6','man7','pin2','pin2'],
    agari:'man8', agariType:'ron',
-   machi:'両面待ち（六・八萬）',
-   fu:30, han:2,
-   conds:[{label:'東場'},{label:'親（東家）'},{label:'ロン'},{label:'2翻30符',accent:true},{label:'立直＋断么九'},{label:'両面待ち'}],
-   answer:2900,choices:[2900,2000,3900,5800],
-   answerNote:'2翻30符 → 親ロン2900点',
-   explanation:'基本点 = 30 × 2^(2+2) = 480点。親ロンは×6 = 2880 → 切り上げ2900点。同じ翻符でも親は子の約1.5倍になります。'},
+   machi:'両面待ち（六・八萬）— 平和ロンは30符固定',
+   fu:30, han:3,
+   conds:[{label:'東場'},{label:'子（西家）'},{label:'ロン'},{label:'3翻30符',accent:true},{label:'立直＋断么九＋平和'},{label:'両面待ち'}],
+   answer:3900,choices:[3900,2600,5200,7700],
+   answerNote:'3翻30符 → 子ロン3900点',
+   explanation:'役: 立直1翻+断么九1翻+平和1翻=3翻。平和のロンあがりは30符固定（両面待ち+順子のみ+役牌でない雀頭）。基本点=30×32=960。子ロン×4=3840→3900点。'},
 
-  /* ══════ 中級 ══════ */
-
-  // Q7: 3翻40符 子ロン（カンチャン+2符→40符）
-  {difficulty:'mid',
-   text:'東場北家（子）、立直1翻＋一発1翻＋發1翻、計3翻40符でロンあがり。点数は？',
-   hand:['pin2','pin3','pin4','pin5','pin6','pin7','hatu','hatu','hatu','man3','man5','pin1','pin1'],
-   agari:'man4', agariType:'ron',
-   machi:'カンチャン待ち（三〜五萬）',
+  // Q4: 立直+白+一発 3翻40符 子ロン（白刻子+ロン符で40符）
+  // 手牌: 一二三 ④⑤⑥ 七八九萬 白白白 ⑨⑨ ロン④（③〜⑤カンチャン…いや）
+  // ⑨⑨雀頭で残りを確認: 一二三(順子)+④⑤⑥(順子)+七八九萬(順子)+白白白(刻子) = 12枚 + 雀頭⑨⑨ = 14枚 → 完成
+  // 13枚手牌: 一二三 ④⑤⑥ 七八九萬 白白白 ⑨⑨→14枚なのでロン牌は①等
+  // 修正: 一二三 ④⑤⑥ 七八九萬 白白白 ⑨⑨ = 14枚 → -1枚で13枚にする
+  // 手牌(13枚): 一二三 ④⑤⑥ 七八九萬 白白白 ⑨ ロン⑨（単騎）
+  // 符: 基本30+白刻子ロン8+単騎2=40符 役: 立直1+白1+一発1=3翻
+  // → 3翻40符 子ロン = 基本点1280×4=5120→5200点
+  {difficulty:'easy',
+   text:'東場北家（子）、ロンあがり。立直・一発・白の3翻。待ちは単騎。点数はいくら？',
+   hand:['man1','man2','man3','pin4','pin5','pin6','man7','man8','man9','haku','haku','haku','pin9'],
+   agari:'pin9', agariType:'ron',
+   machi:'単騎待ち（⑨）— 白刻子+単騎で+10符 → 40符',
    fu:40, han:3,
-   conds:[{label:'東場'},{label:'子（北家）'},{label:'ロン'},{label:'3翻40符',accent:true},{label:'立直＋一発＋發'},{label:'カンチャン待ち+2符'}],
+   conds:[{label:'東場'},{label:'子（北家）'},{label:'ロン'},{label:'3翻40符',accent:true},{label:'立直＋一発＋白'},{label:'単騎待ち+2符 白刻子+8符'}],
    answer:5200,choices:[5200,3900,7700,6400],
    answerNote:'3翻40符 → 子ロン5200点',
-   explanation:'基本点 = 40 × 2^(3+2) = 1280点。子ロンは×4 = 5120 → 切り上げ5200点。カンチャン待ちは+2符で30符→40符に上がっています。'},
+   explanation:'役: 立直1+一発1+白1=3翻。符: 基本30+白明刻(ロン)8+単騎待ち2=40符。基本点=40×32=1280。子ロン×4=5120→5200点。白の刻子と単騎待ちで符が上がった例。'},
 
-  // Q8: 平和ツモ 3翻20符（固定）
-  {difficulty:'mid',
-   text:'東場南家（子）、立直1翻＋断么九1翻＋平和1翻、計3翻。平和ツモの符は20符固定。合計獲得点数は？',
-   hand:['pin2','pin3','pin4','pin5','pin6','pin7','man3','man4','man5','man6','man7','pin2','pin3'],
-   agari:'pin4', agariType:'tsumo',
-   machi:'両面待ち（③④ — 平和ツモは20符固定）',
+  // Q5: 立直+断么九+平和 3翻20符 子ツモ（平和ツモは20符固定）
+  // 手牌(13枚): ②③④ ⑤⑥⑦ 三四五 六七 ③③ ロン八萬ではなくツモ八萬
+  {difficulty:'easy',
+   text:'東場南家（子）、ツモあがり。立直・断么九・平和の3翻。平和ツモの符は？合計点数は？',
+   hand:['pin2','pin3','pin4','pin5','pin6','pin7','man3','man4','man5','man6','man7','pin3','pin3'],
+   agari:'man8', agariType:'tsumo',
+   machi:'両面待ち（六・八萬）— 平和ツモは20符固定',
    fu:20, han:3,
    conds:[{label:'東場'},{label:'子（南家）'},{label:'ツモ'},{label:'3翻20符（平和ツモ固定）',accent:true},{label:'立直＋断么九＋平和'},{label:'両面待ち'}],
    answer:2000,choices:[2000,1300,3900,2600],
    answerNote:'平和ツモ 3翻20符 → 子500点・親1000点（合計2000点）',
-   explanation:'平和ツモは特例で20符固定。通常ツモは+2符だが平和との複合時のみ20符になります。子500点・親1000点の支払いで合計2000点。'},
+   explanation:'役: 立直1+断么九1+平和1=3翻。平和ツモは特例で20符固定（通常ツモの+2符は平和との組み合わせでは適用しない）。子500点・親1000点で合計2000点。'},
 
-  // Q9: 4翻30符 子ロン（両面待ち）
-  {difficulty:'mid',
-   text:'東場北家（子）、立直1翻＋一発1翻＋白1翻＋ドラ1翻、計4翻30符でロンあがり。点数は？',
-   hand:['pin3','pin4','pin5','pin6','pin7','pin8','haku','haku','haku','man3','man4','man5','pin2'],
-   agari:'pin2', agariType:'ron',
-   machi:'単騎待ち（②）',
-   fu:30, han:4,
-   conds:[{label:'東場'},{label:'子（北家）'},{label:'ロン'},{label:'4翻30符',accent:true},{label:'立直＋一発＋白＋ドラ'},{label:'単騎待ち+2符'}],
-   answer:7700,choices:[7700,8000,5200,12000],
-   answerNote:'4翻30符 → 子ロン7700点（満貫ではない）',
-   explanation:'基本点 = 30 × 2^(4+2) = 1920点。子ロンは×4 = 7680 → 切り上げ7700点。4翻30符は満貫8000点に届かない。満貫は5翻以上・4翻60符以上・3翻70符以上。'},
-
-  // Q10: 5翻（満貫）子ロン（一盃口：手牌は223344の順）
-  {difficulty:'mid',
-   text:'東場西家（子）、立直1翻＋一発1翻＋断么九1翻＋一盃口1翻＋ドラ1翻、計5翻でロンあがり。点数は？',
-   hand:['pin2','pin2','pin3','pin3','pin4','pin4','pin5','pin6','pin7','man3','man4','man5','pin8'],
-   agari:'pin8', agariType:'ron',
-   machi:'単騎待ち（⑧）',
-   fu:30, han:5,
-   conds:[{label:'東場'},{label:'子（西家）'},{label:'ロン'},{label:'5翻（満貫）',accent:true},{label:'立直＋一発＋断么九＋一盃口＋ドラ'},{label:'単騎待ち'}],
-   answer:8000,choices:[8000,7700,12000,9600],
-   answerNote:'5翻以上 → 満貫 → 子ロン8000点',
-   explanation:'5翻以上は符に関係なく満貫。子ロン満貫は8000点。一盃口（②②③③④④）は同じ順子2組が並ぶ形。'},
-
-  // Q11: 4翻30符 親ロン（両面待ち）
-  {difficulty:'mid',
-   text:'東場東家（親）、立直1翻＋發1翻＋中1翻＋ドラ1翻、計4翻30符でロンあがり。親の点数は？',
-   hand:['pin1','pin2','pin3','hatu','hatu','hatu','tyun','tyun','tyun','man4','man5','pin5','pin5'],
-   agari:'man6', agariType:'ron',
-   machi:'両面待ち（四〜六萬）',
-   fu:30, han:4,
-   conds:[{label:'東場'},{label:'親（東家）'},{label:'ロン'},{label:'4翻30符',accent:true},{label:'立直＋發＋中＋ドラ'},{label:'両面待ち'}],
-   answer:11600,choices:[11600,12000,7700,9600],
-   answerNote:'4翻30符 → 親ロン11600点',
-   explanation:'基本点 = 30 × 2^(4+2) = 1920点。親ロンは×6 = 11520 → 切り上げ11600点。満貫12000点より少し安い。'},
-
-  /* ══════ 上級 ══════ */
-
-  // Q12: 親ツモ満貫（5翻）
-  {difficulty:'hard',
-   text:'東場東家（親）、5翻（満貫）でツモあがり。親ツモ満貫の合計獲得点数はいくら？',
+  // Q6: 立直+断么九+平和+一発 4翻20符 子ツモ → 満貫（4翻30符以上で満貫だが20符は該当しない→4翻20符=通常計算）
+  // 4翻20符 子ツモ: 基本点=20×2^6=1280 子分=切り上げ700 親分=切り上げ1300 合計=700×2+1300=2700点
+  // それより 4翻30符 親ロン の問題を作る
+  // 立直+断么九+平和 3翻の親版 → 親ロン3翻30符=基本点960×6=5760→5800点
+  {difficulty:'easy',
+   text:'東場東家（親）、ロンあがり。立直・断么九・平和の3翻。親の点数はいくら？',
    hand:['pin2','pin3','pin4','pin5','pin6','pin7','man3','man4','man5','man6','man7','pin2','pin2'],
+   agari:'man8', agariType:'ron',
+   machi:'両面待ち（六・八萬）— 平和ロンは30符固定',
+   fu:30, han:3,
+   conds:[{label:'東場'},{label:'親（東家）'},{label:'ロン'},{label:'3翻30符',accent:true},{label:'立直＋断么九＋平和'},{label:'両面待ち'}],
+   answer:5800,choices:[5800,3900,7700,11600],
+   answerNote:'3翻30符 → 親ロン5800点',
+   explanation:'役: 立直1+断么九1+平和1=3翻。平和ロンは30符固定。基本点=30×32=960。親ロン×6=5760→切り上げ5800点。'},
+
+  //──────────── 中級 ────────────
+
+  // Q7: 立直+中+一発 3翻40符 子ロン（中刻子+単騎待ちで40符）
+  // 手牌(13枚): ②③④ ⑤⑥⑦ 三四五 中中中 ② ロン②（単騎）
+  // 符: 基本30+中明刻ロン16+単騎2=48→50符 → 3翻50符 子ロン=基本点50×2^5=1600 ×4=6400点
+  // → 3翻50符 子ロン6400点の問題にする
+  {difficulty:'mid',
+   text:'東場北家（子）、ロンあがり。立直・一発・中の3翻。中の刻子と単騎待ちが符に影響。点数は？',
+   hand:['pin2','pin3','pin4','pin5','pin6','pin7','man3','man4','man5','tyun','tyun','tyun','pin2'],
+   agari:'pin2', agariType:'ron',
+   machi:'単騎待ち（②）— 中刻子ロン+16符 単騎+2符 → 50符',
+   fu:50, han:3,
+   conds:[{label:'東場'},{label:'子（北家）'},{label:'ロン'},{label:'3翻50符',accent:true},{label:'立直＋一発＋中'},{label:'単騎待ち+中刻子で50符'}],
+   answer:6400,choices:[6400,5200,7700,8000],
+   answerNote:'3翻50符 → 子ロン6400点',
+   explanation:'役: 立直1+一発1+中1=3翻。符: 基本30+中明刻(ロン)16+単騎待ち2=48→切り上げ50符。基本点=50×32=1600。子ロン×4=6400点。役牌の刻子は符が大きくなるので要注意。'},
+
+  // Q8: 立直+白+發 3翻50符 子ロン（白刻子+發刻子+両面待ち）
+  // 手牌(13枚): 三四五 ⑥⑦⑧ 白白白 發發發 ③③ ロン③（単騎）
+  // 符: 基本30+白明刻ロン8+發明刻ロン8+単騎2=48→50符 役: 立直1+白1+發1=3翻
+  // → 3翻50符 子ロン=6400点（Q7と同じ点数になるので別の点数問題にしたい）
+  // → 發を暗刻にする: 手牌13枚で暗刻は可能。立直中なので発を暗刻として持っていたとする
+  // 発暗刻ロン: 16符。白明刻ロン: 8符。 基本30+16+8+単騎2=56→60符 3翻60符=満貫（3翻70符以上が満貫、60符は未達）
+  // 3翻60符 子ロン: 基本点60×2^5=1920 ×4=7680→7700点
+  {difficulty:'mid',
+   text:'東場西家（子）、ロンあがり。立直・白・發の3翻。發は暗刻。点数は？',
+   hand:['man3','man4','man5','pin6','pin7','pin8','haku','haku','haku','hatu','hatu','hatu','pin3'],
+   agari:'pin3', agariType:'ron',
+   machi:'単騎待ち（③）— 白明刻+發暗刻+単騎で60符',
+   fu:60, han:3,
+   conds:[{label:'東場'},{label:'子（西家）'},{label:'ロン'},{label:'3翻60符',accent:true},{label:'立直＋白＋發'},{label:'白明刻8符 發暗刻16符 単騎2符'}],
+   answer:7700,choices:[7700,6400,8000,5200],
+   answerNote:'3翻60符 → 子ロン7700点',
+   explanation:'役: 立直1+白1+發1=3翻。符: 基本30+白明刻(ロン)8+發暗刻16+単騎待ち2=56→切り上げ60符。基本点=60×32=1920。子ロン×4=7680→7700点。暗刻は明刻の2倍の符。'},
+
+  // Q9: 立直+断么九+一盃口+平和 4翻30符 子ロン
+  // 手牌(13枚): ②②③③④④ ⑤⑥⑦ 三四 ⑧⑧ ロン五萬（三〜五萬の両面）
+  // 役: 立直1+断么九1+一盃口1+平和1=4翻
+  // ※一盃口と平和は複合する（どちらも門前のみ役だが互いに干渉しない）
+  // 符: 平和ロンは30符固定
+  // → 4翻30符 子ロン = 基本点1920×4=7680→7700点
+  {difficulty:'mid',
+   text:'東場南家（子）、ロンあがり。立直・断么九・一盃口・平和の4翻。一盃口と平和は複合します。点数は？',
+   hand:['pin2','pin2','pin3','pin3','pin4','pin4','pin5','pin6','pin7','man3','man4','pin8','pin8'],
+   agari:'man5', agariType:'ron',
+   machi:'両面待ち（三〜五萬）— 平和ロンは30符固定',
+   fu:30, han:4,
+   conds:[{label:'東場'},{label:'子（南家）'},{label:'ロン'},{label:'4翻30符',accent:true},{label:'立直＋断么九＋一盃口＋平和'},{label:'両面待ち'}],
+   answer:7700,choices:[7700,3900,8000,5200],
+   answerNote:'4翻30符 → 子ロン7700点',
+   explanation:'役: 立直1+断么九1+一盃口1+平和1=4翻。一盃口（②②③③④④）と平和（順子のみ・中張雀頭⑧⑧・両面待ち）は複合します。符: 平和ロンは30符固定。基本点=30×2^6=1920。子ロン×4=7680→7700点。'},
+
+  // Q10: 立直+断么九+平和+一発 4翻20符 子ツモ → 満貫（4翻20符は満貫未満）
+  // 4翻20符 子ツモ: 基本点=20×2^6=1280 子分=ceil(1280/100)*100=1300 親分=ceil(1280*2/100)*100=2600
+  // 合計=1300×2+2600=5200点 ← 満貫8000点より少ない
+  // 4翻20符は満貫にならない（満貫は4翻30符以上、または5翻以上）
+  // ここを「4翻20符で満貫にならない」ことを理解させる問題にする
+  {difficulty:'mid',
+   text:'東場西家（子）、ツモあがり。立直・断么九・平和・一発の4翻。平和ツモは20符固定。合計点数は？',
+   hand:['pin2','pin3','pin4','pin5','pin6','pin7','man3','man4','man5','man6','man7','pin2','pin3'],
+   agari:'pin4', agariType:'tsumo',
+   machi:'両面待ち（③〜⑤）— 平和ツモは20符固定',
+   fu:20, han:4,
+   conds:[{label:'東場'},{label:'子（西家）'},{label:'ツモ'},{label:'4翻20符',accent:true},{label:'立直＋断么九＋平和＋一発'},{label:'4翻20符は満貫にならない'}],
+   answer:5200,choices:[5200,8000,4000,3900],
+   answerNote:'4翻20符 → 子ツモ 1300点・2600点（合計5200点）',
+   explanation:'役: 立直1+断么九1+平和1+一発1=4翻。平和ツモは20符固定。4翻20符は満貫条件（4翻30符以上・5翻以上）を満たさない。基本点=20×2^6=1280。子1300点・親2600点で合計5200点。'},
+
+  // Q11: 立直+發+中+ドラ1 4翻40符 親ロン（發刻子+中刻子+単騎で符大）
+  // 手牌(13枚): ①②③ 發發發 中中中 四五六 ⑤⑤ ロン⑤（単騎）
+  // 符: 基本30+發明刻ロン8+中明刻ロン16+単騎2=56→60符
+  // 役: 立直1+發1+中1+ドラ(⑤がドラと仮定)1=4翻
+  // → 4翻60符 親ロン: 基本点=60×2^6=3840 ×6=23040→23100点 → 満貫12000点！（4翻60符以上は満貫）
+  // よし、4翻60符（満貫）親ロンで12000点の問題にする
+  {difficulty:'mid',
+   text:'東場東家（親）、ロンあがり。立直・發・中・ドラ1の4翻。4翻60符は何点？',
+   hand:['pin1','pin2','pin3','hatu','hatu','hatu','tyun','tyun','tyun','man4','man5','man6','pin5'],
+   agari:'pin5', agariType:'ron',
+   machi:'単騎待ち（⑤がドラ）— 發刻子+中刻子+単騎で60符 → 満貫',
+   fu:60, han:4,
+   conds:[{label:'東場'},{label:'親（東家）'},{label:'ロン'},{label:'4翻60符（満貫）',accent:true},{label:'立直＋發＋中＋ドラ'},{label:'4翻60符以上 → 満貫'}],
+   answer:12000,choices:[12000,11600,7700,9600],
+   answerNote:'4翻60符以上 → 満貫 → 親ロン12000点',
+   explanation:'役: 立直1+發1+中1+ドラ1=4翻。符: 基本30+發明刻(ロン)8+中明刻(ロン)16+単騎待ち2=56→60符。4翻60符以上は満貫扱い。親ロン満貫=12000点。4翻30符（11600点）と区別して覚えよう。'},
+
+  //──────────── 上級（符・翻も自分で計算） ────────────
+
+  // Q12: 立直+断么九+一盃口+平和+ドラ1 5翻20符（満貫）子ロン
+  // 手牌(13枚): ②②③③④④ ⑤⑥⑦ 三四 ③③ ロン五萬（三〜五萬の両面）
+  // 役: 立直1+断么九1+一盃口1+平和1+ドラ(③)1=5翻
+  // ※一盃口と平和は複合する
+  // 符: 平和ロンは30符固定
+  // → 5翻30符 → 満貫 子ロン8000点
+  // ただし上級問題なので「符・翻を自分で計算させる」
+  // fu_choices: 平和ロンなので答えは30符
+  // han_choices: 5翻
+  {difficulty:'hard',
+   text:'東場西家（子）、ロンあがり。手牌から役・符・翻数をすべて自分で計算してください。（ドラ表示牌は②→ドラは③）',
+   hand:['pin2','pin2','pin3','pin3','pin4','pin4','pin5','pin6','pin7','man3','man4','pin3','pin3'],
+   agari:'man5', agariType:'ron',
+   machi:'両面待ち（三〜五萬）',
+   fu:30, han:5,
+   fu_choices:[20,25,30,40,50],
+   han_choices:[3,4,5,6,7],
+   conds:[{label:'東場'},{label:'子（西家）'},{label:'ロン'},{label:'ドラ表示牌②→ドラ③'},{label:'？翻？符'}],
+   answer:8000,choices:[8000,7700,12000,3900],
+   answerNote:'立直1+断么九1+一盃口1+平和1+ドラ1=5翻 30符 → 満貫 子ロン8000点',
+   explanation:'役の確認: ①立直1翻 ②断么九(1・9・字牌なし)1翻 ③一盃口(②②③③④④)1翻 ④平和(順子のみ・中張雀頭③③・両面待ち)1翻 ⑤ドラ③が1枚=1翻 合計5翻。一盃口と平和は複合します！符: 平和ロン=30符固定。5翻以上=満貫。子ロン8000点。'},
+
+  // Q13: 立直+斷么九+平和+ドラ3 6翻（跳満）子ツモ
+  // 手牌: ③④⑤ ⑥⑦⑧ 三四五 六七 ③③ ツモ八萬（両面待ち六or八）
+  // ドラ3=ドラ表示牌が②ならドラは③→③が3枚で3翻
+  // 役: 立直1+断么九1+平和1+ドラ3=6翻 → 跳満 子ツモ=子3000・親6000=12000点
+  {difficulty:'hard',
+   text:'東場西家（子）、ツモあがり。手牌から役・符・翻数をすべて計算してください。（ドラ表示牌は②→ドラは③）',
+   hand:['pin3','pin4','pin5','pin6','pin7','pin8','man3','man4','man5','man6','man7','pin3','pin3'],
    agari:'man8', agariType:'tsumo',
-   machi:'両面待ち（六・八萬）',
-   fu:20, han:5,
-   conds:[{label:'東場'},{label:'親（東家）'},{label:'ツモ'},{label:'5翻（満貫）',accent:true},{label:'4000点オール'}],
-   answer:12000,choices:[12000,8000,9000,16000],
-   answerNote:'親ツモ満貫 → 4000点オール（合計12000点）',
-   explanation:'親ツモ満貫は全員（子3人）から4000点ずつ受け取る。4000 × 3 = 12000点。子ツモ満貫は子2000点・親4000点（合計8000点）。'},
+   machi:'両面待ち（六・八萬）— 平和ツモは20符固定',
+   fu:20, han:6,
+   fu_choices:[20,25,30,40,50,60],
+   han_choices:[3,4,5,6,7],
+   conds:[{label:'東場'},{label:'子（西家）'},{label:'ツモ'},{label:'ドラ表示牌②→ドラ③'},{label:'？翻？符'}],
+   answer:12000,choices:[12000,8000,18000,16000],
+   answerNote:'立直1+断么九1+平和1+ドラ3=6翻 20符 → 跳満 子ツモ3000/6000（合計12000点）',
+   explanation:'役: ①立直1翻 ②断么九1翻 ③平和1翻（順子のみ+中張雀頭+両面待ち）④ドラ③が3枚=3翻 合計6翻。符: 平和ツモは20符固定。6〜7翻=跳満。子ツモ跳満=子3000点・親6000点（合計12000点）。'},
 
-  // Q13: 子ロン跳満（6翻）
+  // Q14: 親ロン倍満（対々和+三暗刻+混老頭+ダブ東）
   {difficulty:'hard',
-   text:'南場南家（子）、南ダブ南2翻＋中1翻＋一気通貫2翻＋ドラ1翻、計6翻（跳満）でロンあがり。点数は？',
-   hand:['man1','man2','man3','man7','man8','man9','pin1','pin2','pin3','nan','nan','nan','tyun'],
-   agari:'tyun', agariType:'ron',
-   machi:'単騎待ち（中）',
-   fu:30, han:6,
-   conds:[{label:'南場'},{label:'子（南家）'},{label:'ロン'},{label:'6翻（跳満）',accent:true},{label:'南ダブ南＋中＋一気通貫＋ドラ'},{label:'単騎待ち'}],
-   answer:12000,choices:[12000,8000,16000,18000],
-   answerNote:'6〜7翻 → 跳満 → 子ロン12000点',
-   explanation:'6〜7翻は跳満。子ロン跳満は12000点。親ロン跳満は18000点。子ツモ跳満は子3000点・親6000点（合計12000点）。'},
-
-  // Q14: 親ロン倍満（8翻）
-  {difficulty:'hard',
-   text:'東場東家（親）、対々和2翻＋三暗刻2翻＋混老頭2翻＋ダブ東2翻、計8翻（倍満）でロンあがり。点数は？',
+   text:'東場東家（親）、ロンあがり。手牌から役・符・翻数をすべて計算してください。',
    hand:['man1','man1','man1','man9','man9','man9','pin1','pin1','pin1','ton','ton','ton','pin9'],
    agari:'pin9', agariType:'ron',
    machi:'単騎待ち（⑨）',
    fu:70, han:8,
-   conds:[{label:'東場'},{label:'親（東家）'},{label:'ロン'},{label:'8翻（倍満）',accent:true},{label:'対々和＋三暗刻＋混老頭＋ダブ東'},{label:'単騎待ち'}],
-   answer:24000,choices:[24000,16000,36000,18000],
-   answerNote:'8〜10翻 → 倍満 → 親ロン24000点',
-   explanation:'8〜10翻は倍満。親ロン倍満は24000点。子ロンなら16000点。'},
+   fu_choices:[40,50,60,70,80],
+   han_choices:[6,7,8,9,10],
+   conds:[{label:'東場'},{label:'親（東家）'},{label:'ロン'},{label:'？翻？符'}],
+   answer:24000,choices:[24000,16000,36000,12000],
+   answerNote:'対々和2+三暗刻2+混老頭2+ダブ東2=8翻 → 倍満 親ロン24000点',
+   explanation:'役: 対々和(すべて刻子)2翻+三暗刻(暗刻3組)2翻+混老頭(1・9・字牌のみ)2翻+ダブ東(場風+自風)2翻=8翻。符: 基本30+一萬暗刻32+九萬暗刻32+①暗刻32+東暗刻32+単騎2=大きく超えるが8翻以上=倍満で符計算不要。親ロン倍満24000点。'},
 
-  // Q15: 役満 親ロン
+  // Q15: 役満 親ロン 国士無双
   {difficulty:'hard',
-   text:'東場東家（親）、国士無双（役満）でロンあがり。点数はいくら？',
+   text:'東場東家（親）、ロンあがり。役満（国士無双）。点数はいくら？',
    hand:['man1','man9','pin1','pin9','sou1','sou9','ton','nan','sya','pei','haku','hatu','tyun'],
    agari:'man1', agariType:'ron',
    machi:'国士無双13面待ち',
    fu:0, han:13,
-   conds:[{label:'東場'},{label:'親（東家）'},{label:'ロン'},{label:'役満（国士無双）',accent:true},{label:'13面待ち'}],
+   fu_choices:[0,30,40,50,60],
+   han_choices:[8,9,10,11,13],
+   conds:[{label:'東場'},{label:'親（東家）'},{label:'ロン'},{label:'役満'}],
    answer:48000,choices:[48000,32000,36000,24000],
-   answerNote:'役満 → 親ロン48000点',
-   explanation:'役満は符・翻の計算を超えた特別点数。親ロン役満は48000点。子ロンなら32000点。子ツモ役満は子8000点・親16000点（合計32000点）。'},
+   answerNote:'役満（国士無双）→ 親ロン48000点',
+   explanation:'国士無双は1・9・字牌13種すべてを集める特殊役。役満は符・翻の計算を超えた特別点数。親ロン役満48000点。子ロンなら32000点。13面待ちは国士の特別ルール（採用しない場合もある）。'},
 ];
 
+
+// ── エンジン ──
 let qList=[],qIdx=0,correctCount=0,answered=false;
+let selectedFu=null,selectedHan=null,fuhanSubmitted=false;
+
 function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 
 function startQuiz(){
@@ -407,7 +504,8 @@ function startQuiz(){
 }
 
 function showQuestion(){
-  const q=qList[qIdx]; answered=false;
+  const q=qList[qIdx];
+  answered=false;selectedFu=null;selectedHan=null;fuhanSubmitted=false;
   const pct=Math.round(qIdx/qList.length*100);
   document.getElementById('prog-label').textContent='問題 '+(qIdx+1)+' / '+qList.length;
   document.getElementById('prog-pct').textContent=pct+'%';
@@ -415,44 +513,60 @@ function showQuestion(){
   document.getElementById('q-no').textContent='Q'+(qIdx+1);
   const dm={easy:['初級','badge-easy'],mid:['中級','badge-mid'],hard:['上級','badge-hard']};
   const badge=document.getElementById('q-badge');
-  badge.textContent=dm[q.difficulty][0]; badge.className='badge '+dm[q.difficulty][1];
+  badge.textContent=dm[q.difficulty][0];badge.className='badge '+dm[q.difficulty][1];
   document.getElementById('q-text').textContent=q.text;
 
-  // 手牌 ＋ 区切り ＋ あがり牌
+  // 手牌＋あがり牌
   const handEl=document.getElementById('q-hand');
   handEl.innerHTML='';
-  q.hand.forEach(k=>{
-    const w=makeTileEl(k.replace('_aka',''),k.includes('_aka'));
-    handEl.appendChild(w);
-  });
-  // 縦線区切り
-  const sep=document.createElement('div');
-  sep.className='hand-sep';
-  handEl.appendChild(sep);
-  // あがり牌
-  const agariWrap=document.createElement('div');
-  agariWrap.className='agari-label-wrap';
-  const agariLbl=document.createElement('span');
-  agariLbl.className='agari-label';
-  agariLbl.textContent=q.agariType==='ron'?'ロン':'ツモ';
-  const agariTile=makeTileEl(q.agari.replace('_aka',''),q.agari.includes('_aka'),false,'agari-tile');
-  agariWrap.appendChild(agariLbl);
-  agariWrap.appendChild(agariTile);
-  handEl.appendChild(agariWrap);
+  q.hand.forEach(k=>{handEl.appendChild(makeTileEl(k.replace('_aka',''),k.includes('_aka')));});
+  const sep=document.createElement('div');sep.className='hand-sep';handEl.appendChild(sep);
+  const aw=document.createElement('div');aw.className='agari-label-wrap';
+  const al=document.createElement('span');al.className='agari-label';al.textContent=q.agariType==='ron'?'ロン':'ツモ';
+  aw.appendChild(al);
+  aw.appendChild(makeTileEl(q.agari.replace('_aka',''),q.agari.includes('_aka'),false,'agari-tile'));
+  handEl.appendChild(aw);
 
-  // 待ちメモ
   document.getElementById('q-hand-note').textContent='待ち: '+q.machi;
-
-  // 条件ピル
   document.getElementById('q-cond').innerHTML=q.conds.map(c=>'<span class="cond-pill'+(c.accent?' accent':'')+'">'+c.label+'</span>').join('');
 
-  // 選択肢
+  // 上級: 符・翻選択UI
+  const isHard=q.difficulty==='hard';
+  const fhWrap=document.getElementById('fuhan-wrap');
+  const submitBtn=document.getElementById('submit-btn');
+  fhWrap.className='fuhan-wrap'+(isHard?' show':'');
+  submitBtn.style.display=isHard?'block':'none';
+  submitBtn.disabled=true;
+
+  if(isHard){
+    // 符ボタン
+    const fuEl=document.getElementById('fu-choices');
+    fuEl.innerHTML='';
+    q.fu_choices.forEach(v=>{
+      const b=document.createElement('button');
+      b.className='fuhan-btn';b.textContent=v+'符';b.dataset.val=v;
+      b.onclick=()=>selectFu(v,q);fuEl.appendChild(b);
+    });
+    document.getElementById('fu-note').textContent='';
+    // 翻ボタン
+    const hanEl=document.getElementById('han-choices');
+    hanEl.innerHTML='';
+    q.han_choices.forEach(v=>{
+      const b=document.createElement('button');
+      b.className='fuhan-btn';b.textContent=v+'翻';b.dataset.val=v;
+      b.onclick=()=>selectHan(v,q);hanEl.appendChild(b);
+    });
+    document.getElementById('han-note').textContent='';
+  }
+
+  // 点数選択肢（上級は符翻確定後に有効化）
   const shuffled=shuffle(q.choices);
   const choicesEl=document.getElementById('q-choices');
   choicesEl.innerHTML='';
   shuffled.forEach(val=>{
     const b=document.createElement('button');
-    b.className='choice-btn'; b.textContent=val.toLocaleString()+'点'; b.dataset.val=val;
+    b.className='choice-btn';b.textContent=val.toLocaleString()+'点';b.dataset.val=val;
+    if(isHard)b.disabled=true;
     b.onclick=()=>selectAnswer(val,q);
     choicesEl.appendChild(b);
   });
@@ -461,13 +575,64 @@ function showQuestion(){
   document.getElementById('q-feedback').className='feedback';
   document.getElementById('next-btn').style.display='none';
   const card=document.getElementById('q-card');
-  card.style.animation='none'; void card.offsetWidth; card.style.animation='fadeIn 0.35s ease';
+  card.style.animation='none';void card.offsetWidth;card.style.animation='fadeIn 0.35s ease';
+}
+
+function selectFu(val,q){
+  if(fuhanSubmitted)return;
+  selectedFu=val;
+  document.querySelectorAll('#fu-choices .fuhan-btn').forEach(b=>b.classList.toggle('selected',parseInt(b.dataset.val)===val));
+  checkFuHanReady();
+}
+function selectHan(val,q){
+  if(fuhanSubmitted)return;
+  selectedHan=val;
+  document.querySelectorAll('#han-choices .fuhan-btn').forEach(b=>b.classList.toggle('selected',parseInt(b.dataset.val)===val));
+  checkFuHanReady();
+}
+function checkFuHanReady(){
+  document.getElementById('submit-btn').disabled=!(selectedFu!==null&&selectedHan!==null);
+}
+
+function submitFuHan(){
+  const q=qList[qIdx];
+  fuhanSubmitted=true;
+  document.getElementById('submit-btn').disabled=true;
+
+  // 符の正誤
+  const fuCorrect=selectedFu===q.fu;
+  document.querySelectorAll('#fu-choices .fuhan-btn').forEach(b=>{
+    const v=parseInt(b.dataset.val);
+    if(v===q.fu)b.classList.add('correct-sel');
+    else if(v===selectedFu&&!fuCorrect)b.classList.add('wrong-sel');
+    b.disabled=true;
+  });
+  document.getElementById('fu-note').textContent=fuCorrect?('✓ 正解: '+q.fu+'符'):('✗ 正解は '+q.fu+'符');
+  document.getElementById('fu-note').style.color=fuCorrect?'rgba(100,220,130,0.9)':'rgba(220,100,80,0.9)';
+
+  // 翻の正誤
+  const hanCorrect=selectedHan===q.han;
+  document.querySelectorAll('#han-choices .fuhan-btn').forEach(b=>{
+    const v=parseInt(b.dataset.val);
+    if(v===q.han)b.classList.add('correct-sel');
+    else if(v===selectedHan&&!hanCorrect)b.classList.add('wrong-sel');
+    b.disabled=true;
+  });
+  document.getElementById('han-note').textContent=hanCorrect?('✓ 正解: '+q.han+'翻'):('✗ 正解は '+q.han+'翻');
+  document.getElementById('han-note').style.color=hanCorrect?'rgba(100,220,130,0.9)':'rgba(220,100,80,0.9)';
+
+  // 点数選択肢を有効化
+  document.querySelectorAll('.choice-btn').forEach(b=>b.disabled=false);
 }
 
 function selectAnswer(val,q){
-  if(answered)return; answered=true;
+  if(answered)return;answered=true;
   const isCorrect=val===q.answer;
-  if(isCorrect)correctCount++;
+  // 上級は符翻も正解していないと完全正解にしない
+  let fullCorrect=isCorrect;
+  if(q.difficulty==='hard'&&!(selectedFu===q.fu&&selectedHan===q.han))fullCorrect=false;
+  if(fullCorrect)correctCount++;
+
   document.getElementById('nav-correct').textContent=correctCount;
   document.getElementById('nav-total').textContent=qIdx+1;
   document.querySelectorAll('.choice-btn').forEach(b=>{
@@ -477,34 +642,35 @@ function selectAnswer(val,q){
     else if(bv===val&&!isCorrect)b.classList.add('wrong');
   });
   const fb=document.getElementById('q-feedback');
-  fb.style.display='block'; fb.className='feedback '+(isCorrect?'correct-fb':'wrong-fb');
+  fb.style.display='block';
+  const allCorrect=isCorrect&&(q.difficulty!=='hard'||(selectedFu===q.fu&&selectedHan===q.han));
+  fb.className='feedback '+(allCorrect?'correct-fb':'wrong-fb');
   const title=document.getElementById('fb-title');
-  title.className='fb-title '+(isCorrect?'fb-correct':'fb-wrong');
-  title.textContent=isCorrect?'✓ 正解！':'✗ 不正解';
+  title.className='fb-title '+(allCorrect?'fb-correct':'fb-wrong');
+  if(allCorrect)title.textContent='✓ 完全正解！';
+  else if(isCorrect&&q.difficulty==='hard')title.textContent='△ 点数は正解（符・翻に誤りあり）';
+  else title.textContent='✗ 不正解';
   document.getElementById('fb-note').textContent='正解: '+q.answer.toLocaleString()+'点　— '+q.answerNote;
   document.getElementById('fb-body').textContent=q.explanation;
   const nb=document.getElementById('next-btn');
-  nb.style.display='block'; nb.textContent=(qIdx+1<qList.length)?'次の問題 →':'結果を見る';
+  nb.style.display='block';nb.textContent=(qIdx+1<qList.length)?'次の問題 →':'結果を見る';
 }
 
 function nextQuestion(){qIdx++;if(qIdx>=qList.length)showResult();else showQuestion();}
-
 function showResult(){
   document.getElementById('quiz-area').style.display='none';
-  const rs=document.getElementById('result-screen'); rs.style.display='block';
+  const rs=document.getElementById('result-screen');rs.style.display='block';
   document.getElementById('res-big').textContent=correctCount;
   document.getElementById('res-denom').textContent='/ '+qList.length+' 問正解';
   const pct=Math.round(correctCount/qList.length*100);
   let c='';
-  if(pct>=90)c='素晴らしい！点数感覚がしっかり身についています。';
-  else if(pct>=70)c='よくできました！苦手な翻数・符をもう一度復習してみましょう。';
-  else if(pct>=50)c='もう少しです。満貫・跳満・倍満の早見表を確認してから再チャレンジを。';
+  if(pct>=90)c='完璧です！符計算まで正確に身についています。';
+  else if(pct>=70)c='よくできました！符と翻の複合を意識して復習してみましょう。';
+  else if(pct>=50)c='もう少しです。役牌刻子・待ちの種類による符の変化を確認しましょう。';
   else c='基礎から復習しましょう。まず「点数計算モード」で符と翻の仕組みを確認してください。';
   document.getElementById('res-comment').textContent=c;
 }
-
 startQuiz();
 </script>
-
-
-</body></html>
+</body>
+</html>

@@ -130,12 +130,12 @@
   /* Mode cards */
   .cards-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 16px;
     margin-bottom: 28px;
     animation: fadeUp 1.0s 0.2s ease both;
   }
-  @media(max-width: 600px) { .cards-grid { grid-template-columns: 1fr; } }
+  @media(max-width: 520px) { .cards-grid { grid-template-columns: 1fr; } }
 
   .mode-card {
     background: var(--card-bg);
@@ -236,6 +236,32 @@
   </div>
 
   <div class="cards-grid">
+    <a class="mode-card" href="yaku.html">
+      <span class="card-icon">📖</span>
+      <div class="card-title">役・符一覧</div>
+      <div class="card-title-en">Yaku reference</div>
+      <div class="card-hr"></div>
+      <p class="card-desc">全役の解説・符計算の仕組み・点数早見表を一覧で確認できる。</p>
+      <div class="card-tags">
+        <span class="tag tag-gold">役一覧</span>
+        <span class="tag tag-gold">符一覧</span>
+        <span class="tag tag-gold">点数表</span>
+      </div>
+    </a>
+
+    <a class="mode-card" href="yaku-quiz.html">
+      <span class="card-icon">🎴</span>
+      <div class="card-title">役名クイズ</div>
+      <div class="card-title-en">Yaku name quiz</div>
+      <div class="card-hr"></div>
+      <p class="card-desc">手牌を見て役名を当てる初心者向けクイズ。初級・中級・上級の3モード。</p>
+      <div class="card-tags">
+        <span class="tag tag-blue">初級</span>
+        <span class="tag tag-blue">中級</span>
+        <span class="tag tag-blue">上級</span>
+      </div>
+    </a>
+
     <a class="mode-card" href="nankiru.html">
       <span class="card-icon">🀇</span>
       <div class="card-title">何切る</div>
@@ -263,15 +289,15 @@
     </a>
 
     <a class="mode-card" href="quiz.html">
-      <span class="card-icon">🎴</span>
+      <span class="card-icon">🎯</span>
       <div class="card-title">点数クイズ</div>
       <div class="card-title-en">Score quiz</div>
       <div class="card-hr"></div>
       <p class="card-desc">「この手何点？」の問題に答えて点数感覚を身につける。解説つき。</p>
       <div class="card-tags">
-        <span class="tag tag-blue">初級</span>
-        <span class="tag tag-blue">中級</span>
-        <span class="tag tag-blue">上級</span>
+        <span class="tag tag-red">初級</span>
+        <span class="tag tag-red">中級</span>
+        <span class="tag tag-red">上級</span>
       </div>
     </a>
   </div>
