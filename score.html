@@ -1,319 +1,764 @@
 <!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
+<!-- saved from url=(0045)file:///C:/Users/shoum/Downloads/score_5.html -->
+<html lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>点数計算 — 麻雀道場</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&family=Noto+Serif+JP:wght@400;700&family=Zen+Antique&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="./score_files/css2" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
-  :root {
-    --gold:#d4af37; --gold-dim:rgba(212,175,55,0.5); --gold-faint:rgba(212,175,55,0.13);
-    --felt:#111a0a; --felt-mid:#1a2810;
-    --text-bright:rgba(255,255,255,0.88); --text-mid:rgba(255,255,255,0.5); --text-dim:rgba(255,255,255,0.28);
-    --sec-bg:rgba(255,255,255,0.04); --sec-border:rgba(212,175,55,0.18);
-    --input-bg:rgba(255,255,255,0.06); --input-border:rgba(255,255,255,0.15);
-  }
-  html,body { min-height:100vh; background:var(--felt); color:var(--text-bright); font-family:'Noto Sans JP',sans-serif; font-size:14px; }
-  body { background-image: repeating-linear-gradient(45deg,rgba(255,255,255,0.01) 0px,rgba(255,255,255,0.01) 1px,transparent 1px,transparent 12px), repeating-linear-gradient(-45deg,rgba(255,255,255,0.01) 0px,rgba(255,255,255,0.01) 1px,transparent 1px,transparent 12px), radial-gradient(ellipse 80% 50% at 50% 0%,var(--felt-mid) 0%,var(--felt) 60%); }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --gold:#d4af37;--gold-dim:rgba(212,175,55,0.5);--gold-faint:rgba(212,175,55,0.13);
+  --felt:#111a0a;--felt-mid:#1a2810;
+  --text-bright:rgba(255,255,255,0.88);--text-mid:rgba(255,255,255,0.5);--text-dim:rgba(255,255,255,0.28);
+  --sec-bg:rgba(255,255,255,0.04);--sec-border:rgba(212,175,55,0.18);
+}
+html,body{min-height:100vh;background:var(--felt);color:var(--text-bright);font-family:'Noto Sans JP',sans-serif;font-size:14px;}
+body{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.01) 0px,rgba(255,255,255,0.01) 1px,transparent 1px,transparent 12px),repeating-linear-gradient(-45deg,rgba(255,255,255,0.01) 0px,rgba(255,255,255,0.01) 1px,transparent 1px,transparent 12px),radial-gradient(ellipse 80% 50% at 50% 0%,var(--felt-mid) 0%,var(--felt) 60%);}
+.nav{display:flex;align-items:center;gap:12px;padding:16px 24px;border-bottom:0.5px solid rgba(212,175,55,0.12);}
+.nav-back{color:var(--gold-dim);text-decoration:none;font-size:13px;transition:color 0.15s;}
+.nav-back:hover{color:var(--gold);}
+.nav-title{font-family:'Zen Antique',serif;font-size:16px;color:var(--gold);letter-spacing:0.12em;}
+.page{max-width:760px;margin:0 auto;padding:24px 20px 64px;}
+.sec{background:var(--sec-bg);border:0.5px solid var(--sec-border);border-radius:12px;padding:18px 20px;margin-bottom:12px;}
+.sec-title{font-size:13px;font-weight:500;color:var(--gold-dim);margin-bottom:12px;letter-spacing:0.05em;}
+.hint{font-size:11px;color:var(--text-dim);margin-bottom:10px;line-height:1.6;}
 
-  .nav { display:flex; align-items:center; gap:12px; padding:16px 24px; border-bottom:0.5px solid rgba(212,175,55,0.12); }
-  .nav-back { color:var(--gold-dim); text-decoration:none; font-size:13px; letter-spacing:0.05em; transition:color 0.15s; }
-  .nav-back:hover { color:var(--gold); }
-  .nav-title { font-family:'Zen Antique',serif; font-size:16px; color:var(--gold); letter-spacing:0.12em; }
+/* モード切り替え */
+.mode-tabs{display:flex;gap:6px;margin-bottom:14px;}
+.mode-tab{padding:6px 16px;border-radius:7px;font-size:12px;font-family:'Noto Sans JP',sans-serif;border:0.5px solid rgba(255,255,255,0.2);cursor:pointer;background:transparent;color:var(--text-mid);transition:all 0.12s;}
+.mode-tab.on{background:rgba(212,175,55,0.15);border-color:var(--gold-dim);color:var(--gold);}
 
-  .page { max-width:720px; margin:0 auto; padding:24px 20px 64px; }
+/* パレット */
+.suit-label{font-size:11px;color:var(--text-dim);margin-bottom:4px;}
+.tile-grid{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:8px;}
+.pal-tile{width:32px;height:44px;background:#f0ebe0;border-radius:3px;border-bottom:3px solid #b8a888;overflow:hidden;cursor:pointer;flex-shrink:0;transition:transform 0.1s;}
+.pal-tile:hover{transform:translateY(-3px);}
+.pal-tile img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;}
+.pal-tile.dim{opacity:0.35;pointer-events:none;}
 
-  .sec { background:var(--sec-bg); border:0.5px solid var(--sec-border); border-radius:12px; padding:18px 20px; margin-bottom:12px; }
-  .sec-title { font-size:13px; font-weight:500; color:var(--gold-dim); margin-bottom:14px; display:flex; align-items:center; gap:7px; letter-spacing:0.05em; }
-  .sec-title span.cnt { font-size:11px; color:var(--text-dim); font-weight:400; }
-  .suit-label { font-size:11px; color:var(--text-dim); margin-bottom:5px; letter-spacing:0.05em; }
-  .tile-grid { display:flex; flex-wrap:wrap; gap:4px; margin-bottom:10px; }
+/* 面子ビルダー（通常形） */
+.meld-builder{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px;align-items:flex-start;}
+.meld-slot{background:rgba(0,0,0,0.25);border:0.5px dashed rgba(255,255,255,0.2);border-radius:8px;padding:8px 10px;min-width:90px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;transition:border-color 0.15s;}
+.meld-slot.active{border-color:var(--gold-dim);border-style:solid;}
+.meld-slot.complete{border-color:rgba(39,160,80,0.4);border-style:solid;}
+.meld-slot.jantai-slot{border-color:rgba(41,128,185,0.35);border-style:solid;}
+.meld-slot.jantai-slot.active{border-color:rgba(41,128,185,0.7);}
+.meld-slot-label{font-size:10px;color:var(--text-dim);letter-spacing:0.04em;}
+.meld-tiles{display:flex;gap:2px;align-items:flex-end;min-height:44px;}
+.m-tile{width:28px;height:38px;background:#f0ebe0;border-radius:3px;border-bottom:3px solid #b8a888;overflow:hidden;cursor:pointer;flex-shrink:0;}
+.m-tile img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;}
+.m-tile.yoko{width:38px;height:28px;border-bottom:none;border-right:3px solid #b8a888;}
+.tile-empty{width:28px;height:38px;background:rgba(255,255,255,0.05);border-radius:3px;border:0.5px dashed rgba(255,255,255,0.12);}
+.meld-naki-btn{font-size:10px;padding:2px 8px;border-radius:10px;cursor:pointer;border:0.5px solid rgba(255,255,255,0.18);background:transparent;color:var(--text-dim);font-family:'Noto Sans JP',sans-serif;transition:all 0.12s;white-space:nowrap;}
+.meld-naki-btn.on{background:rgba(192,57,43,0.18);border-color:rgba(192,57,43,0.5);color:rgba(220,100,80,0.9);}
+.meld-del{font-size:11px;color:var(--text-dim);cursor:pointer;background:none;border:none;padding:0;line-height:1;}
+.meld-del:hover{color:rgba(220,100,80,0.8);}
 
-  /* ── 共通牌スタイル ── */
-  .tile-wrap {
-    width:34px; height:46px;
-    background:#f0ebe0;
-    border-radius:3px; border-bottom:3px solid #b8a888;
-    overflow:hidden; cursor:pointer;
-    box-shadow:0 2px 4px rgba(0,0,0,0.4);
-    transition:transform 0.12s, background 0.12s;
-    flex-shrink:0;
-  }
-  .tile-wrap img { width:100%; height:100%; object-fit:cover; display:block; pointer-events:none; }
-  .tile-wrap.tile-fallback { display:flex; align-items:center; justify-content:center; font-size:13px; font-family:'Noto Serif JP',serif; color:#1a1a1a; }
-  .tile-wrap:hover { transform:translateY(-3px); background:#fff8f0; }
+/* 自由入力（七対子・国士） */
+.free-tiles{display:flex;flex-wrap:wrap;gap:4px;min-height:50px;padding:8px;background:rgba(0,0,0,0.2);border:0.5px solid rgba(255,255,255,0.1);border-radius:8px;align-items:flex-end;margin-bottom:8px;}
+.free-tile{width:32px;height:44px;background:#f0ebe0;border-radius:3px;border-bottom:3px solid #b8a888;overflow:hidden;cursor:pointer;flex-shrink:0;}
+.free-tile img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;}
+.free-count{font-size:12px;color:var(--text-dim);}
 
-  /* パレット（選択クリック） */
-  .pal-tile { }
-  .pal-tile:hover { transform:translateY(-3px); }
+/* あがり牌 */
 
-  /* 手牌エリア */
-  .hand-area { min-height:58px; background:rgba(0,0,0,0.25); border:0.5px solid var(--input-border); border-radius:8px; padding:8px 10px; display:flex; flex-wrap:wrap; gap:4px; align-items:flex-end; }
-  .hand-placeholder { font-size:12px; color:var(--text-dim); align-self:center; }
-  .hand-tile:hover { transform:translateY(-2px); border-color:#e24b4a; border-bottom-color:#e24b4a; }
+/* 待ち選択 */
+.machi-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+.machi-btn{padding:5px 12px;border-radius:7px;font-size:12px;font-family:'Noto Sans JP',sans-serif;border:0.5px solid rgba(255,255,255,0.18);background:transparent;color:var(--text-mid);cursor:pointer;transition:all 0.12s;}
+.machi-btn.on{background:rgba(212,175,55,0.15);border-color:var(--gold-dim);color:var(--gold);}
 
-  .err-msg { font-size:12px; color:#e24b4a; margin-top:6px; min-height:18px; }
+/* コントロール */
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px;}
+.lbl{font-size:13px;color:var(--text-mid);min-width:60px;}
+.rbtn{padding:5px 14px;border-radius:7px;font-size:12px;font-family:'Noto Sans JP',sans-serif;border:0.5px solid rgba(255,255,255,0.2);cursor:pointer;background:transparent;color:var(--text-mid);transition:all 0.12s;}
+.rbtn.on{background:rgba(212,175,55,0.15);border-color:var(--gold-dim);color:var(--gold);}
+.chip{padding:5px 13px;border-radius:20px;font-size:12px;font-family:'Noto Sans JP',sans-serif;border:0.5px solid rgba(255,255,255,0.15);cursor:pointer;background:transparent;color:var(--text-mid);transition:all 0.12s;}
+.chip.on{background:rgba(212,175,55,0.15);border-color:var(--gold-dim);color:var(--gold);}
+.dora-input{width:48px;padding:4px 8px;background:rgba(0,0,0,0.3);border:0.5px solid rgba(255,255,255,0.2);border-radius:6px;color:var(--text-bright);font-size:14px;text-align:center;font-family:'Noto Sans JP',sans-serif;}
 
-  .row { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:10px; }
-  .row:last-child { margin-bottom:0; }
-  .lbl { font-size:13px; color:var(--text-mid); min-width:60px; }
+/* 自動判別役 */
+.auto-yaku-wrap{display:flex;flex-wrap:wrap;gap:5px;min-height:22px;}
+.auto-tag{font-size:11px;padding:2px 9px;border-radius:12px;background:rgba(39,160,80,0.15);color:rgba(100,220,130,0.9);border:0.5px solid rgba(39,160,80,0.3);}
+.auto-tag.manual{background:rgba(212,175,55,0.15);color:var(--gold);border-color:rgba(212,175,55,0.3);}
 
-  .rbtn { padding:5px 14px; border-radius:7px; font-size:12px; font-family:'Noto Sans JP',sans-serif; border:0.5px solid rgba(255,255,255,0.2); cursor:pointer; background:transparent; color:var(--text-mid); transition:background 0.12s, border-color 0.12s, color 0.12s; }
-  .rbtn:hover { background:rgba(255,255,255,0.06); }
-  .rbtn.on { background:rgba(212,175,55,0.15); border-color:var(--gold-dim); color:var(--gold); }
-  .chip { padding:5px 13px; border-radius:20px; font-size:12px; font-family:'Noto Sans JP',sans-serif; border:0.5px solid rgba(255,255,255,0.15); cursor:pointer; background:transparent; color:var(--text-mid); transition:background 0.12s, border-color 0.12s, color 0.12s; }
-  .chip:hover { background:rgba(255,255,255,0.06); }
-  .chip.on { background:rgba(212,175,55,0.15); border-color:var(--gold-dim); color:var(--gold); }
-  .chip.danger-on { background:rgba(192,57,43,0.18); border-color:rgba(192,57,43,0.5); color:rgba(220,100,80,0.9); }
+.calc-btn{width:100%;padding:14px;font-size:15px;font-weight:500;font-family:'Noto Sans JP',sans-serif;background:rgba(212,175,55,0.12);border:0.5px solid var(--gold-dim);border-radius:10px;cursor:pointer;color:var(--gold);letter-spacing:0.08em;transition:background 0.15s;margin-bottom:10px;}
+.calc-btn:hover{background:rgba(212,175,55,0.22);}
+.err-msg{font-size:12px;color:#e24b4a;min-height:18px;margin-bottom:8px;}
 
-  .calc-btn { width:100%; padding:14px; font-size:15px; font-weight:500; font-family:'Noto Sans JP',sans-serif; background:rgba(212,175,55,0.12); border:0.5px solid var(--gold-dim); border-radius:10px; cursor:pointer; color:var(--gold); letter-spacing:0.08em; transition:background 0.15s; margin-bottom:12px; }
-  .calc-btn:hover { background:rgba(212,175,55,0.22); }
+/* 結果 */
+.result-sec{background:var(--sec-bg);border:0.5px solid var(--sec-border);border-radius:12px;padding:20px;display:none;}
+.result-score{text-align:center;padding:20px;background:rgba(0,0,0,0.2);border-radius:8px;margin-bottom:14px;}
+.score-num{font-size:42px;font-weight:500;color:var(--gold);}
+.score-sub{font-size:13px;color:var(--text-mid);margin-top:5px;}
+.yaku-wrap{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px;}
+.yaku-tag{font-size:11px;padding:3px 10px;border-radius:14px;background:rgba(212,175,55,0.13);color:rgba(212,175,55,0.8);border:0.5px solid rgba(212,175,55,0.25);}
+.breakdown{border:0.5px solid var(--sec-border);border-radius:8px;overflow:hidden;}
+.bd-row{display:flex;justify-content:space-between;padding:8px 14px;font-size:13px;border-bottom:0.5px solid rgba(212,175,55,0.08);}
+.bd-row:last-child{border-bottom:none;}
+.bd-key{color:var(--text-mid);}
+.bd-val{font-weight:500;color:var(--text-bright);}
 
-  .result-sec { background:var(--sec-bg); border:0.5px solid var(--sec-border); border-radius:12px; padding:20px; display:none; }
-  .result-score { text-align:center; padding:20px; background:rgba(0,0,0,0.2); border-radius:8px; margin-bottom:14px; }
-  .score-num { font-size:42px; font-weight:500; color:var(--gold); letter-spacing:0.04em; }
-  .score-sub { font-size:13px; color:var(--text-mid); margin-top:5px; }
-  .yaku-wrap { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:14px; }
-  .yaku-tag { font-size:11px; padding:3px 10px; border-radius:14px; background:rgba(212,175,55,0.13); color:rgba(212,175,55,0.8); border:0.5px solid rgba(212,175,55,0.25); }
-  .breakdown { border:0.5px solid var(--sec-border); border-radius:8px; overflow:hidden; }
-  .bd-row { display:flex; justify-content:space-between; padding:8px 14px; font-size:13px; border-bottom:0.5px solid rgba(212,175,55,0.08); }
-  .bd-row:last-child { border-bottom:none; }
-  .bd-key { color:var(--text-mid); }
-  .bd-val { font-weight:500; color:var(--text-bright); }
+/* リセット */
+.reset-btn{font-size:12px;padding:5px 14px;border-radius:7px;border:0.5px solid rgba(255,255,255,0.15);background:transparent;color:var(--text-dim);cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:all 0.12s;margin-left:auto;display:block;}
+.reset-btn:hover{color:rgba(220,100,80,0.8);border-color:rgba(192,57,43,0.4);}
 </style>
 </head>
 <body>
 <nav class="nav">
-  <a class="nav-back" href="index.html">← 道場へ戻る</a>
+  <a class="nav-back" href="file:///C:/Users/shoum/Downloads/index.html">← 道場へ戻る</a>
   <span style="color:var(--text-dim)">|</span>
   <span class="nav-title">点数計算</span>
 </nav>
 <div class="page">
-  <div class="sec">
-    <div class="sec-title">手牌を選ぶ <span class="cnt" id="hand-count">（0 / 14枚）</span></div>
-    <div class="suit-label">萬子（マンズ）</div>
-    <div class="tile-grid" id="pal-man"></div>
-    <div class="suit-label">筒子（ピンズ）</div>
-    <div class="tile-grid" id="pal-pin"></div>
-    <div class="suit-label">索子（ソウズ）</div>
-    <div class="tile-grid" id="pal-sou"></div>
-    <div class="suit-label">字牌</div>
-    <div class="tile-grid" id="pal-ji"></div>
-    <div style="font-size:11px;color:var(--text-dim);margin-bottom:8px">※ 追加した牌をクリックすると削除できます</div>
-    <div class="hand-area" id="hand-area"><span class="hand-placeholder">牌をクリックして追加</span></div>
-    <div class="err-msg" id="err-msg"></div>
+
+<!-- ① 入力モード -->
+<div class="sec">
+  <div class="sec-title">① 手牌の形を選択</div>
+  <div class="mode-tabs">
+    <button class="mode-tab on" onclick="setMode(&#39;normal&#39;)">通常形</button>
+    <button class="mode-tab" onclick="setMode(&#39;chiitoi&#39;)">七対子</button>
+    </div>
+  <div class="hint" id="mode-hint">面子4組＋雀頭1組の通常形。パレットから牌を選んで面子スロットに追加してください。</div>
+</div>
+
+<!-- ② 牌パレット -->
+<div class="sec">
+  <div class="sec-title">② 牌パレット <button class="reset-btn" onclick="resetAll()">リセット</button></div>
+  <div class="suit-label">萬子</div><div class="tile-grid" id="pal-man"><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man1.png" alt="一" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man2.png" alt="二" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man3.png" alt="三" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man4.png" alt="四" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man5.png" alt="五" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man6.png" alt="六" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man7.png" alt="七" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man8.png" alt="八" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man9.png" alt="九" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div></div>
+  <div class="suit-label">筒子</div><div class="tile-grid" id="pal-pin"><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin1.png" alt="①" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin2.png" alt="②" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin3.png" alt="③" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin4.png" alt="④" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin5.png" alt="⑤" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin6.png" alt="⑥" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin7.png" alt="⑦" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin8.png" alt="⑧" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin9.png" alt="⑨" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div></div>
+  <div class="suit-label">索子</div><div class="tile-grid" id="pal-sou"><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou1.png" alt="1s" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou2.png" alt="2s" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou3.png" alt="3s" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou4.png" alt="4s" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou5.png" alt="5s" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou6.png" alt="6s" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou7.png" alt="7s" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou8.png" alt="8s" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou9.png" alt="9s" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div></div>
+  <div class="suit-label">字牌</div><div class="tile-grid" id="pal-ji"><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/ton.png" alt="東" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/nan.png" alt="南" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sya.png" alt="西" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pei.png" alt="北" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/haku.png" alt="白" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/hatu.png" alt="發" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/tyun.png" alt="中" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div></div>
+</div>
+
+<!-- ③ 手牌入力 -->
+<div class="sec">
+  <div class="sec-title" id="hand-sec-title">③ 面子入力（アクティブな枠に牌が追加されます）</div>
+  <!-- 通常形 -->
+  <div id="normal-input">
+    <div class="meld-builder" id="meld-builder"><div class="meld-slot active"><div class="meld-slot-label">面子1（3枚）</div><div class="meld-tiles"><div class="tile-empty"></div><div class="tile-empty"></div><div class="tile-empty"></div></div><button class="meld-naki-btn">鳴きなし</button><button class="meld-del">✕</button></div><div class="meld-slot"><div class="meld-slot-label">面子2（3枚）</div><div class="meld-tiles"><div class="tile-empty"></div><div class="tile-empty"></div><div class="tile-empty"></div></div><button class="meld-naki-btn">鳴きなし</button><button class="meld-del">✕</button></div><div class="meld-slot"><div class="meld-slot-label">面子3（3枚）</div><div class="meld-tiles"><div class="tile-empty"></div><div class="tile-empty"></div><div class="tile-empty"></div></div><button class="meld-naki-btn">鳴きなし</button><button class="meld-del">✕</button></div><div class="meld-slot"><div class="meld-slot-label">面子4（3枚）</div><div class="meld-tiles"><div class="tile-empty"></div><div class="tile-empty"></div><div class="tile-empty"></div></div><button class="meld-naki-btn">鳴きなし</button><button class="meld-del">✕</button></div><div class="meld-slot jantai-slot"><div class="meld-slot-label">雀頭（2枚）</div><div class="meld-tiles"><div class="tile-empty"></div><div class="tile-empty"></div></div></div></div>
+    <button onclick="addMentsu()" style="font-size:12px;padding:5px 14px;border-radius:7px;border:0.5px solid rgba(255,255,255,0.18);background:transparent;color:var(--text-mid);cursor:pointer;font-family:&#39;Noto Sans JP&#39;,sans-serif;margin-right:6px;">＋ 面子を追加</button>
   </div>
-  <div class="sec">
-    <div class="sec-title">あがり条件</div>
-    <div class="row"><span class="lbl">あがり方</span>
-      <button class="rbtn on" id="btn-tsumo" onclick="setTsumo(true)">ツモ</button>
-      <button class="rbtn" id="btn-ron" onclick="setTsumo(false)">ロン</button>
-    </div>
-    <div class="row"><span class="lbl">自風</span><div id="jikaze-group" style="display:flex;gap:6px;flex-wrap:wrap"></div></div>
-    <div class="row"><span class="lbl">場風</span><div id="bakaze-group" style="display:flex;gap:6px;flex-wrap:wrap"></div></div>
-    <div class="row" style="margin-top:6px">
-      <span class="lbl" style="width:100%;min-width:unset;margin-bottom:6px">役・特殊条件</span>
-      <div style="display:flex;flex-wrap:wrap;gap:6px" id="chip-wrap"></div>
-    </div>
-  </div>
-  <button class="calc-btn" onclick="calculate()">点数を計算する</button>
-  <div class="result-sec" id="result-sec">
-    <div class="sec-title">計算結果</div>
-    <div class="result-score">
-      <div class="score-num" id="res-score">—</div>
-      <div class="score-sub" id="res-label"></div>
-    </div>
-    <div class="yaku-wrap" id="res-yaku"></div>
-    <div class="breakdown" id="res-breakdown"></div>
+  <!-- 七対子・国士（自由入力） -->
+  <div id="free-input" style="display:none;">
+    <div class="free-tiles" id="free-tiles"></div>
+    <div class="free-count" id="free-count">0 / 13枚</div>
   </div>
 </div>
+
+<!-- ④ あがり方（常時表示）＋待ち（通常形のみ） -->
+<div class="sec">
+  <div class="sec-title" id="agari-sec-title">④ あがり方・待ちの種類</div>
+  <!-- ツモ/ロンは常に表示 -->
+  <div class="row" style="margin-bottom:0;">
+    <span class="lbl">あがり方</span>
+    <button class="rbtn on" id="btn-tsumo" onclick="setTsumo(true)">ツモ</button>
+    <button class="rbtn" id="btn-ron" onclick="setTsumo(false)">ロン</button>
+  </div>
+  <!-- 待ち選択は通常形のみ -->
+  <div id="agari-detail">
+    <div style="margin-top:12px;">
+      <div style="font-size:12px;color:var(--text-mid);margin-bottom:6px;">待ちの種類（符計算に影響します）</div>
+      <div class="machi-wrap">
+        <button class="machi-btn on" onclick="setMachi(&#39;ryamen&#39;)" data-machi="ryamen">両面待ち +0符</button>
+        <button class="machi-btn" onclick="setMachi(&#39;shanpon&#39;)" data-machi="shanpon">シャンポン待ち +0符</button>
+        <button class="machi-btn" onclick="setMachi(&#39;kanchan&#39;)" data-machi="kanchan">カンチャン待ち +2符</button>
+        <button class="machi-btn" onclick="setMachi(&#39;penchan&#39;)" data-machi="penchan">ペンチャン待ち +2符</button>
+        <button class="machi-btn" onclick="setMachi(&#39;tanki&#39;)" data-machi="tanki">単騎待ち +2符</button>
+      </div>
+    </div>
+  </div>
+  <!-- 七対子モード時の注記 -->
+  <div id="chiitoi-agari-note" style="display:none;margin-top:10px;font-size:12px;color:var(--text-dim);">
+    七対子は25符固定のため、待ちの種類の入力は不要です。
+  </div>
+</div>
+<!-- ⑤ 場況 -->
+<div class="sec">
+  <div class="sec-title">⑤ 場況・役</div>
+  <div class="row"><span class="lbl">自風</span><div id="jikaze-group" style="display:flex;gap:6px;flex-wrap:wrap;"><button class="rbtn on" data-val="1">東</button><button class="rbtn" data-val="2">南</button><button class="rbtn" data-val="3">西</button><button class="rbtn" data-val="4">北</button></div></div>
+  <div class="row"><span class="lbl">場風</span><div id="bakaze-group" style="display:flex;gap:6px;flex-wrap:wrap;"><button class="rbtn on" data-val="1">東</button><button class="rbtn" data-val="2">南</button><button class="rbtn" data-val="3">西</button><button class="rbtn" data-val="4">北</button></div></div>
+  <div class="row">
+    <span class="lbl">特殊役</span>
+    <button class="chip" id="chip-riichi" onclick="toggleChip(&#39;riichi&#39;)">立直</button>
+    <button class="chip" id="chip-ippatsu" onclick="toggleChip(&#39;ippatsu&#39;)">一発</button>
+    <button class="chip" id="chip-dbl-riichi" onclick="toggleChip(&#39;dbl-riichi&#39;)">ダブル立直</button>
+    <button class="chip" id="chip-haitei" onclick="toggleChip(&#39;haitei&#39;)">海底/河底</button>
+    <button class="chip" id="chip-rinshan" onclick="toggleChip(&#39;rinshan&#39;)">嶺上開花</button>
+  </div>
+  <div class="row">
+    <span class="lbl" style="color:rgba(220,100,80,0.8);">役満</span>
+    <button class="chip" id="chip-yakuman" onclick="toggleChip(&#39;yakuman&#39;)" style="border-color:rgba(192,57,43,0.3);color:rgba(220,100,80,0.7);">役満あがり</button>
+    <span style="font-size:11px;color:var(--text-dim);">選択すると符・翻計算をスキップして親48,000 / 子32,000点を表示</span>
+  </div>
+  <div class="row">
+    <span class="lbl">ドラ</span>
+    <input class="dora-input" type="number" id="dora-count" min="0" max="16" value="0"> 枚
+    <span style="font-size:11px;color:var(--text-dim);">（裏ドラ含む）</span>
+  </div>
+</div>
+
+<!-- ⑥ 自動判別役 -->
+<div class="sec">
+  <div class="sec-title">⑥ 判別された役（自動＋手動）</div>
+  <div class="hint">緑＝自動判別、金＝手動入力</div>
+  <div class="auto-yaku-wrap" id="auto-yaku">
+    <span style="font-size:12px;color:var(--text-dim);">手牌を入力すると自動判別されます</span>
+  </div>
+</div>
+
+<div class="err-msg" id="err-msg"></div>
+<button class="calc-btn" onclick="calculate()">点数を計算する</button>
+
+<div class="result-sec" id="result-sec">
+  <div class="sec-title">計算結果</div>
+  <div class="result-score">
+    <div class="score-num" id="res-score">—</div>
+    <div class="score-sub" id="res-label"></div>
+  </div>
+  <div class="yaku-wrap" id="res-yaku"></div>
+  <div class="breakdown" id="res-breakdown"></div>
+</div>
+</div>
+
 <script>
-// tiles.js — 共通の牌画像ユーティリティ
-// 全ページからこのファイルを読み込んで使う
-
-const TILE_IMG_BASE = 'img/tiles/';
-
-// keyからファイル名を返す
-// key例: 'man1','pin5','sou3','ton','nan','sya','pei','haku','hatu','tyun','back'
-function tileFile(key) {
-  return TILE_IMG_BASE + key + '.png';
+// ── tiles ──
+const TILE_IMG_BASE='img/tiles/';
+const TILE_LABEL={man1:'一',man2:'二',man3:'三',man4:'四',man5:'五',man6:'六',man7:'七',man8:'八',man9:'九',pin1:'①',pin2:'②',pin3:'③',pin4:'④',pin5:'⑤',pin6:'⑥',pin7:'⑦',pin8:'⑧',pin9:'⑨',sou1:'1s',sou2:'2s',sou3:'3s',sou4:'4s',sou5:'5s',sou6:'6s',sou7:'7s',sou8:'8s',sou9:'9s',ton:'東',nan:'南',sya:'西',pei:'北',haku:'白',hatu:'發',tyun:'中'};
+const SUIT_KEYS={man:['man1','man2','man3','man4','man5','man6','man7','man8','man9'],pin:['pin1','pin2','pin3','pin4','pin5','pin6','pin7','pin8','pin9'],sou:['sou1','sou2','sou3','sou4','sou5','sou6','sou7','sou8','sou9'],ji:['ton','nan','sya','pei','haku','hatu','tyun']};
+const JIHAI=new Set(['ton','nan','sya','pei','haku','hatu','tyun']);
+const SANGENHAI=new Set(['haku','hatu','tyun']);
+const YAOCHU=new Set(['man1','man9','pin1','pin9','sou1','sou9','ton','nan','sya','pei','haku','hatu','tyun']);
+function tileFile(k){return TILE_IMG_BASE+k+'.png';}
+function makeTileImg(key,w,h,yoko){
+  const img=document.createElement('img');
+  img.src=yoko?tileFile(key+'_yoko'):tileFile(key);
+  img.alt=TILE_LABEL[key]||key;
+  img.style.cssText='width:100%;height:100%;object-fit:cover;display:block;';
+  return img;
 }
 
-// 牌定義（suit, index→key）
-const SUIT_KEYS = {
-  man: ['man1','man2','man3','man4','man5','man6','man7','man8','man9'],
-  pin: ['pin1','pin2','pin3','pin4','pin5','pin6','pin7','pin8','pin9'],
-  sou: ['sou1','sou2','sou3','sou4','sou5','sou6','sou7','sou8','sou9'],
-  ji:  ['ton','nan','sya','pei','haku','hatu','tyun']
+// ── State ──
+let inputMode='normal'; // 'normal'|'chiitoi'
+// 通常形: melds = [{tiles:[], naki:bool, type:'mentsu'|'jantai'}]
+let melds=[];
+let activeMeldIdx=0;
+// 自由入力(七対子・国士)
+let freeTiles=[];
+// 共通
+let isTsumo=true;
+let machiType='ryamen'; // 'ryamen'|'shanpon'|'kanchan'|'penchan'|'tanki'
+let jikaze=1, bakaze=1;
+const chips={'riichi':false,'ippatsu':false,'dbl-riichi':false,'haitei':false,'rinshan':false,'yakuman':false};
+
+// ── モード ──
+const MODE_HINTS={
+  normal:'面子4組＋雀頭1組の通常形。パレットから牌を選んでアクティブ（青枠）な面子スロットに追加されます。',
+  chiitoi:'七対子は7種類の対子のみ。好きに14枚入力してください。',
 };
-
-// 表示ラベル（フォールバック用）
-const TILE_LABEL = {
-  man1:'一',man2:'二',man3:'三',man4:'四',man5:'五',man6:'六',man7:'七',man8:'八',man9:'九',
-  pin1:'①',pin2:'②',pin3:'③',pin4:'④',pin5:'⑤',pin6:'⑥',pin7:'⑦',pin8:'⑧',pin9:'⑨',
-  sou1:'1s',sou2:'2s',sou3:'3s',sou4:'4s',sou5:'5s',sou6:'6s',sou7:'7s',sou8:'8s',sou9:'9s',
-  ton:'東',nan:'南',sya:'西',pei:'北',haku:'白',hatu:'發',tyun:'中',back:'？'
-};
-
-// aka(赤)バリアント
-const AKA_KEYS = { man5:'man5_aka', pin5:'pin5_aka', sou5:'sou5_aka' };
-
-/**
- * <div class="tile-wrap"> を生成して返す
- * @param {string} key   牌キー
- * @param {boolean} aka  赤牌かどうか
- * @param {boolean} yoko 横向きかどうか
- * @param {string} extraClass 追加クラス
- */
-function makeTileEl(key, aka=false, yoko=false, extraClass='') {
-  const wrap = document.createElement('div');
-  let cls = 'tile-wrap';
-  if (yoko) cls += ' tile-yoko';
-  if (extraClass) cls += ' ' + extraClass;
-  wrap.className = cls;
-  wrap.dataset.key = key;
-
-  const img = document.createElement('img');
-  let fileKey = key;
-  if (aka && AKA_KEYS[key]) fileKey = AKA_KEYS[key];
-  if (yoko) fileKey = fileKey + '_yoko';
-  img.src = tileFile(fileKey);
-  img.alt = TILE_LABEL[key] || key;
-  // 画像がなければフォールバックでラベル表示
-  wrap.appendChild(img);
-  return wrap;
+function setMode(m){
+  inputMode=m;
+  document.querySelectorAll('.mode-tab').forEach((b,i)=>{
+    b.className='mode-tab'+(['normal','chiitoi'][i]===m?' on':'');
+  });
+  document.getElementById('mode-hint').textContent=MODE_HINTS[m];
+  document.getElementById('normal-input').style.display=m==='normal'?'block':'none';
+  document.getElementById('free-input').style.display=m!=='normal'?'block':'none';
+  document.getElementById('hand-sec-title').textContent=
+    m==='normal'?'③ 面子入力（アクティブな枠に牌が追加されます）':'③ 七対子の牌入力（14枚）';
+  freeTiles=[];
+  renderFreeTiles();
+  // 七対子モードではあがり牌・待ち入力を非表示
+  const isChiitoi=m==='chiitoi';
+  document.getElementById('agari-detail').style.display=isChiitoi?'none':'block';
+  document.getElementById('chiitoi-agari-note').style.display=isChiitoi?'block':'none';
+  document.getElementById('agari-sec-title').textContent=
+    isChiitoi?'④ あがり方':'④ あがり方・待ちの種類';
+  autoDetect();
 }
 
-</script>
-<script>
-const SUITS_DEF = {
-  man: { keys:['man1','man2','man3','man4','man5','man6','man7','man8','man9'] },
-  pin: { keys:['pin1','pin2','pin3','pin4','pin5','pin6','pin7','pin8','pin9'] },
-  sou: { keys:['sou1','sou2','sou3','sou4','sou5','sou6','sou7','sou8','sou9'] },
-  ji:  { keys:['ton','nan','sya','pei','haku','hatu','tyun'] }
-};
-
-let hand=[], isTsumo=true, jikaze=1, bakaze=1;
-const CHIPS=[
-  {key:'riichi',label:'立直',type:'normal'},{key:'ippatsu',label:'一発',type:'normal'},
-  {key:'tanyao',label:'断么九',type:'normal'},{key:'pinfu',label:'平和',type:'normal'},
-  {key:'iipeiko',label:'一盃口',type:'normal'},{key:'haku',label:'白',type:'normal'},
-  {key:'hatsu',label:'發',type:'normal'},{key:'chun',label:'中',type:'normal'},
-  {key:'menzen',label:'門前清',type:'normal'},{key:'chiitoitsu',label:'七対子',type:'danger'},
-];
-let chipState={};
-CHIPS.forEach(c=>chipState[c.key]=false);
-
-function buildPal(id,suit){
+// ── パレット ──
+function buildPal(id, suit, cb){
   const el=document.getElementById(id);
-  SUITS_DEF[suit].keys.forEach(k=>{
-    const w=makeTileEl(k,false,false,'pal-tile');
-    w.onclick=()=>addTile({suit,key:k});
-    el.appendChild(w);
+  el.innerHTML='';
+  SUIT_KEYS[suit].forEach(k=>{
+    const d=document.createElement('div'); d.className='pal-tile';
+    d.appendChild(makeTileImg(k,32,44,false));
+    d.onclick=()=>cb(k);
+    el.appendChild(d);
   });
 }
-['man','pin','sou','ji'].forEach(s=>buildPal('pal-'+s,s));
+function buildAllPals(cb){
+  buildPal('pal-man','man',cb); buildPal('pal-pin','pin',cb);
+  buildPal('pal-sou','sou',cb); buildPal('pal-ji','ji',cb);
+}
 
-['東','南','西','北'].forEach((w,i)=>{
-  ['jikaze-group','bakaze-group'].forEach((gid,gi)=>{
-    const b=document.createElement('button');
-    b.className='rbtn'+(i===0?' on':'');
-    b.dataset.val=i+1; b.textContent=w;
-    b.onclick=()=>{if(gi===0)setJikaze(i+1);else setBakaze(i+1);};
-    document.getElementById(gid).appendChild(b);
-  });
-});
+// ── 通常形 面子管理 ──
+function initNormalMelds(){
+  melds=[];
+  for(let i=0;i<4;i++) melds.push({tiles:[],naki:false,type:'mentsu'});
+  melds.push({tiles:[],naki:false,type:'jantai'}); // 雀頭は最後に固定
+  activeMeldIdx=0;
+  renderMelds();
+}
+function addMentsu(){
+  // 雀頭の前に面子を挿入
+  const jIdx=melds.findIndex(m=>m.type==='jantai');
+  melds.splice(jIdx,0,{tiles:[],naki:false,type:'mentsu'});
+  activeMeldIdx=jIdx;
+  renderMelds();
+}
+function renderMelds(){
+  const el=document.getElementById('meld-builder');
+  el.innerHTML='';
+  melds.forEach((m,i)=>{
+    const isJantai=m.type==='jantai';
+    const maxT=isJantai?2:3;
+    const complete=m.tiles.length===maxT;
+    const isActive=i===activeMeldIdx;
+    const slot=document.createElement('div');
+    slot.className='meld-slot'
+      +(isJantai?' jantai-slot':'')
+      +(isActive?' active':'')
+      +(complete&&!isActive?' complete':'');
+    slot.onclick=()=>{activeMeldIdx=i;renderMelds();};
 
-const cw=document.getElementById('chip-wrap');
-CHIPS.forEach(c=>{
-  const b=document.createElement('button');
-  b.className='chip'; b.id='chip-'+c.key; b.textContent=c.label;
-  b.onclick=()=>toggleChip(c.key,c.type);
-  cw.appendChild(b);
-});
+    const lbl=document.createElement('div');
+    lbl.className='meld-slot-label';
+    lbl.textContent=isJantai?'雀頭（2枚）':('面子'+(i+1)+'（3枚）');
+    slot.appendChild(lbl);
 
-function addTile(tile){
-  const err=document.getElementById('err-msg');
-  if(hand.length>=14){err.textContent='手牌は最大14枚です';return;}
-  const cnt=hand.filter(t=>t.key===tile.key).length;
-  if(cnt>=4){err.textContent=TILE_LABEL[tile.key]+'は4枚までです';return;}
-  err.textContent='';
-  hand.push({...tile});
-  renderHand();
-}
-function removeTile(i){hand.splice(i,1);renderHand();}
-function renderHand(){
-  const area=document.getElementById('hand-area');
-  document.getElementById('hand-count').textContent='（'+hand.length+' / 14枚）';
-  if(!hand.length){area.innerHTML='<span class="hand-placeholder">牌をクリックして追加</span>';return;}
-  area.innerHTML='';
-  const order={man:0,pin:1,sou:2,ji:3};
-  const SUIT_OF={};
-  Object.entries(SUITS_DEF).forEach(([s,d])=>d.keys.forEach((k,i)=>SUIT_OF[k]={suit:s,idx:i}));
-  const sorted=hand.map((t,i)=>({...t,origIdx:i})).sort((a,b)=>{
-    const sa=SUIT_OF[a.key]||{suit:'ji',idx:99}, sb=SUIT_OF[b.key]||{suit:'ji',idx:99};
-    return (order[sa.suit]-order[sb.suit])||sa.idx-sb.idx;
+    const tileRow=document.createElement('div');
+    tileRow.className='meld-tiles';
+    m.tiles.forEach((k,ti)=>{
+      const yoko=m.naki&&ti===0;
+      const d=document.createElement('div');
+      d.className='m-tile'+(yoko?' yoko':'');
+      d.appendChild(makeTileImg(k,28,38,yoko));
+      d.title='クリックで削除';
+      d.onclick=e=>{e.stopPropagation();m.tiles.splice(ti,1);renderMelds();autoDetect();};
+      tileRow.appendChild(d);
+    });
+    for(let s=m.tiles.length;s<maxT;s++){
+      const emp=document.createElement('div'); emp.className='tile-empty'; tileRow.appendChild(emp);
+    }
+    slot.appendChild(tileRow);
+
+    if(!isJantai){
+      const nb=document.createElement('button');
+      nb.className='meld-naki-btn'+(m.naki?' on':'');
+      nb.textContent=m.naki?'鳴きあり':'鳴きなし';
+      nb.onclick=e=>{e.stopPropagation();m.naki=!m.naki;renderMelds();autoDetect();};
+      slot.appendChild(nb);
+    }
+    // 削除ボタン（雀頭は削除不可）
+    if(!isJantai){
+      const del=document.createElement('button'); del.className='meld-del'; del.textContent='✕';
+      del.onclick=e=>{e.stopPropagation();melds.splice(i,1);if(activeMeldIdx>=melds.length)activeMeldIdx=melds.length-1;renderMelds();autoDetect();};
+      slot.appendChild(del);
+    }
+    el.appendChild(slot);
   });
-  sorted.forEach(t=>{
-    const w=makeTileEl(t.key,false,false,'hand-tile');
-    w.title='クリックで削除';
-    w.onclick=()=>removeTile(t.origIdx);
-    area.appendChild(w);
+}
+function addTileToMeld(key){
+  if(activeMeldIdx<0||activeMeldIdx>=melds.length) return;
+  const m=melds[activeMeldIdx];
+  const max=m.type==='jantai'?2:3;
+  if(m.tiles.length>=max){
+    // 次の未完成スロットへ
+    let next=-1;
+    for(let i=activeMeldIdx+1;i<melds.length;i++){
+      if(melds[i].tiles.length<(melds[i].type==='jantai'?2:3)){next=i;break;}
+    }
+    if(next===-1) for(let i=0;i<activeMeldIdx;i++){
+      if(melds[i].tiles.length<(melds[i].type==='jantai'?2:3)){next=i;break;}
+    }
+    if(next===-1) return;
+    activeMeldIdx=next;
+  }
+  const m2=melds[activeMeldIdx];
+  const max2=m2.type==='jantai'?2:3;
+  if(m2.tiles.length<max2){
+    m2.tiles.push(key);
+    if(m2.tiles.length===max2){
+      // 完成→次へ
+      let next=-1;
+      for(let i=activeMeldIdx+1;i<melds.length;i++){
+        if(melds[i].tiles.length<(melds[i].type==='jantai'?2:3)){next=i;break;}
+      }
+      if(next!==-1) activeMeldIdx=next;
+    }
+    renderMelds();
+    autoDetect();
+  }
+}
+
+// ── 自由入力（七対子・国士） ──
+function addFree(key){
+  const max=14;
+
+  if(freeTiles.length>=max) return;
+  freeTiles.push(key);
+  renderFreeTiles();
+  autoDetect();
+}
+function renderFreeTiles(){
+  const el=document.getElementById('free-tiles');
+  el.innerHTML='';
+  freeTiles.forEach((k,i)=>{
+    const d=document.createElement('div'); d.className='free-tile';
+    d.appendChild(makeTileImg(k,32,44,false));
+    d.title='クリックで削除';
+    d.onclick=()=>{freeTiles.splice(i,1);renderFreeTiles();autoDetect();};
+    el.appendChild(d);
+  });
+  document.getElementById('free-count').textContent=freeTiles.length+' / 14枚';
+}
+
+// ── 場況 ──
+function buildWindButtons(){
+  ['jikaze-group','bakaze-group'].forEach(gid=>{
+    document.getElementById(gid).innerHTML='';
+  });
+  ['東','南','西','北'].forEach((w,i)=>{
+    ['jikaze-group','bakaze-group'].forEach((gid,gi)=>{
+      const b=document.createElement('button');
+      b.className='rbtn'+(i===0?' on':''); b.dataset.val=i+1; b.textContent=w;
+      b.onclick=()=>{
+        if(gi===0){jikaze=i+1;document.querySelectorAll('#jikaze-group .rbtn').forEach(x=>x.className='rbtn'+(parseInt(x.dataset.val)===i+1?' on':''));}
+        else{bakaze=i+1;document.querySelectorAll('#bakaze-group .rbtn').forEach(x=>x.className='rbtn'+(parseInt(x.dataset.val)===i+1?' on':''));}
+        autoDetect();
+      };
+      document.getElementById(gid).appendChild(b);
+    });
   });
 }
-function setTsumo(v){isTsumo=v;document.getElementById('btn-tsumo').className='rbtn'+(v?' on':'');document.getElementById('btn-ron').className='rbtn'+(!v?' on':'');}
-function setJikaze(v){jikaze=v;document.querySelectorAll('#jikaze-group .rbtn').forEach(b=>b.className='rbtn'+(parseInt(b.dataset.val)===v?' on':''));}
-function setBakaze(v){bakaze=v;document.querySelectorAll('#bakaze-group .rbtn').forEach(b=>b.className='rbtn'+(parseInt(b.dataset.val)===v?' on':''));}
-function toggleChip(key,type){
-  chipState[key]=!chipState[key];
-  const el=document.getElementById('chip-'+key);
-  el.className=type==='danger'?'chip'+(chipState[key]?' danger-on':''):'chip'+(chipState[key]?' on':'');
+function setTsumo(v){
+  isTsumo=v;
+  document.getElementById('btn-tsumo').className='rbtn'+(v?' on':'');
+  document.getElementById('btn-ron').className='rbtn'+(!v?' on':'');
+  autoDetect();
 }
-function calcScore(han,fu,isOya,isTsumo){
+function setMachi(m){
+  machiType=m;
+  document.querySelectorAll('.machi-btn').forEach(b=>{
+    b.className='machi-btn'+(b.onclick.toString().includes("'"+m+"'")||b.onclick.toString().includes('"'+m+'"')?' on':'');
+  });
+  autoDetect();
+}
+function toggleChip(k){
+  chips[k]=!chips[k];
+  document.getElementById('chip-'+k).className='chip'+(chips[k]?' on':'');
+  autoDetect();
+}
+
+// ── 役自動判別 ──
+function getSuit(k){if(k.startsWith('man'))return'man';if(k.startsWith('pin'))return'pin';if(k.startsWith('sou'))return'sou';return'ji';}
+function getNum(k){return parseInt(k.replace(/[a-z]+/,''));}
+function isSyntouArr(tiles){
+  if(tiles.length!==3)return false;
+  const s=getSuit(tiles[0]);
+  if(s==='ji')return false;
+  if(!tiles.every(t=>getSuit(t)===s))return false;
+  const ns=tiles.map(getNum).sort((a,b)=>a-b);
+  return ns[1]===ns[0]+1&&ns[2]===ns[1]+1;
+}
+function isKotsuArr(tiles){return tiles.length===3&&tiles.every(t=>t===tiles[0]);}
+
+function autoDetect(){
+  const windKeys=['ton','nan','sya','pei'];
+  const jikazeTile=windKeys[jikaze-1];
+  const bakazeTile=windKeys[bakaze-1];
+
+  let allTiles=[];
+  if(inputMode==='normal'){
+    allTiles=melds.flatMap(m=>m.tiles);
+  } else {
+    allTiles=[...freeTiles];
+  }
+
+  const detected=[];
+
+  if(allTiles.length===0){
+    document.getElementById('auto-yaku').innerHTML='<span style="font-size:12px;color:var(--text-dim);">手牌を入力すると自動判別されます</span>';
+    addManualYaku([],detected);
+    return detected;
+  }
+
+  const jiTiles=allTiles.filter(t=>JIHAI.has(t));
+  const numTiles=allTiles.filter(t=>!JIHAI.has(t));
+
+  if(inputMode==='chiitoi'){
+    detected.push({name:'七対子',han:2,auto:true});
+    // 七対子でも複合可能な役を判定
+    // タンヤオ
+    if(allTiles.length>0&&allTiles.every(t=>!YAOCHU.has(t))) detected.push({name:'断么九',han:1,auto:true});
+    // 清一色・混一色
+    const chiSuits=[...new Set(numTiles.map(getSuit))];
+    if(numTiles.length>0&&chiSuits.length===1&&jiTiles.length===0) detected.push({name:'清一色',han:6,auto:true});
+    else if(numTiles.length>0&&chiSuits.length===1&&jiTiles.length>0) detected.push({name:'混一色',han:3,auto:true});
+    // 字一色
+    if(allTiles.every(t=>JIHAI.has(t))) detected.push({name:'字一色',han:13,auto:true});
+    // 混老頭（1・9・字牌のみ）
+    if(allTiles.every(t=>YAOCHU.has(t))&&jiTiles.length>0&&numTiles.length>0) detected.push({name:'混老頭',han:2,auto:true});
+  } else {
+    // 通常形の役判定
+    const mentsuList=melds.filter(m=>m.type==='mentsu'&&m.tiles.length===3);
+    const jantai=melds.find(m=>m.type==='jantai');
+    const janKey=jantai&&jantai.tiles.length===2?jantai.tiles[0]:null;
+    const allAnkiNaki=melds.every(m=>!m.naki);
+
+    // タンヤオ
+    if(allTiles.length>0&&allTiles.every(t=>!YAOCHU.has(t))) detected.push({name:'断么九',han:1,auto:true});
+
+    // 役牌
+    mentsuList.forEach(m=>{
+      if(isKotsuArr(m.tiles)){
+        const t=m.tiles[0];
+        if(SANGENHAI.has(t)) detected.push({name:'役牌（'+TILE_LABEL[t]+'）',han:1,auto:true});
+        if(t===jikazeTile&&t===bakazeTile) detected.push({name:'ダブ'+TILE_LABEL[t]+'（2翻）',han:2,auto:true});
+        else if(t===jikazeTile) detected.push({name:'自風（'+TILE_LABEL[t]+'）',han:1,auto:true});
+        else if(t===bakazeTile) detected.push({name:'場風（'+TILE_LABEL[t]+'）',han:1,auto:true});
+      }
+    });
+
+    // 対々和
+    if(mentsuList.length===4&&mentsuList.every(m=>isKotsuArr(m.tiles))) detected.push({name:'対々和',han:2,auto:true});
+
+    // 三暗刻
+    const anko=mentsuList.filter(m=>isKotsuArr(m.tiles)&&!m.naki);
+    if(anko.length===3) detected.push({name:'三暗刻',han:2,auto:true});
+    if(anko.length===4) detected.push({name:'四暗刻',han:13,auto:true});
+
+    // 清一色・混一色
+    const suits=[...new Set(numTiles.map(getSuit))];
+    if(numTiles.length>0&&suits.length===1&&jiTiles.length===0) detected.push({name:'清一色',han:6,auto:true});
+    else if(numTiles.length>0&&suits.length===1&&jiTiles.length>0) detected.push({name:'混一色',han:3,auto:true});
+
+    // 混老頭・清老頭
+    const chiro=['man1','man9','pin1','pin9','sou1','sou9'];
+    if(allTiles.every(t=>YAOCHU.has(t))){
+      if(jiTiles.length>0) detected.push({name:'混老頭',han:2,auto:true});
+      else if(allTiles.every(t=>chiro.includes(t))) detected.push({name:'清老頭',han:13,auto:true});
+    }
+
+    // 大三元
+    if(['haku','hatu','tyun'].every(t=>mentsuList.some(m=>isKotsuArr(m.tiles)&&m.tiles[0]===t))) detected.push({name:'大三元',han:13,auto:true});
+
+    // 小三元
+    const sgKotsu=['haku','hatu','tyun'].filter(t=>mentsuList.some(m=>isKotsuArr(m.tiles)&&m.tiles[0]===t)).length;
+    const sgPair=janKey&&['haku','hatu','tyun'].includes(janKey)?1:0;
+    if(sgKotsu===2&&sgPair===1) detected.push({name:'小三元',han:2,auto:true});
+
+    // チャンタ・ジュンチャン
+    const allMelds=[...mentsuList];
+    if(jantai&&jantai.tiles.length===2) allMelds.push(jantai);
+    if(allMelds.length>=4&&allMelds.every(m=>m.tiles.some(t=>YAOCHU.has(t)))){
+      if(jiTiles.length>0) detected.push({name:'混全帯幺九',han:2,auto:true});
+      else detected.push({name:'純全帯幺九',han:3,auto:true});
+    }
+
+    // 三色同順
+    const synByStart={};
+    mentsuList.filter(m=>isSyntouArr(m.tiles)).forEach(m=>{
+      const s=getSuit(m.tiles[0]),n=Math.min(...m.tiles.map(getNum));
+      if(!synByStart[n])synByStart[n]={};synByStart[n][s]=true;
+    });
+    Object.values(synByStart).forEach(sv=>{if(sv.man&&sv.pin&&sv.sou)detected.push({name:'三色同順',han:2,auto:true});});
+
+    // 三色同刻
+    const koByNum={};
+    mentsuList.filter(m=>isKotsuArr(m.tiles)&&!JIHAI.has(m.tiles[0])).forEach(m=>{
+      const s=getSuit(m.tiles[0]),n=getNum(m.tiles[0]);
+      if(!koByNum[n])koByNum[n]={};koByNum[n][s]=true;
+    });
+    Object.values(koByNum).forEach(sv=>{if(sv.man&&sv.pin&&sv.sou)detected.push({name:'三色同刻',han:2,auto:true});});
+
+    // 一気通貫
+    ['man','pin','sou'].forEach(s=>{
+      const starts=mentsuList.filter(m=>isSyntouArr(m.tiles)&&getSuit(m.tiles[0])===s).map(m=>Math.min(...m.tiles.map(getNum))).sort();
+      if(starts.includes(1)&&starts.includes(4)&&starts.includes(7)) detected.push({name:'一気通貫',han:2,auto:true});
+    });
+
+    // 平和
+    const janIsRole=janKey&&(SANGENHAI.has(janKey)||janKey===jikazeTile||janKey===bakazeTile);
+    // 平和：全条件＋両面待ち選択時のみ成立
+    if(allAnkiNaki&&mentsuList.length===4&&mentsuList.every(m=>isSyntouArr(m.tiles))&&!janIsRole){
+      if(machiType==='ryamen') detected.push({name:'平和',han:1,auto:true});
+      // 両面以外の場合は平和不成立（表示しない）
+    }
+
+    // 一盃口・二盃口
+    if(allAnkiNaki){
+      const synStrs=mentsuList.filter(m=>isSyntouArr(m.tiles)).map(m=>m.tiles.slice().sort().join(','));
+      const cnt={};synStrs.forEach(s=>cnt[s]=(cnt[s]||0)+1);
+      const pairs=Object.values(cnt).filter(v=>v>=2).length;
+      if(pairs>=2) detected.push({name:'二盃口',han:3,auto:true});
+      else if(pairs===1) detected.push({name:'一盃口',han:1,auto:true});
+    }
+
+    // 門前清自摸和
+    if(isTsumo&&allAnkiNaki) detected.push({name:'門前清自摸和',han:1,auto:true});
+  }
+
+  addManualYaku(allTiles,detected);
+  return detected;
+}
+
+function addManualYaku(allTiles,detected){
+  if(chips.riichi) detected.push({name:'立直',han:1,auto:false});
+  if(chips['dbl-riichi']) detected.push({name:'ダブル立直',han:2,auto:false});
+  if(chips.ippatsu) detected.push({name:'一発',han:1,auto:false});
+  if(chips.haitei) detected.push({name:isTsumo?'海底撈月':'河底撈魚',han:1,auto:false});
+  if(chips.rinshan) detected.push({name:'嶺上開花',han:1,auto:false});
+  const doraCount=parseInt(document.getElementById('dora-count').value)||0;
+  if(doraCount>0) detected.push({name:'ドラ'+doraCount,han:doraCount,auto:false});
+
+  const wrap=document.getElementById('auto-yaku');
+  if(detected.length===0){
+    wrap.innerHTML='<span style="font-size:12px;color:var(--text-dim);">役が検出されませんでした</span>';
+  } else {
+    wrap.innerHTML=detected.map(y=>`<span class="auto-tag${y.auto?'':' manual'}">${y.name}${y.han>0&&y.han<13?' '+y.han+'翻':y.han===13?'【役満】':''}</span>`).join('');
+  }
+}
+
+// ── 符計算 ──
+function calcFu(){
+  if(inputMode==='chiitoi') return 25;
+  const windKeys=['ton','nan','sya','pei'];
+  const jikazeTile=windKeys[jikaze-1];
+  const bakazeTile=windKeys[bakaze-1];
+  const mentsuList=melds.filter(m=>m.type==='mentsu'&&m.tiles.length===3);
+  const jantai=melds.find(m=>m.type==='jantai');
+  const janKey=jantai&&jantai.tiles.length===2?jantai.tiles[0]:null;
+  const allAnkiNaki=melds.every(m=>!m.naki);
+
+  // 平和ロン=30符固定、平和ツモ=20符固定
+  const janIsRole=janKey&&(SANGENHAI.has(janKey)||janKey===jikazeTile||janKey===bakazeTile);
+  const allSyn=mentsuList.length===4&&mentsuList.every(m=>isSyntouArr(m.tiles));
+  if(allAnkiNaki&&allSyn&&!janIsRole&&machiType==='ryamen'){
+    return isTsumo?20:30;
+  }
+
+  let fu=20;
+  // あがり方
+  if(!isTsumo) fu+=10; else fu+=2;
+
+  // 各面子
+  mentsuList.forEach(m=>{
+    if(!isKotsuArr(m.tiles)) return; // 順子=0
+    const isYao=YAOCHU.has(m.tiles[0]);
+    const base=isYao?8:4; // 暗刻基本
+    fu+=m.naki?base/2:base; // 明刻=÷2
+  });
+
+  // 雀頭
+  if(janKey){
+    if(SANGENHAI.has(janKey)) fu+=2;
+    if(janKey===jikazeTile) fu+=2;
+    if(janKey===bakazeTile) fu+=2;
+  }
+
+  // 待ち
+  if(machiType==='kanchan'||machiType==='penchan'||machiType==='tanki') fu+=2;
+
+  return Math.ceil(fu/10)*10;
+}
+
+// ── 点数計算 ──
+function ceil100(n){return Math.ceil(n/100)*100;}
+function calcScore(fu,han,isOya,isTsumo){
   if(han>=13)return{score:isOya?48000:32000,label:'役満'};
   if(han>=11)return{score:isOya?36000:24000,label:'三倍満'};
   if(han>=8) return{score:isOya?24000:16000,label:'倍満'};
   if(han>=6) return{score:isOya?18000:12000,label:'跳満'};
   if(han>=5||(han===4&&fu>=30)||(han===3&&fu>=70))return{score:isOya?12000:8000,label:'満貫'};
   const base=fu*Math.pow(2,han+2);
-  let score,label;
   if(isTsumo){
-    if(isOya){const p=Math.ceil(base*2/100)*100;score=p*3;label='ツモ（全員 '+p.toLocaleString()+' 点）';}
-    else{const ko=Math.ceil(base/100)*100,oya=Math.ceil(base*2/100)*100;score=ko*2+oya;label='ツモ（子 '+ko.toLocaleString()+'・親 '+oya.toLocaleString()+'）';}
-  }else{score=isOya?Math.ceil(base*6/100)*100:Math.ceil(base*4/100)*100;label='ロン';}
-  return{score,label};
+    if(isOya){const p=ceil100(base*2);return{score:p*3,label:`ツモ ${p.toLocaleString()}点オール`};}
+    const ko=ceil100(base),oya=ceil100(base*2);
+    return{score:ko*2+oya,label:`ツモ 子${ko.toLocaleString()} 親${oya.toLocaleString()}`};
+  }
+  return{score:isOya?ceil100(base*6):ceil100(base*4),label:'ロン'};
 }
+
 function calculate(){
   const err=document.getElementById('err-msg');
-  if(hand.length<13){err.textContent='最低13枚必要です';return;}
   err.textContent='';
-  let han=0,fu=30,yaku=[];
-  if(chipState.chiitoitsu){han+=2;fu=25;yaku.push({name:'七対子',han:2});}
-  else{
-    if(chipState.tanyao){han+=1;yaku.push({name:'断么九',han:1});}
-    if(chipState.pinfu){han+=1;fu=20;yaku.push({name:'平和',han:1});}
-    if(chipState.iipeiko){han+=1;yaku.push({name:'一盃口',han:1});}
-    if(chipState.haku){han+=1;yaku.push({name:'白',han:1});}
-    if(chipState.hatsu){han+=1;yaku.push({name:'發',han:1});}
-    if(chipState.chun){han+=1;yaku.push({name:'中',han:1});}
+  // 役満チップが選択されている場合は符・翻計算をスキップ
+  if(chips.yakuman){
+    const isOya=jikaze===bakaze;
+    const score=isOya?48000:32000;
+    const sec=document.getElementById('result-sec');
+    sec.style.display='block';
+    document.getElementById('res-score').textContent=score.toLocaleString()+'点';
+    document.getElementById('res-label').textContent='役満 '+(isOya?'（親）':'（子）');
+    document.getElementById('res-yaku').innerHTML='<span class="yaku-tag">役満</span>';
+    document.getElementById('res-breakdown').innerHTML=[
+      ['点数',score.toLocaleString()+'点'],
+      ['親/子',isOya?'親':'子'],
+    ].map(([k,v])=>'<div class="bd-row"><span class="bd-key">'+k+'</span><span class="bd-val">'+v+'</span></div>').join('');
+    sec.scrollIntoView({behavior:'smooth',block:'nearest'});
+    return;
   }
-  if(chipState.riichi){han+=1;yaku.push({name:'立直',han:1});}
-  if(chipState.ippatsu){han+=1;yaku.push({name:'一発',han:1});}
-  if(isTsumo&&!chipState.pinfu&&!chipState.chiitoitsu){han+=1;yaku.push({name:'門前清自摸和',han:1});}
-  if(!yaku.length){err.textContent='役がありません';return;}
+  const detected=autoDetect()||[];
+  let han=detected.filter(y=>y.han>0).reduce((s,y)=>s+y.han,0);
+  const hasYakuman=detected.some(y=>y.han>=13);
+  if(hasYakuman) han=13;
+  if(han===0){err.textContent='役がありません。';return;}
+
+  const fu=calcFu();
   const isOya=jikaze===bakaze;
-  const{score,label}=calcScore(han,fu,isOya,isTsumo);
+  const {score,label}=calcScore(fu,han,isOya,isTsumo);
+
   const sec=document.getElementById('result-sec');
   sec.style.display='block';
   document.getElementById('res-score').textContent=score.toLocaleString()+'点';
   document.getElementById('res-label').textContent=label+(isOya?' （親）':' （子）');
-  document.getElementById('res-yaku').innerHTML=yaku.map(y=>'<span class="yaku-tag">'+y.name+' '+y.han+'翻</span>').join('');
+  document.getElementById('res-yaku').innerHTML=detected.filter(y=>y.han>0).map(y=>'<span class="yaku-tag">'+y.name+(y.han<13&&y.han>0?' '+y.han+'翻':'')+'</span>').join('');
   const winds=['東','南','西','北'];
-  document.getElementById('res-breakdown').innerHTML=[['符',fu+'符'],['翻',han+'翻'],['あがり方',isTsumo?'ツモ':'ロン'],['自風',winds[jikaze-1]],['場風',winds[bakaze-1]],['親/子',isOya?'親':'子']].map(([k,v])=>'<div class="bd-row"><span class="bd-key">'+k+'</span><span class="bd-val">'+v+'</span></div>').join('');
+  const machiLabel={'ryamen':'両面待ち','shanpon':'シャンポン','kanchan':'カンチャン','penchan':'ペンチャン','tanki':'単騎'};
+  document.getElementById('res-breakdown').innerHTML=[
+    ['符',fu+'符'],['翻',han+'翻'],
+    ['あがり方',isTsumo?'ツモ':'ロン'],
+    ['待ち',machiLabel[machiType]||'-'],
+    ['自風',winds[jikaze-1]],['場風',winds[bakaze-1]],['親/子',isOya?'親':'子'],
+  ].map(([k,v])=>'<div class="bd-row"><span class="bd-key">'+k+'</span><span class="bd-val">'+v+'</span></div>').join('');
   sec.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
+
+function resetAll(){
+  freeTiles=[];
+  document.getElementById('result-sec').style.display='none';
+  document.getElementById('err-msg').textContent='';
+  initNormalMelds();
+  renderFreeTiles();
+  document.getElementById('agari-detail').style.display='block';
+  document.getElementById('chiitoi-agari-note').style.display='none';
+  document.getElementById('agari-sec-title').textContent='④ あがり方・待ちの種類';
+  autoDetect();
+}
+
+// ── 初期化 ──
+buildAllPals(k=>{
+  if(inputMode==='normal') addTileToMeld(k);
+  else addFree(k);
+});
+buildWindButtons();
+document.getElementById('dora-count').addEventListener('input',autoDetect);
+// 待ちボタンのonclick修正（文字列マッチではなくdataset使用）
+document.querySelectorAll('.machi-btn').forEach(b=>{
+  const m=b.onclick.toString().match(/'([a-z]+)'/);
+  if(m) b.dataset.machi=m[1];
+  b.onclick=()=>{
+    machiType=b.dataset.machi;
+    document.querySelectorAll('.machi-btn').forEach(x=>x.classList.toggle('on',x.dataset.machi===machiType));
+    autoDetect();
+  };
+});
+initNormalMelds();
 </script>
-</body>
-</html>
+
+
+</body></html>

@@ -74,7 +74,18 @@ body{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.008) 0p
 .score-table-wrap{overflow-x:auto;margin-bottom:28px;}
 .score-table{border-collapse:collapse;font-size:12px;min-width:500px;}
 .score-table th{background:var(--gold-faint);color:var(--gold);padding:7px 10px;text-align:center;border:0.5px solid rgba(212,175,55,0.15);font-weight:500;white-space:nowrap;}
-.score-table td{padding:6px 10px;border:0.5px solid rgba(255,255,255,0.06);text-align:center;color:var(--text-mid);white-space:nowrap;}
+.score-table td{padding:6px 8px;border:0.5px solid rgba(255,255,255,0.06);text-align:center;color:var(--text-mid);white-space:nowrap;line-height:1.5;}
+.score-label{font-size:11px;font-weight:500;}
+.score-total{font-size:13px;color:var(--text-bright);}
+.score-breakdown{font-size:11px;color:var(--text-dim);}
+.score-table .mangan .score-total,.score-table .mangan .score-label{color:var(--gold);}
+.score-table .mangan .score-breakdown{color:rgba(212,175,55,0.6);}
+.score-table .haneman .score-total,.score-table .haneman .score-label{color:rgba(200,150,230,0.9);}
+.score-table .haneman .score-breakdown{color:rgba(200,150,230,0.6);}
+.score-table .baiman .score-total,.score-table .baiman .score-label{color:rgba(100,170,220,0.9);}
+.score-table .baiman .score-breakdown{color:rgba(100,170,220,0.6);}
+.score-table .yakuman .score-total,.score-table .yakuman .score-label{color:rgba(220,100,80,0.9);}
+.score-table .yakuman .score-breakdown{color:rgba(220,100,80,0.6);}
 .score-table .oya{color:rgba(212,175,55,0.8);}
 .score-table .mangan{background:rgba(212,175,55,0.08);color:var(--gold);font-weight:500;}
 .score-table .haneman{background:rgba(155,89,182,0.08);color:rgba(200,150,230,0.9);font-weight:500;}
@@ -463,24 +474,59 @@ buildGrid('grid-m', YAKU.filter(y=>y.han==='役満'));
 
 // 点数表生成
 function ceil100(n){return Math.ceil(n/100)*100;}
+
+// 返り値: { total, label, breakdown }
+// breakdown: ロン=null / ツモ子={ ko, oya } / ツモ親={ all }
 function calcScore(fu,han,isOya,isTsumo){
-  if(han>=13)return{main:isOya?48000:32000,label:'役満'};
-  if(han>=11)return{main:isOya?36000:24000,label:'三倍満'};
-  if(han>=8) return{main:isOya?24000:16000,label:'倍満'};
-  if(han>=6) return{main:isOya?18000:12000,label:'跳満'};
-  if(han>=5||(han===4&&fu>=30)||(han===3&&fu>=70))return{main:isOya?12000:8000,label:'満貫'};
+  // 満貫以上
+  if(han>=13){
+    const t=isOya?48000:32000;
+    if(isTsumo){
+      return isOya?{total:t,label:'役満',breakdown:{all:16000}}
+                  :{total:t,label:'役満',breakdown:{ko:8000,oya:16000}};
+    }
+    return{total:t,label:'役満',breakdown:null};
+  }
+  if(han>=11){
+    const t=isOya?36000:24000;
+    if(isTsumo) return isOya?{total:t,label:'三倍満',breakdown:{all:12000}}
+                            :{total:t,label:'三倍満',breakdown:{ko:6000,oya:12000}};
+    return{total:t,label:'三倍満',breakdown:null};
+  }
+  if(han>=8){
+    const t=isOya?24000:16000;
+    if(isTsumo) return isOya?{total:t,label:'倍満',breakdown:{all:8000}}
+                            :{total:t,label:'倍満',breakdown:{ko:4000,oya:8000}};
+    return{total:t,label:'倍満',breakdown:null};
+  }
+  if(han>=6){
+    const t=isOya?18000:12000;
+    if(isTsumo) return isOya?{total:t,label:'跳満',breakdown:{all:6000}}
+                            :{total:t,label:'跳満',breakdown:{ko:3000,oya:6000}};
+    return{total:t,label:'跳満',breakdown:null};
+  }
+  if(han>=5||(han===4&&fu>=30)||(han===3&&fu>=70)){
+    const t=isOya?12000:8000;
+    if(isTsumo) return isOya?{total:t,label:'満貫',breakdown:{all:4000}}
+                            :{total:t,label:'満貫',breakdown:{ko:2000,oya:4000}};
+    return{total:t,label:'満貫',breakdown:null};
+  }
   const base=fu*Math.pow(2,han+2);
   if(isTsumo){
-    if(isOya){const p=ceil100(base*2);return{main:p*3,label:`${p.toLocaleString()}点オール`};}
-    else{const ko=ceil100(base);const oya=ceil100(base*2);return{main:ko*2+oya,label:`${ko.toLocaleString()}/${oya.toLocaleString()}`};}
+    if(isOya){
+      const all=ceil100(base*2);
+      return{total:all*3,label:'',breakdown:{all}};
+    }else{
+      const ko=ceil100(base), oya=ceil100(base*2);
+      return{total:ko*2+oya,label:'',breakdown:{ko,oya}};
+    }
   }else{
-    const s=isOya?ceil100(base*6):ceil100(base*4);
-    return{main:s,label:''};
+    const total=isOya?ceil100(base*6):ceil100(base*4);
+    return{total,label:'',breakdown:null};
   }
 }
 
 function buildScoreTable(tableId,isOya,isTsumo){
-  // 20符：平和ツモ専用（ロン表には不要、ツモ表のみ）
   const fus=isTsumo?[20,25,30,40,50,60,70,80,90,100]:[25,30,40,50,60,70,80,90,100,110];
   const hans=[1,2,3,4,5,6,7,8];
   const el=document.getElementById(tableId);
@@ -488,10 +534,8 @@ function buildScoreTable(tableId,isOya,isTsumo){
   hans.forEach(h=>html+=`<th>${h}翻</th>`);
   html+='</tr>';
   fus.forEach(fu=>{
-    // 20符ツモは平和ツモのみ（1翻は存在しない→2翻から）
     html+=`<tr><td class="row-head">${fu===25?'25符<br>七対子':fu+'符'+(fu===20?'<br>平和ツモ':'')}</td>`;
     hans.forEach(h=>{
-      // 20符は平和ツモなのでメンゼンツモで実質2翻以上
       if(fu===20&&h===1){html+='<td style="color:var(--text-dim)">—</td>';return;}
       const r=calcScore(fu,h,isOya,isTsumo);
       let cls='';
@@ -499,8 +543,25 @@ function buildScoreTable(tableId,isOya,isTsumo){
       else if(r.label==='跳満') cls='haneman';
       else if(r.label==='倍満') cls='baiman';
       else if(r.label==='三倍満'||r.label==='役満') cls='yakuman';
-      const val=cls?r.label:r.main.toLocaleString();
-      html+=`<td class="${cls}">${val}</td>`;
+
+      let inner='';
+      if(cls){
+        // 満貫以上: ラベル + 合計点 + 内訳
+        inner=`<span class="score-label">${r.label}</span><br><span class="score-total">${r.total.toLocaleString()}</span>`;
+      }else{
+        inner=`<span class="score-total">${r.total.toLocaleString()}</span>`;
+      }
+      // 内訳行
+      if(r.breakdown){
+        if(r.breakdown.all!==undefined){
+          inner+=`<br><span class="score-breakdown">${r.breakdown.all.toLocaleString()}点オール</span>`;
+        }else{
+          inner+=`<br><span class="score-breakdown">子${r.breakdown.ko.toLocaleString()} 親${r.breakdown.oya.toLocaleString()}</span>`;
+        }
+      }else if(isTsumo&&fu===25&&h===1){
+        inner+='<br><span class="score-breakdown" style="color:var(--text-dim)">—</span>';
+      }
+      html+=`<td class="${cls}">${inner}</td>`;
     });
     html+='</tr>';
   });
