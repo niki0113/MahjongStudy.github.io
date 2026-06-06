@@ -480,23 +480,26 @@ function calcScore(fu,han,isOya,isTsumo){
 }
 
 function buildScoreTable(tableId,isOya,isTsumo){
-  const fus=[20,25,30,40,50,60,70,80,90,100,110];
+  // 20符：平和ツモ専用（ロン表には不要、ツモ表のみ）
+  const fus=isTsumo?[20,25,30,40,50,60,70,80,90,100]:[25,30,40,50,60,70,80,90,100,110];
   const hans=[1,2,3,4,5,6,7,8];
   const el=document.getElementById(tableId);
-  let html='<tr><th class="row-head">符\翻</th>';
+  let html='<tr><th class="row-head">符＼翻</th>';
   hans.forEach(h=>html+=`<th>${h}翻</th>`);
   html+='</tr>';
   fus.forEach(fu=>{
-    if(fu===110&&!isOya) return; // 簡略
-    html+=`<tr><td class="row-head">${fu===25?'25符<br>(七対子)':fu+'符'}</td>`;
+    // 20符ツモは平和ツモのみ（1翻は存在しない→2翻から）
+    html+=`<tr><td class="row-head">${fu===25?'25符<br>七対子':fu+'符'+(fu===20?'<br>平和ツモ':'')}</td>`;
     hans.forEach(h=>{
+      // 20符は平和ツモなのでメンゼンツモで実質2翻以上
+      if(fu===20&&h===1){html+='<td style="color:var(--text-dim)">—</td>';return;}
       const r=calcScore(fu,h,isOya,isTsumo);
       let cls='';
       if(r.label==='満貫') cls='mangan';
       else if(r.label==='跳満') cls='haneman';
       else if(r.label==='倍満') cls='baiman';
       else if(r.label==='三倍満'||r.label==='役満') cls='yakuman';
-      const val=(cls)?r.label:r.main.toLocaleString();
+      const val=cls?r.label:r.main.toLocaleString();
       html+=`<td class="${cls}">${val}</td>`;
     });
     html+='</tr>';

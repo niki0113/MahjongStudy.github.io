@@ -26,37 +26,36 @@ body{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.008) 0p
 .nav-score{font-size:13px;color:var(--text-mid);background:var(--sec-bg);border:0.5px solid var(--sec-border);border-radius:20px;padding:4px 14px;}
 .nav-score span{color:var(--gold);font-weight:500;}
 .page{max-width:660px;margin:0 auto;padding:24px 20px 64px;}
-/* Progress */
 .progress-wrap{margin-bottom:20px;}
 .progress-info{display:flex;justify-content:space-between;font-size:12px;color:var(--text-dim);margin-bottom:6px;}
 .progress-bar{height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;}
 .progress-fill{height:100%;background:var(--gold);border-radius:2px;transition:width 0.4s ease;}
-/* Card */
-.q-card{background:var(--sec-bg);border:0.5px solid var(--sec-border);border-radius:12px;padding:22px;margin-bottom:14px;animation:fadeIn 0.35s ease;}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.q-no{font-size:12px;color:var(--text-dim);margin-bottom:6px;}
-/* 難易度バッジ */
 .badge{display:inline-block;font-size:11px;padding:3px 10px;border-radius:12px;margin-bottom:12px;}
 .badge-easy{background:rgba(39,160,80,0.15);color:rgba(100,210,130,0.9);border:0.5px solid rgba(39,160,80,0.35);}
 .badge-mid{background:rgba(212,175,55,0.15);color:var(--gold);border:0.5px solid rgba(212,175,55,0.35);}
 .badge-hard{background:rgba(192,57,43,0.15);color:rgba(220,100,80,0.9);border:0.5px solid rgba(192,57,43,0.35);}
-/* 問題文 */
+.q-card{background:var(--sec-bg);border:0.5px solid var(--sec-border);border-radius:12px;padding:22px;margin-bottom:14px;animation:fadeIn 0.35s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.q-no{font-size:12px;color:var(--text-dim);margin-bottom:4px;}
 .q-text{font-size:15px;font-weight:500;color:var(--text-bright);line-height:1.7;margin-bottom:14px;}
-/* 牌例表示 */
-.tile-display{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px;padding:10px 12px;background:rgba(0,0,0,0.2);border:0.5px solid rgba(255,255,255,0.08);border-radius:8px;align-items:flex-end;}
-.tile-wrap{width:32px;height:44px;background:#f0ebe0;border-radius:3px;border-bottom:3px solid #b8a888;overflow:hidden;box-shadow:0 2px 4px rgba(0,0,0,0.4);flex-shrink:0;}
+/* 手牌表示エリア */
+.tile-display{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;padding:10px 12px;background:rgba(0,0,0,0.2);border:0.5px solid rgba(255,255,255,0.08);border-radius:8px;align-items:flex-end;}
+/* 面子グループ（通常） */
+.meld-group{display:flex;gap:2px;align-items:flex-end;}
+/* 鳴き面子グループ：左端牌を横向き＋少し下げる */
+.meld-group.naki{align-items:flex-end;}
+/* 通常牌 */
+.tile-wrap{width:32px;height:44px;background:#f0ebe0;border-radius:3px;border-bottom:3px solid #b8a888;overflow:hidden;flex-shrink:0;}
 .tile-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
-.tile-wrap.tile-fallback{display:flex;align-items:center;justify-content:center;font-size:12px;font-family:'Noto Serif JP',serif;color:#1a1a1a;}
-/* テキスト牌（PNG未使用時の代替） */
-.t-tile{width:30px;height:40px;background:#f0ebe0;border-radius:3px;border-bottom:2px solid #b8a888;display:flex;align-items:center;justify-content:center;font-size:12px;font-family:'Noto Serif JP',serif;color:#1a1a1a;flex-shrink:0;}
-.t-tile.gr{color:#1a7a3a;}.t-tile.rd{color:#c0392b;}
-.t-sep{width:8px;height:40px;display:flex;align-items:center;justify-content:center;}
+/* 横向き牌（鳴き牌） */
+.tile-wrap.yoko{width:44px;height:32px;border-bottom:none;border-right:3px solid #b8a888;margin-bottom:3px;}
+.tile-wrap.yoko img{width:100%;height:100%;object-fit:cover;display:block;}
+/* グループ間区切り */
+.group-sep{width:6px;flex-shrink:0;}
 .tile-note{font-size:11px;color:var(--text-dim);margin-bottom:12px;}
-/* 条件ピル */
 .cond-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
 .cond-pill{padding:3px 10px;border-radius:20px;background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);color:var(--text-mid);font-size:12px;}
 .cond-pill.gold{background:rgba(212,175,55,0.12);border-color:rgba(212,175,55,0.3);color:var(--gold);}
-/* 選択肢 */
 .choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 @media(max-width:440px){.choices{grid-template-columns:1fr;}}
 .choice-btn{padding:12px 10px;border-radius:8px;font-size:14px;font-weight:500;font-family:'Noto Serif JP',serif;border:0.5px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.05);color:var(--text-bright);cursor:pointer;letter-spacing:0.05em;transition:background 0.12s,border-color 0.12s,transform 0.08s;line-height:1.3;}
@@ -67,7 +66,6 @@ body{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.008) 0p
 .choice-btn.correct .kana{color:rgba(100,220,130,0.7);}
 .choice-btn.wrong{background:var(--wrong);border-color:var(--wrong-border);color:rgba(220,100,80,0.9);}
 .choice-btn:disabled{cursor:default;}
-/* フィードバック */
 .feedback{margin-top:14px;border-radius:10px;padding:14px 16px;display:none;animation:fadeIn 0.3s ease;}
 .feedback.correct-fb{background:rgba(39,160,80,0.1);border:0.5px solid rgba(39,160,80,0.3);}
 .feedback.wrong-fb{background:rgba(192,57,43,0.1);border:0.5px solid rgba(192,57,43,0.3);}
@@ -77,7 +75,6 @@ body{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.008) 0p
 .fb-body{font-size:13px;color:var(--text-mid);line-height:1.8;}
 .next-btn{width:100%;margin-top:12px;padding:13px;font-size:14px;font-weight:500;font-family:'Noto Sans JP',sans-serif;background:rgba(212,175,55,0.12);border:0.5px solid var(--gold-dim);border-radius:9px;cursor:pointer;color:var(--gold);letter-spacing:0.08em;transition:background 0.15s;display:none;}
 .next-btn:hover{background:rgba(212,175,55,0.22);}
-/* 結果 */
 .result-screen{background:var(--sec-bg);border:0.5px solid var(--sec-border);border-radius:12px;padding:36px 24px;text-align:center;display:none;animation:fadeIn 0.4s ease;}
 .res-title{font-family:'Zen Antique',serif;font-size:22px;color:var(--gold);letter-spacing:0.15em;margin-bottom:20px;}
 .res-big{font-size:52px;font-weight:500;color:var(--gold);line-height:1;margin-bottom:6px;}
@@ -88,7 +85,6 @@ body{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.008) 0p
 .retry-btn:hover{background:rgba(212,175,55,0.22);}
 .home-btn{padding:13px 32px;font-size:14px;font-weight:500;font-family:'Noto Sans JP',sans-serif;background:transparent;border:0.5px solid rgba(255,255,255,0.2);border-radius:9px;cursor:pointer;color:var(--text-mid);text-decoration:none;display:inline-block;transition:background 0.15s;}
 .home-btn:hover{background:rgba(255,255,255,0.06);}
-/* モード選択 */
 .mode-screen{text-align:center;padding:20px 0;}
 .mode-title{font-family:'Zen Antique',serif;font-size:20px;color:var(--gold);margin-bottom:8px;letter-spacing:0.1em;}
 .mode-sub{font-size:13px;color:var(--text-mid);margin-bottom:28px;line-height:1.7;}
@@ -110,46 +106,40 @@ body{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.008) 0p
   </div>
   <div class="nav-score">正答 <span id="nav-correct">0</span> / <span id="nav-total">0</span></div>
 </nav>
-
 <div class="page">
-  <!-- モード選択 -->
   <div id="mode-screen" class="mode-screen">
     <div class="mode-title">役名クイズ</div>
-    <div class="mode-sub">手牌の形を見て役名を当てましょう。<br>役一覧と一緒に使うと効果的です。</div>
+    <div class="mode-sub">手牌の形を見て役名を当てましょう。<br>横向きの牌は鳴き（ポン・チー）した牌です。</div>
     <div class="mode-grid">
       <button class="mode-btn" onclick="startQuiz('easy')">
         <span class="mode-btn-badge badge badge-easy">初級</span>
         <div class="mode-btn-title">初級モード</div>
-        <div class="mode-btn-sub">頻出役10問<br>立直・平和・タンヤオなど</div>
+        <div class="mode-btn-sub">頻出役10問</div>
       </button>
       <button class="mode-btn" onclick="startQuiz('mid')">
         <span class="mode-btn-badge badge badge-mid">中級</span>
         <div class="mode-btn-title">中級モード</div>
-        <div class="mode-btn-sub">やや難しい役10問<br>一盃口・混一色など</div>
+        <div class="mode-btn-sub">やや難しい役10問</div>
       </button>
       <button class="mode-btn" onclick="startQuiz('hard')">
         <span class="mode-btn-badge badge badge-hard">上級</span>
         <div class="mode-btn-title">上級モード</div>
-        <div class="mode-btn-sub">難役・役満10問<br>二盃口・清一色など</div>
+        <div class="mode-btn-sub">難役・役満10問</div>
       </button>
       <button class="mode-btn" onclick="startQuiz('all')">
         <span class="mode-btn-badge" style="background:rgba(212,175,55,0.15);color:var(--gold);border:0.5px solid rgba(212,175,55,0.3);">全問</span>
         <div class="mode-btn-title">全問モード</div>
-        <div class="mode-btn-sub">全難易度混合20問<br>腕試しに！</div>
+        <div class="mode-btn-sub">全難易度混合20問</div>
       </button>
     </div>
     <a class="home-btn" href="yaku.html">役一覧を見る →</a>
   </div>
-
-  <!-- 進捗 -->
   <div id="progress-area" style="display:none">
     <div class="progress-wrap">
       <div class="progress-info"><span id="prog-label">問題 1 / 10</span><span id="prog-pct">0%</span></div>
       <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
     </div>
   </div>
-
-  <!-- 問題エリア -->
   <div id="quiz-area" style="display:none">
     <div class="q-card" id="q-card">
       <div class="q-no" id="q-no">Q1</div>
@@ -166,8 +156,6 @@ body{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.008) 0p
       <button class="next-btn" id="next-btn" onclick="nextQuestion()">次の問題 →</button>
     </div>
   </div>
-
-  <!-- 結果 -->
   <div class="result-screen" id="result-screen">
     <div class="res-title">お疲れ様でした</div>
     <div class="res-big" id="res-big">0</div>
@@ -181,271 +169,509 @@ body{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.008) 0p
 </div>
 
 <script>
-// tiles.js インライン
 const TILE_IMG_BASE='img/tiles/';
 function tileFile(key){return TILE_IMG_BASE+key+'.png';}
-const TILE_LABEL={man1:'一',man2:'二',man3:'三',man4:'四',man5:'五',man6:'六',man7:'七',man8:'八',man9:'九',pin1:'①',pin2:'②',pin3:'③',pin4:'④',pin5:'⑤',pin6:'⑥',pin7:'⑦',pin8:'⑧',pin9:'⑨',sou1:'1s',sou2:'2s',sou3:'3s',sou4:'4s',sou5:'5s',sou6:'6s',sou7:'7s',sou8:'8s',sou9:'9s',ton:'東',nan:'南',sya:'西',pei:'北',haku:'白',hatu:'發',tyun:'中',back:'？'};
-const AKA_KEYS={man5:'man5_aka',pin5:'pin5_aka',sou5:'sou5_aka'};
-function makeTileEl(key,aka=false,yoko=false,extraClass=''){
+
+function makeTile(key, isYoko){
   const wrap=document.createElement('div');
-  wrap.className=('tile-wrap '+(yoko?'tile-yoko ':'')+extraClass).trim();
-  wrap.dataset.key=key;
+  wrap.className='tile-wrap'+(isYoko?' yoko':'');
   const img=document.createElement('img');
-  let fk=key; if(aka&&AKA_KEYS[key])fk=AKA_KEYS[key]; if(yoko)fk+='_yoko';
-  img.src=tileFile(fk); img.alt=TILE_LABEL[key]||key;
+  const src=isYoko?tileFile(key+'_yoko'):tileFile(key);
+  img.src=src; img.alt=key;
   img.style.cssText='width:100%;height:100%;object-fit:cover;display:block;';
-  wrap.appendChild(img); return wrap;
+  wrap.appendChild(img);
+  return wrap;
 }
 
-// ── 問題データ ──
-// hand: キー配列 (null = 牌なし・文字説明のみ)
-// answer: 正解役名
-// choices: 4択 (answerを必ず含む)
-// conds: 条件ピル [{label, gold:bool}]
-// note: タイルの下に表示する補足
+/*
+  問題データ構造:
+  groups: 面子・雀頭の配列
+    各グループ: {tiles:[キー配列], naki:bool}
+    naki:true → 先頭牌を横向き表示（ポン・チーの表現）
+  ※ grpの並び順がそのまま手牌の左→右の表示順になる
+  ※ 単一の役のみ成立する手牌・あがり形であること
+*/
 const QUESTIONS_EASY = [
+
+  // Q1 平和: 門前・順子のみ・役牌以外雀頭・両面待ち
+  // 手: ②③④ ⑥⑦⑧ 三四五 七八九 + 雀頭⑤⑤（中張）
+  // 役: 平和のみ（断么九なし→七を含む=端牌に近いが2〜8内なのでタンヤオも複合→排除するため一を含める）
+  // → 手: 一二三 ⑥⑦⑧ 三四五(sou) 七八九(sou) 雀頭⑤⑤  待ち:三or六索（両面）
+  // タンヤオ複合しないよう一萬を入れる
   {difficulty:'easy',
-   text:'この手牌の形はどの役でしょう？',
-   hand:['pin2','pin3','pin4','pin5','pin6','pin7','man3','man4','man5','man7','man8','man9','pin8','pin8'],
-   note:'雀頭：⑧⑧　待ち：両面待ち（六or九萬）',
+   text:'この手牌の形はどの役でしょう？（門前・テンパイ形）',
+   groups:[
+     {tiles:['man1','man2','man3'],naki:false},
+     {tiles:['pin6','pin7','pin8'],naki:false},
+     {tiles:['sou4','sou5','sou6'],naki:false},
+     {tiles:['sou7','sou8','sou9'],naki:false},
+     {tiles:['pin4','pin4'],naki:false},
+   ],
+   note:'雀頭：④④（筒子）　4面子すべて順子　両面待ち',
    conds:[{label:'門前',gold:false},{label:'順子のみ',gold:false},{label:'雀頭が役牌以外',gold:false},{label:'両面待ち',gold:false}],
    answer:'平和',kana:'ピンフ',
    choices:[{name:'平和',kana:'ピンフ'},{name:'断么九',kana:'タンヤオ'},{name:'立直',kana:'リーチ'},{name:'一気通貫',kana:'イッキツウカン'}],
-   explanation:'平和（ピンフ）：①門前 ②4面子すべて順子 ③雀頭が役牌以外 ④両面待ち の4条件が揃うと成立する1翻役。符が付かないためロンで30符固定、ツモで20符固定。'},
+   explanation:'平和（ピンフ）：①門前 ②4面子すべて順子 ③雀頭が役牌以外 ④両面待ち の4条件で成立する1翻役。符が付かないためロン30符・ツモ20符固定。'},
+
+  // Q2 断么九: 中張牌のみ・門前 / 平和にならないよう刻子を混ぜる
+  // 手: ②②② ⑤⑥⑦ 三四五 六七八 雀頭③③
   {difficulty:'easy',
    text:'この手牌の形はどの役でしょう？',
-   hand:['pin2','pin3','pin4','pin5','pin6','pin7','man3','man4','man5','man6','man7','man8','pin3','pin3'],
-   note:'1・9・字牌が一枚もない手牌',
+   groups:[
+     {tiles:['pin2','pin2','pin2'],naki:false},
+     {tiles:['pin5','pin6','pin7'],naki:false},
+     {tiles:['man3','man4','man5'],naki:false},
+     {tiles:['man6','man7','man8'],naki:false},
+     {tiles:['pin3','pin3'],naki:false},
+   ],
+   note:'1・9・字牌が一枚もない。刻子①がある',
    conds:[{label:'1・9・字牌なし',gold:true},{label:'鳴きでも成立',gold:false}],
    answer:'断么九',kana:'タンヤオ',
-   choices:[{name:'断么九',kana:'タンヤオ'},{name:'平和',kana:'ピンフ'},{name:'混一色',kana:'ホンイツ'},{name:'七対子',kana:'チートイツ'}],
-   explanation:'断么九（タンヤオ）：数牌の2〜8（中張牌）だけで手を完成させる1翻役。1・9・字牌を一枚も使わないのがポイント。鳴いてOK。'},
+   choices:[{name:'断么九',kana:'タンヤオ'},{name:'平和',kana:'ピンフ'},{name:'混一色',kana:'ホンイツ'},{name:'対々和',kana:'トイトイ'}],
+   explanation:'断么九（タンヤオ）：数牌の2〜8（中張牌）だけで手を完成させる1翻役。1・9・字牌を一枚も使わないのがポイント。鳴いてもOK。'},
+
+  // Q3 七対子: 7種類の対子
   {difficulty:'easy',
    text:'この手牌の形はどの役でしょう？',
-   hand:['man2','man2','man4','man4','pin3','pin3','pin7','pin7','sou2','sou2','ton','ton','haku','haku'],
+   groups:[
+     {tiles:['man2','man2'],naki:false},
+     {tiles:['man7','man7'],naki:false},
+     {tiles:['pin3','pin3'],naki:false},
+     {tiles:['pin8','pin8'],naki:false},
+     {tiles:['sou4','sou4'],naki:false},
+     {tiles:['ton','ton'],naki:false},
+     {tiles:['haku','haku'],naki:false},
+   ],
    note:'14枚すべて対子（2枚組）が7組',
    conds:[{label:'対子7組',gold:true},{label:'門前のみ',gold:false},{label:'25符固定',gold:false}],
    answer:'七対子',kana:'チートイツ',
    choices:[{name:'七対子',kana:'チートイツ'},{name:'対々和',kana:'トイトイ'},{name:'混老頭',kana:'ホンロウトウ'},{name:'平和',kana:'ピンフ'}],
-   explanation:'七対子（チートイツ）：異なる7種の対子を揃える2翻役。符は25符固定。同じ牌を4枚持っても2組の対子とは認められない。'},
+   explanation:'七対子（チートイツ）：異なる7種の対子を揃える2翻役。符は25符固定。同じ牌4枚での2組は認められない。'},
+
+  // Q4 役牌（中）: ポン形 / 他は普通の順子・雀頭は数牌
   {difficulty:'easy',
    text:'この手牌の形はどの役でしょう？',
-   hand:['tyun','tyun','tyun','pin2','pin3','pin4','pin6','pin7','pin8','man3','man4','man5','pin5','pin5'],
-   note:'中（三元牌）の刻子を含む',
+   groups:[
+     {tiles:['tyun','tyun','tyun'],naki:true},
+     {tiles:['pin2','pin3','pin4'],naki:false},
+     {tiles:['pin6','pin7','pin8'],naki:false},
+     {tiles:['man3','man4','man5'],naki:false},
+     {tiles:['pin5','pin5'],naki:false},
+   ],
+   note:'中（三元牌）の刻子：横向きは鳴き（ポン）した牌',
    conds:[{label:'三元牌の刻子',gold:true},{label:'鳴きOK',gold:false}],
    answer:'役牌（中）',kana:'ヤクハイ',
    choices:[{name:'役牌（中）',kana:'ヤクハイ'},{name:'平和',kana:'ピンフ'},{name:'断么九',kana:'タンヤオ'},{name:'対々和',kana:'トイトイ'}],
-   explanation:'役牌（ヤクハイ）：三元牌（白・發・中）または場風・自風を刻子で揃える1翻役。中なら「中中中」の3枚。鳴いてOK。'},
+   explanation:'役牌（ヤクハイ）：三元牌（白・發・中）または場風・自風を刻子で揃える1翻役。鳴いてOK。横向きの牌はポンした牌。'},
+
+  // Q5 対々和: 鳴きあり・刻子4組。三暗刻複合しないよう鳴き2組
   {difficulty:'easy',
    text:'この手牌の形はどの役でしょう？',
-   hand:['man1','man1','man1','man5','man5','man5','pin3','pin3','pin3','sou7','sou7','sou7','pin9','pin9'],
-   note:'4面子すべて刻子（3枚組）',
+   groups:[
+     {tiles:['man3','man3','man3'],naki:true},
+     {tiles:['pin7','pin7','pin7'],naki:true},
+     {tiles:['sou5','sou5','sou5'],naki:false},
+     {tiles:['sou9','sou9','sou9'],naki:false},
+     {tiles:['man1','man1'],naki:false},
+   ],
+   note:'4面子すべて刻子。横向き2組は鳴き（ポン）',
    conds:[{label:'4面子すべて刻子',gold:true},{label:'鳴きOK',gold:false}],
    answer:'対々和',kana:'トイトイ',
    choices:[{name:'対々和',kana:'トイトイ'},{name:'七対子',kana:'チートイツ'},{name:'三暗刻',kana:'サンアンコウ'},{name:'混老頭',kana:'ホンロウトウ'}],
-   explanation:'対々和（トイトイ）：4組の面子をすべて刻子で揃える2翻役。暗刻でも明刻でもOK。七対子とは異なり通常の面子として4組揃える。'},
+   explanation:'対々和（トイトイ）：4組の面子をすべて刻子で揃える2翻役。鳴いてもOK。横向きはポンした牌。'},
+
+  // Q6 一気通貫: 鳴き版（鳴き1翻）。チー牌で三色複合しないよう索子のみ
   {difficulty:'easy',
    text:'この手牌の形はどの役でしょう？',
-   hand:['man1','man2','man3','man4','man5','man6','man7','man8','man9','pin3','pin3','pin3','sou5','sou5'],
-   note:'萬子で1〜9が123・456・789の3順子',
-   conds:[{label:'1種の数牌で123・456・789',gold:true},{label:'門前2翻 / 鳴き1翻',gold:false}],
+   groups:[
+     {tiles:['man1','man2','man3'],naki:true},
+     {tiles:['man4','man5','man6'],naki:true},
+     {tiles:['man7','man8','man9'],naki:false},
+     {tiles:['pin3','pin3','pin3'],naki:false},
+     {tiles:['sou5','sou5'],naki:false},
+   ],
+   note:'萬子で1-2-3・4-5-6・7-8-9の3順子（横は鳴き）',
+   conds:[{label:'1種の数牌で123・456・789',gold:true},{label:'鳴き1翻',gold:false}],
    answer:'一気通貫',kana:'イッキツウカン',
    choices:[{name:'一気通貫',kana:'イッキツウカン'},{name:'清一色',kana:'チンイツ'},{name:'平和',kana:'ピンフ'},{name:'混一色',kana:'ホンイツ'}],
-   explanation:'一気通貫（イッキツウカン）：1種類の数牌で123・456・789の3順子を揃える2翻役（鳴きで1翻）。萬子・筒子・索子のどれか1種類で揃える。'},
+   explanation:'一気通貫（イッキツウカン）：1種の数牌で123・456・789の3順子を揃える役。門前2翻・鳴き1翻。横向きはチー（鳴き）した牌。'},
+
+  // Q7 三色同順: 鳴き版1翻。複合しないよう字牌雀頭・刻子なし
   {difficulty:'easy',
    text:'この手牌の形はどの役でしょう？',
-   hand:['man5','man6','man7','pin5','pin6','pin7','sou5','sou6','sou7','man3','man3','man3','sou2','sou2'],
-   note:'萬・筒・索それぞれに567の順子',
-   conds:[{label:'3種の数牌で同じ数の順子',gold:true},{label:'門前2翻 / 鳴き1翻',gold:false}],
+   groups:[
+     {tiles:['man5','man6','man7'],naki:true},
+     {tiles:['pin5','pin6','pin7'],naki:true},
+     {tiles:['sou5','sou6','sou7'],naki:false},
+     {tiles:['man2','man3','man4'],naki:false},
+     {tiles:['nan','nan'],naki:false},
+   ],
+   note:'萬・筒・索それぞれに567の順子（横は鳴き）',
+   conds:[{label:'3種の数牌で同じ数の順子',gold:true},{label:'鳴き1翻',gold:false}],
    answer:'三色同順',kana:'サンショクドウジュン',
    choices:[{name:'三色同順',kana:'サンショクドウジュン'},{name:'三色同刻',kana:'サンショクドウコウ'},{name:'一気通貫',kana:'イッキツウカン'},{name:'対々和',kana:'トイトイ'}],
-   explanation:'三色同順（サンショクドウジュン）：萬・筒・索の3種で同じ数字の順子を作る2翻役（鳴き1翻）。'},
+   explanation:'三色同順（サンショクドウジュン）：萬・筒・索の3種で同じ数字の順子を作る役。門前2翻・鳴き1翻。'},
+
+  // Q8 大三元: 役満・三元牌3刻子
   {difficulty:'easy',
    text:'この手牌の形はどの役でしょう？',
-   hand:['haku','haku','haku','hatu','hatu','hatu','tyun','tyun','tyun','man3','man4','man5','pin7','pin7'],
-   note:'白・發・中の刻子3組',
+   groups:[
+     {tiles:['haku','haku','haku'],naki:true},
+     {tiles:['hatu','hatu','hatu'],naki:true},
+     {tiles:['tyun','tyun','tyun'],naki:true},
+     {tiles:['man3','man4','man5'],naki:false},
+     {tiles:['sou7','sou7'],naki:false},
+   ],
+   note:'白・發・中すべてをポン（横向き）',
    conds:[{label:'三元牌3種すべて刻子',gold:true},{label:'役満',gold:true}],
    answer:'大三元',kana:'ダイサンゲン',
    choices:[{name:'大三元',kana:'ダイサンゲン'},{name:'小三元',kana:'ショウサンゲン'},{name:'役牌',kana:'ヤクハイ'},{name:'対々和',kana:'トイトイ'}],
    explanation:'大三元（ダイサンゲン）：三元牌（白・發・中）の3種をすべて刻子で揃える役満。鳴いてOK。'},
+
+  // Q9 清一色: 鳴き5翻。鳴き2組で対々和複合しないよう順子混在
   {difficulty:'easy',
    text:'この手牌の形はどの役でしょう？',
-   hand:['man1','man1','man1','man3','man3','man3','man6','man6','man6','man9','man9','man9','man5','man5'],
-   note:'萬子だけで面子と雀頭を揃えた',
-   conds:[{label:'1種の数牌のみ',gold:true},{label:'門前6翻 / 鳴き5翻',gold:false}],
+   groups:[
+     {tiles:['man1','man1','man1'],naki:true},
+     {tiles:['man3','man4','man5'],naki:true},
+     {tiles:['man6','man7','man8'],naki:false},
+     {tiles:['man2','man3','man4'],naki:false},
+     {tiles:['man9','man9'],naki:false},
+   ],
+   note:'萬子だけで面子と雀頭を揃えた（横は鳴き）',
+   conds:[{label:'1種の数牌のみ',gold:true},{label:'鳴き5翻',gold:false}],
    answer:'清一色',kana:'チンイツ',
    choices:[{name:'清一色',kana:'チンイツ'},{name:'混一色',kana:'ホンイツ'},{name:'一気通貫',kana:'イッキツウカン'},{name:'断么九',kana:'タンヤオ'}],
-   explanation:'清一色（チンイツ）：萬・筒・索のどれか1種類のみで面子と雀頭を揃える6翻役（鳴き5翻）。字牌は使えない。'},
+   explanation:'清一色（チンイツ）：1種類の数牌だけで面子と雀頭を揃える役。門前6翻・鳴き5翻。'},
+
+  // Q10 三暗刻: 暗刻3組・残り1組は鳴き（明刻）
   {difficulty:'easy',
    text:'この手牌の形はどの役でしょう？',
-   hand:['man1','man2','man3','man1','man1','man1','pin7','pin8','pin9','sou3','sou4','sou5','pin5','pin5'],
-   note:'暗刻（手の中の刻子）が3組',
-   conds:[{label:'暗刻3組',gold:true},{label:'鳴きOK（1面子は鳴いてOK）',gold:false}],
+   groups:[
+     {tiles:['sou2','sou2','sou2'],naki:true},
+     {tiles:['man3','man3','man3'],naki:false},
+     {tiles:['pin7','pin7','pin7'],naki:false},
+     {tiles:['man7','man7','man7'],naki:false},
+     {tiles:['pin5','pin5'],naki:false},
+   ],
+   note:'暗刻3組（手の中）＋ポン1組（横向き）',
+   conds:[{label:'暗刻3組',gold:true},{label:'残り1組はポン',gold:false}],
    answer:'三暗刻',kana:'サンアンコウ',
    choices:[{name:'三暗刻',kana:'サンアンコウ'},{name:'対々和',kana:'トイトイ'},{name:'四暗刻',kana:'スーアンコウ'},{name:'混老頭',kana:'ホンロウトウ'}],
-   explanation:'三暗刻（サンアンコウ）：3組の刻子をすべて暗刻（手の中）で揃える2翻役。ロンで揃えた刻子は明刻になるので注意。'},
+   explanation:'三暗刻（サンアンコウ）：3組の刻子をすべて暗刻（手の中）で揃える2翻役。残り1組はポン（鳴き=明刻）してもOK。'},
 ];
 
 const QUESTIONS_MID = [
+
+  // Q1 一盃口: 門前のみ。平和複合しないよう刻子or字牌雀頭or片面待ち
+  // 手: ②②③③④④ 六六六（暗刻）一二三 雀頭東東
   {difficulty:'mid',
    text:'この手牌の形はどの役でしょう？',
-   hand:['pin2','pin2','pin3','pin3','pin4','pin4','pin5','pin6','pin7','man3','man4','man5','pin8','pin8'],
-   note:'②②③③④④ が同じ順子2組',
+   groups:[
+     {tiles:['pin2','pin2','pin3','pin3','pin4','pin4'],naki:false},
+     {tiles:['man6','man6','man6'],naki:false},
+     {tiles:['man1','man2','man3'],naki:false},
+     {tiles:['ton','ton'],naki:false},
+   ],
+   note:'②②③③④④ が同じ順子2組　雀頭は字牌',
    conds:[{label:'同じ順子2組',gold:true},{label:'門前のみ',gold:false}],
    answer:'一盃口',kana:'イーペーコー',
    choices:[{name:'一盃口',kana:'イーペーコー'},{name:'二盃口',kana:'リャンペーコー'},{name:'七対子',kana:'チートイツ'},{name:'平和',kana:'ピンフ'}],
-   explanation:'一盃口（イーペーコー）：同じ色・同じ並びの順子を2組揃える1翻門前役。②②③③④④は「②③④」が2組。平和とも複合する。'},
+   explanation:'一盃口（イーペーコー）：同じ色・同じ並びの順子を2組揃える1翻門前役。②②③③④④は「②③④」が2組。平和と複合するには平和の条件も必要。'},
+
+  // Q2 混全帯幺九（チャンタ）: 全面子に1・9・字牌。鳴き版1翻
   {difficulty:'mid',
    text:'この手牌の形はどの役でしょう？',
-   hand:['man1','man2','man3','man7','man8','man9','sou1','sou2','sou3','pei','pei','pei','pin9','pin9'],
+   groups:[
+     {tiles:['man1','man2','man3'],naki:true},
+     {tiles:['sou7','sou8','sou9'],naki:true},
+     {tiles:['pei','pei','pei'],naki:false},
+     {tiles:['pin7','pin8','pin9'],naki:false},
+     {tiles:['pin9','pin9'],naki:false},
+   ],
    note:'すべての面子と雀頭に1・9・字牌が含まれる',
-   conds:[{label:'全面子に1・9・字牌を含む',gold:true},{label:'門前2翻 / 鳴き1翻',gold:false}],
+   conds:[{label:'全面子に1・9・字牌を含む',gold:true},{label:'鳴き1翻',gold:false}],
    answer:'混全帯幺九',kana:'チャンタ',
    choices:[{name:'混全帯幺九',kana:'チャンタ'},{name:'純全帯幺九',kana:'ジュンチャン'},{name:'混老頭',kana:'ホンロウトウ'},{name:'対々和',kana:'トイトイ'}],
-   explanation:'混全帯幺九（チャンタ）：全ての面子と雀頭に1・9・字牌（么九牌）を含ませる2翻役。純全帯幺九は字牌なしのバージョン。'},
+   explanation:'混全帯幺九（チャンタ）：全ての面子と雀頭に1・9・字牌を含ませる役。門前2翻・鳴き1翻。'},
+
+  // Q3 純全帯幺九（ジュンチャン）: 全面子に1or9・字牌なし。鳴き2翻
   {difficulty:'mid',
    text:'この手牌の形はどの役でしょう？',
-   hand:['man1','man2','man3','man7','man8','man9','pin1','pin1','pin1','sou7','sou8','sou9','pin9','pin9'],
-   note:'すべての面子と雀頭に数牌の1か9が含まれ、字牌なし',
-   conds:[{label:'全面子に1か9の数牌',gold:true},{label:'字牌なし',gold:true},{label:'門前3翻 / 鳴き2翻',gold:false}],
+   groups:[
+     {tiles:['man1','man2','man3'],naki:true},
+     {tiles:['man7','man8','man9'],naki:true},
+     {tiles:['pin1','pin1','pin1'],naki:false},
+     {tiles:['sou7','sou8','sou9'],naki:false},
+     {tiles:['pin9','pin9'],naki:false},
+   ],
+   note:'全面子に1か9が含まれ、字牌なし',
+   conds:[{label:'全面子に1か9の数牌',gold:true},{label:'字牌なし',gold:true},{label:'鳴き2翻',gold:false}],
    answer:'純全帯幺九',kana:'ジュンチャン',
    choices:[{name:'純全帯幺九',kana:'ジュンチャン'},{name:'混全帯幺九',kana:'チャンタ'},{name:'混老頭',kana:'ホンロウトウ'},{name:'清一色',kana:'チンイツ'}],
-   explanation:'純全帯幺九（ジュンチャン）：全ての面子と雀頭に数牌の1か9を含める3翻役。字牌を使わないのがチャンタとの違い。'},
+   explanation:'純全帯幺九（ジュンチャン）：全ての面子と雀頭に数牌の1か9を含める3翻役（鳴き2翻）。字牌を使わないのがチャンタとの違い。'},
+
+  // Q4 混一色: 1種の数牌＋字牌。役牌複合しないよう字牌は風牌の雀頭だけ
   {difficulty:'mid',
    text:'この手牌の形はどの役でしょう？',
-   hand:['man2','man3','man4','man5','man5','man5','man6','man7','man8','sya','sya','sya','haku','haku'],
-   note:'萬子と字牌のみで揃えた手',
-   conds:[{label:'1種の数牌＋字牌のみ',gold:true},{label:'門前3翻 / 鳴き2翻',gold:false}],
+   groups:[
+     {tiles:['man2','man3','man4'],naki:true},
+     {tiles:['man5','man6','man7'],naki:true},
+     {tiles:['man1','man2','man3'],naki:false},
+     {tiles:['man6','man7','man8'],naki:false},
+     {tiles:['sya','sya'],naki:false},
+   ],
+   note:'萬子と西（字牌）のみ。西は雀頭のみで刻子なし',
+   conds:[{label:'1種の数牌＋字牌のみ',gold:true},{label:'鳴き2翻',gold:false}],
    answer:'混一色',kana:'ホンイツ',
    choices:[{name:'混一色',kana:'ホンイツ'},{name:'清一色',kana:'チンイツ'},{name:'断么九',kana:'タンヤオ'},{name:'混全帯幺九',kana:'チャンタ'}],
-   explanation:'混一色（ホンイツ）：萬・筒・索の1種類と字牌だけで揃える3翻役（鳴き2翻）。清一色は字牌なし版で6翻。'},
+   explanation:'混一色（ホンイツ）：1種の数牌と字牌だけで揃える役。門前3翻・鳴き2翻。役牌複合しないよう字牌は刻子にしていない。'},
+
+  // Q5 混老頭: 1・9・字牌のみ。必ずトイトイ複合（問題として「混老頭」を問う）
+  // 対々和との区別がポイントなので問題文で強調
   {difficulty:'mid',
-   text:'この手牌の形はどの役でしょう？',
-   hand:['haku','haku','man2','man3','man4','man5','man6','man7','man8','man9','man9','man9','man1','man1'],
-   note:'萬子と字牌の白のみ。1・9が含まれている',
-   conds:[{label:'1・9・字牌のみ',gold:true},{label:'実質4翻（トイトイ複合）',gold:false}],
+   text:'この手牌の形はどの役でしょう？（対々和ではない別の役があります）',
+   groups:[
+     {tiles:['man1','man1','man1'],naki:true},
+     {tiles:['man9','man9','man9'],naki:true},
+     {tiles:['pin1','pin1','pin1'],naki:false},
+     {tiles:['pei','pei','pei'],naki:false},
+     {tiles:['sou9','sou9'],naki:false},
+   ],
+   note:'1・9・字牌のみで構成された対々和形',
+   conds:[{label:'1・9・字牌のみ',gold:true},{label:'必ずトイトイと複合',gold:true}],
    answer:'混老頭',kana:'ホンロウトウ',
-   choices:[{name:'混老頭',kana:'ホンロウトウ'},{name:'混一色',kana:'ホンイツ'},{name:'対々和',kana:'トイトイ'},{name:'純全帯幺九',kana:'ジュンチャン'}],
-   explanation:'混老頭（ホンロウトウ）：1・9・字牌のみで面子と雀頭を揃える2翻役。必ずトイトイか七対子と複合するため実質4翻。'},
+   choices:[{name:'混老頭',kana:'ホンロウトウ'},{name:'清老頭',kana:'チンロウトウ'},{name:'対々和',kana:'トイトイ'},{name:'混全帯幺九',kana:'チャンタ'}],
+   explanation:'混老頭（ホンロウトウ）：1・9・字牌だけで面子と雀頭を揃える2翻役。必ずトイトイと複合するため実質4翻。清老頭は字牌なし版の役満。'},
+
+  // Q6 三色同刻: 鳴きあり2組。三暗刻複合しないよう明刻2組以上
   {difficulty:'mid',
    text:'この手牌の形はどの役でしょう？',
-   hand:['man5','man5','man5','pin5','pin5','pin5','sou5','sou5','sou5','man3','man3','pin7','pin7','pin7'],
-   note:'萬・筒・索それぞれに5の刻子',
+   groups:[
+     {tiles:['man5','man5','man5'],naki:true},
+     {tiles:['pin5','pin5','pin5'],naki:true},
+     {tiles:['sou5','sou5','sou5'],naki:false},
+     {tiles:['man2','man3','man4'],naki:false},
+     {tiles:['pin3','pin3'],naki:false},
+   ],
+   note:'萬・筒・索それぞれに5の刻子（横は鳴き）',
    conds:[{label:'3種の数牌で同じ数の刻子',gold:true},{label:'鳴きOK',gold:false}],
    answer:'三色同刻',kana:'サンショクドウコウ',
    choices:[{name:'三色同刻',kana:'サンショクドウコウ'},{name:'三色同順',kana:'サンショクドウジュン'},{name:'対々和',kana:'トイトイ'},{name:'三暗刻',kana:'サンアンコウ'}],
-   explanation:'三色同刻（サンショクドウコウ）：萬・筒・索の3種で同じ数字の刻子を作る2翻役。3つ全てが暗刻なら三暗刻も複合する。'},
+   explanation:'三色同刻（サンショクドウコウ）：萬・筒・索の3種で同じ数字の刻子を作る2翻役。3つ全て暗刻なら三暗刻も複合する。'},
+
+  // Q7 混一色（字牌雀頭版で役牌不成立）- 索子系
   {difficulty:'mid',
    text:'この手牌の形はどの役でしょう？',
-   hand:['man1','man1','man1','man9','man9','man9','pin1','pin1','pin1','pei','pei','pei','sou9','sou9'],
-   note:'1・9・字牌のみ、順子なし',
-   conds:[{label:'1・9・字牌のみ',gold:true},{label:'すべて刻子',gold:true}],
-   answer:'混老頭',kana:'ホンロウトウ',
-   choices:[{name:'混老頭',kana:'ホンロウトウ'},{name:'清老頭',kana:'チンロウトウ'},{name:'対々和',kana:'トイトイ'},{name:'混全帯幺九',kana:'チャンタ'}],
-   explanation:'混老頭（ホンロウトウ）：1・9・字牌だけで揃える。字牌が含まれるので清老頭ではなく混老頭。必ずトイトイと複合し実質4翻。'},
-  {difficulty:'mid',
-   text:'この手牌の形はどの役でしょう？',
-   hand:['hatu','hatu','man1','man2','man3','man5','man5','man5','man7','man8','man9','haku','haku','haku'],
-   note:'萬子と三元牌（白・發）のみで揃えた',
-   conds:[{label:'1種の数牌＋三元牌',gold:false},{label:'混一色の一形',gold:true}],
+   groups:[
+     {tiles:['sou1','sou2','sou3'],naki:true},
+     {tiles:['sou4','sou5','sou6'],naki:true},
+     {tiles:['sou7','sou8','sou9'],naki:false},
+     {tiles:['sou2','sou3','sou4'],naki:false},
+     {tiles:['sya','sya'],naki:false},
+   ],
+   note:'索子と西（字牌）のみ。西は雀頭',
+   conds:[{label:'1種の数牌＋字牌のみ',gold:true},{label:'鳴き2翻',gold:false}],
    answer:'混一色',kana:'ホンイツ',
-   choices:[{name:'混一色',kana:'ホンイツ'},{name:'役牌',kana:'ヤクハイ'},{name:'混全帯幺九',kana:'チャンタ'},{name:'清一色',kana:'チンイツ'}],
-   explanation:'混一色（ホンイツ）：1種類の数牌と字牌だけで揃える3翻役。この手は萬子＋三元牌（白・發）で混一色が成立。役牌も複合する。'},
+   choices:[{name:'混一色',kana:'ホンイツ'},{name:'一気通貫',kana:'イッキツウカン'},{name:'清一色',kana:'チンイツ'},{name:'断么九',kana:'タンヤオ'}],
+   explanation:'混一色（ホンイツ）：1種の数牌と字牌のみで揃える3翻役（鳴き2翻）。'},
+
+  // Q8 小三元: 三元牌2種刻子＋1種雀頭
   {difficulty:'mid',
    text:'この手牌の形はどの役でしょう？',
-   hand:['man3','man3','man3','pin7','pin7','pin7','sou2','sou2','sou2','nan','nan','nan','pin5','pin5'],
-   note:'暗刻（手の中）が3組、残り1面子は南の明刻',
-   conds:[{label:'暗刻3組＋明刻1組',gold:false},{label:'鳴きあり',gold:false}],
-   answer:'三暗刻',kana:'サンアンコウ',
-   choices:[{name:'三暗刻',kana:'サンアンコウ'},{name:'四暗刻',kana:'スーアンコウ'},{name:'対々和',kana:'トイトイ'},{name:'混老頭',kana:'ホンロウトウ'}],
-   explanation:'三暗刻（サンアンコウ）：3組の刻子が暗刻（手の中で自然に揃えた）であれば成立。4組目はポンしてもOK。'},
-  {difficulty:'mid',
-   text:'この手牌の形はどの役でしょう？',
-   hand:['hatu','hatu','hatu','haku','haku','man2','man3','man4','man6','man7','man8','tyun','tyun','tyun'],
-   note:'白を雀頭、發・中を刻子にした三元牌3種の組み合わせ',
-   conds:[{label:'三元牌1種が雀頭',gold:true},{label:'残り2種が刻子',gold:true},{label:'実質4翻',gold:false}],
+   groups:[
+     {tiles:['hatu','hatu','hatu'],naki:true},
+     {tiles:['tyun','tyun','tyun'],naki:true},
+     {tiles:['man2','man3','man4'],naki:false},
+     {tiles:['man6','man7','man8'],naki:false},
+     {tiles:['haku','haku'],naki:false},
+   ],
+   note:'白を雀頭、發・中を刻子（横は鳴き）',
+   conds:[{label:'三元牌1種が雀頭',gold:true},{label:'残り2種が刻子',gold:true}],
    answer:'小三元',kana:'ショウサンゲン',
    choices:[{name:'小三元',kana:'ショウサンゲン'},{name:'大三元',kana:'ダイサンゲン'},{name:'役牌',kana:'ヤクハイ'},{name:'対々和',kana:'トイトイ'}],
-   explanation:'小三元（ショウサンゲン）：三元牌の1種を雀頭、残り2種を刻子にする2翻役。必ず役牌×2翻と複合するため実質4翻。大三元は3種すべて刻子で役満。'},
+   explanation:'小三元（ショウサンゲン）：三元牌の1種を雀頭、残り2種を刻子にする2翻役。必ず役牌×2と複合するため実質4翻。'},
+
+  // Q9 三暗刻: 暗刻3組・順子1組鳴き・三色等複合しない構成
+  {difficulty:'mid',
+   text:'この手牌の形はどの役でしょう？',
+   groups:[
+     {tiles:['man4','man5','man6'],naki:true},
+     {tiles:['pin3','pin3','pin3'],naki:false},
+     {tiles:['sou7','sou7','sou7'],naki:false},
+     {tiles:['man8','man8','man8'],naki:false},
+     {tiles:['pin6','pin6'],naki:false},
+   ],
+   note:'暗刻3組（縦向き）＋チー1組（横向き）',
+   conds:[{label:'暗刻3組',gold:true},{label:'残り1組はチー',gold:false}],
+   answer:'三暗刻',kana:'サンアンコウ',
+   choices:[{name:'三暗刻',kana:'サンアンコウ'},{name:'四暗刻',kana:'スーアンコウ'},{name:'対々和',kana:'トイトイ'},{name:'混老頭',kana:'ホンロウトウ'}],
+   explanation:'三暗刻（サンアンコウ）：3組の刻子が暗刻であれば成立する2翻役。残り1組は鳴いてもOK。'},
+
+  // Q10 純全帯幺九 門前版3翻（平和複合しないよう刻子を含む）
+  {difficulty:'mid',
+   text:'この手牌の形はどの役でしょう？（門前）',
+   groups:[
+     {tiles:['man1','man2','man3'],naki:false},
+     {tiles:['man7','man8','man9'],naki:false},
+     {tiles:['pin1','pin1','pin1'],naki:false},
+     {tiles:['sou7','sou8','sou9'],naki:false},
+     {tiles:['pin9','pin9'],naki:false},
+   ],
+   note:'全面子に1か9が含まれる。字牌なし。刻子あり',
+   conds:[{label:'全面子に1か9',gold:true},{label:'字牌なし',gold:true},{label:'門前3翻',gold:false}],
+   answer:'純全帯幺九',kana:'ジュンチャン',
+   choices:[{name:'純全帯幺九',kana:'ジュンチャン'},{name:'混全帯幺九',kana:'チャンタ'},{name:'清一色',kana:'チンイツ'},{name:'一気通貫',kana:'イッキツウカン'}],
+   explanation:'純全帯幺九（ジュンチャン）：全面子に1か9の数牌を含み、字牌を使わない3翻役（鳴き2翻）。'},
 ];
 
 const QUESTIONS_HARD = [
+
+  // Q1 二盃口: 門前3翻・平和複合しないよう刻子雀頭
   {difficulty:'hard',
-   text:'この手牌の形はどの役でしょう？',
-   hand:['pin2','pin3','pin4','pin2','pin3','pin4','pin5','pin6','pin7','pin5','pin6','pin7','pin8','pin8'],
-   note:'②③④が2組、⑤⑥⑦が2組の一盃口が2セット',
-   conds:[{label:'一盃口が2セット',gold:true},{label:'門前のみ',gold:false}],
+   text:'この手牌の形はどの役でしょう？（門前）',
+   groups:[
+     {tiles:['pin2','pin2','pin3','pin3','pin4','pin4'],naki:false},
+     {tiles:['pin5','pin5','pin6','pin6','pin7','pin7'],naki:false},
+     {tiles:['man5','man5'],naki:false},
+   ],
+   note:'②②③③④④ と ⑤⑤⑥⑥⑦⑦ — 一盃口が2セット',
+   conds:[{label:'一盃口が2セット',gold:true},{label:'門前のみ3翻',gold:false}],
    answer:'二盃口',kana:'リャンペーコー',
    choices:[{name:'二盃口',kana:'リャンペーコー'},{name:'一盃口',kana:'イーペーコー'},{name:'七対子',kana:'チートイツ'},{name:'清一色',kana:'チンイツ'}],
-   explanation:'二盃口（リャンペーコー）：一盃口を2セット作る3翻門前役。同じ順子が2組×2種で4組の面子＋雀頭の形。七対子に見えることがあるが別の役。'},
+   explanation:'二盃口（リャンペーコー）：一盃口を2セット揃える3翻門前役。七対子に見えるが別の役で、雀頭1組＋4面子の形。'},
+
+  // Q2 国士無双: 1・9・字牌13種
   {difficulty:'hard',
    text:'この手牌の形はどの役でしょう？',
-   hand:['man1','man9','pin1','pin9','sou1','sou9','ton','nan','sya','pei','haku','hatu','tyun','tyun'],
-   note:'1・9・字牌を全種類1枚ずつ＋中が雀頭',
-   conds:[{label:'1・9・字牌13種全種＋雀頭1種',gold:true},{label:'門前のみ・役満',gold:true}],
+   groups:[
+     {tiles:['man1','man9','pin1','pin9','sou1','sou9','ton','nan','sya','pei','haku','hatu','tyun','tyun'],naki:false},
+   ],
+   note:'1・9・字牌を全13種集めて中を雀頭',
+   conds:[{label:'1・9・字牌13種全種',gold:true},{label:'門前のみ・役満',gold:true}],
    answer:'国士無双',kana:'コクシムソウ',
    choices:[{name:'国士無双',kana:'コクシムソウ'},{name:'混老頭',kana:'ホンロウトウ'},{name:'字一色',kana:'ツーイーソー'},{name:'清老頭',kana:'チンロウトウ'}],
-   explanation:'国士無双（コクシムソウ）：1・9・字牌の13種を全て集め、そのうち1種を雀頭にする役満。門前のみ。13面待ちはダブル役満とする場合もある。'},
+   explanation:'国士無双（コクシムソウ）：1・9・字牌の13種を全て集め、そのうち1種を雀頭にする役満。門前のみ。'},
+
+  // Q3 清老頭: 数牌1・9のみ・役満。対々和も複合するが「清老頭」が問題
   {difficulty:'hard',
-   text:'この手牌の形はどの役でしょう？',
-   hand:['man1','man1','man1','man9','man9','man9','pin1','pin1','pin1','sou1','sou1','sou1','pin9','pin9'],
-   note:'1と9の数牌のみ。字牌なし',
+   text:'この手牌の形はどの役でしょう？（対々和とは別の役満が隠れています）',
+   groups:[
+     {tiles:['man1','man1','man1'],naki:true},
+     {tiles:['man9','man9','man9'],naki:true},
+     {tiles:['pin1','pin1','pin1'],naki:false},
+     {tiles:['sou9','sou9','sou9'],naki:false},
+     {tiles:['pin9','pin9'],naki:false},
+   ],
+   note:'数牌の1と9だけ。字牌なし',
    conds:[{label:'数牌の1・9のみ',gold:true},{label:'字牌なし',gold:true},{label:'役満',gold:true}],
    answer:'清老頭',kana:'チンロウトウ',
    choices:[{name:'清老頭',kana:'チンロウトウ'},{name:'混老頭',kana:'ホンロウトウ'},{name:'国士無双',kana:'コクシムソウ'},{name:'対々和',kana:'トイトイ'}],
-   explanation:'清老頭（チンロウトウ）：数牌の1と9だけで面子と雀頭を揃える役満。混老頭は字牌を含む版で2翻。'},
+   explanation:'清老頭（チンロウトウ）：数牌の1と9だけで面子と雀頭を揃える役満。字牌がないのが混老頭との違い。'},
+
+  // Q4 緑一色
   {difficulty:'hard',
    text:'この手牌の形はどの役でしょう？',
-   hand:['hatu','hatu','sou2','sou3','sou4','sou6','sou6','sou6','sou8','sou8','sou8','sou4','sou4','sou4'],
-   note:'發・2・3・4・6・8索のみ（緑色の牌）',
+   groups:[
+     {tiles:['hatu','hatu','hatu'],naki:true},
+     {tiles:['sou2','sou3','sou4'],naki:true},
+     {tiles:['sou6','sou6','sou6'],naki:false},
+     {tiles:['sou8','sou8','sou8'],naki:false},
+     {tiles:['sou4','sou4'],naki:false},
+   ],
+   note:'發・2・3・4・6・8索のみ（すべて緑色の牌）',
    conds:[{label:'發・2s・3s・4s・6s・8sのみ',gold:true},{label:'役満',gold:true}],
    answer:'緑一色',kana:'リューイーソー',
    choices:[{name:'緑一色',kana:'リューイーソー'},{name:'清一色',kana:'チンイツ'},{name:'混一色',kana:'ホンイツ'},{name:'字一色',kana:'ツーイーソー'}],
-   explanation:'緑一色（リューイーソー）：發・索子の2・3・4・6・8だけで揃える役満。これらは全て緑色の牌。鳴いてもOK。'},
+   explanation:'緑一色（リューイーソー）：發・索子の2・3・4・6・8だけで揃える役満。これらはすべて緑色の牌。鳴いてもOK。'},
+
+  // Q5 大四喜
   {difficulty:'hard',
    text:'この手牌の形はどの役でしょう？',
-   hand:['ton','ton','ton','nan','nan','nan','sya','sya','sya','pei','pei','pei','haku','haku'],
+   groups:[
+     {tiles:['ton','ton','ton'],naki:true},
+     {tiles:['nan','nan','nan'],naki:true},
+     {tiles:['sya','sya','sya'],naki:false},
+     {tiles:['pei','pei','pei'],naki:false},
+     {tiles:['haku','haku'],naki:false},
+   ],
    note:'東・南・西・北の刻子4組＋白の雀頭',
-   conds:[{label:'東南西北を全て刻子',gold:true},{label:'役満（ダブル役満のルールあり）',gold:true}],
+   conds:[{label:'東南西北を全て刻子',gold:true},{label:'役満',gold:true}],
    answer:'大四喜',kana:'ダイスーシー',
    choices:[{name:'大四喜',kana:'ダイスーシー'},{name:'小四喜',kana:'ショウスーシー'},{name:'字一色',kana:'ツーイーソー'},{name:'対々和',kana:'トイトイ'}],
-   explanation:'大四喜（ダイスーシー）：東・南・西・北の4種すべてを刻子で揃える役満。ルールによってはダブル役満。小四喜は3種が刻子・1種が雀頭。'},
+   explanation:'大四喜（ダイスーシー）：東・南・西・北の4種すべてを刻子で揃える役満。ルールによってはダブル役満。'},
+
+  // Q6 字一色（七対子形）
   {difficulty:'hard',
    text:'この手牌の形はどの役でしょう？',
-   hand:['ton','ton','nan','nan','sya','sya','pei','pei','haku','haku','hatu','hatu','tyun','tyun'],
-   note:'7種の対子を字牌のみで構成',
-   conds:[{label:'字牌のみ',gold:true},{label:'七対子の形',gold:false},{label:'役満',gold:true}],
+   groups:[
+     {tiles:['ton','ton'],naki:false},
+     {tiles:['nan','nan'],naki:false},
+     {tiles:['sya','sya'],naki:false},
+     {tiles:['pei','pei'],naki:false},
+     {tiles:['haku','haku'],naki:false},
+     {tiles:['hatu','hatu'],naki:false},
+     {tiles:['tyun','tyun'],naki:false},
+   ],
+   note:'字牌のみで7対子の形',
+   conds:[{label:'字牌のみ',gold:true},{label:'役満',gold:true}],
    answer:'字一色',kana:'ツーイーソー',
    choices:[{name:'字一色',kana:'ツーイーソー'},{name:'七対子',kana:'チートイツ'},{name:'混老頭',kana:'ホンロウトウ'},{name:'大四喜',kana:'ダイスーシー'}],
-   explanation:'字一色（ツーイーソー）：字牌だけで面子と雀頭を揃える役満。対々和形でも七対子形でもOK。鳴いてもOK。'},
+   explanation:'字一色（ツーイーソー）：字牌だけで面子と雀頭を揃える役満。七対子形でも対々和形でもOK。'},
+
+  // Q7 四暗刻: 4組すべて暗刻・単騎待ちで成立（単騎なのでロンOK）
   {difficulty:'hard',
-   text:'この手牌の形はどの役でしょう？',
-   hand:['man1','man1','man1','man6','man6','man6','pin3','pin3','pin3','nan','nan','nan','sou4','sou4'],
-   note:'暗刻が4組（ツモ後の形）',
-   conds:[{label:'暗刻4組',gold:true},{label:'門前のみ・役満',gold:true}],
+   text:'この手牌の形はどの役でしょう？（4組すべて手の中で揃えた）',
+   groups:[
+     {tiles:['man2','man2','man2'],naki:false},
+     {tiles:['pin6','pin6','pin6'],naki:false},
+     {tiles:['sou3','sou3','sou3'],naki:false},
+     {tiles:['nan','nan','nan'],naki:false},
+     {tiles:['haku','haku'],naki:false},
+   ],
+   note:'4組すべて暗刻（縦向き）、雀頭単騎待ち',
+   conds:[{label:'暗刻4組',gold:true},{label:'門前のみ・役満',gold:true},{label:'単騎待ち',gold:false}],
    answer:'四暗刻',kana:'スーアンコウ',
    choices:[{name:'四暗刻',kana:'スーアンコウ'},{name:'三暗刻',kana:'サンアンコウ'},{name:'対々和',kana:'トイトイ'},{name:'混老頭',kana:'ホンロウトウ'}],
-   explanation:'四暗刻（スーアンコウ）：4組の刻子をすべて暗刻で揃える役満。ロンでは3組目の刻子が明刻になるため不成立（単騎待ちのロンはOK）。'},
+   explanation:'四暗刻（スーアンコウ）：4組の刻子をすべて暗刻で揃える役満。単騎待ちならロンでも成立。それ以外の待ちでロンすると三暗刻になる。'},
+
+  // Q8 九蓮宝燈
   {difficulty:'hard',
    text:'この手牌の形はどの役でしょう？',
-   hand:['man1','man1','man1','man2','man3','man4','man5','man6','man7','man8','man9','man9','man9','man5'],
-   note:'萬子のみで 1112345678999 ＋1枚 の形',
-   conds:[{label:'1種の数牌で111・2・3・4・5・6・7・8・999',gold:true},{label:'門前のみ・役満',gold:true}],
+   groups:[
+     {tiles:['pin1','pin1','pin1','pin2','pin3','pin4','pin5','pin6','pin7','pin8','pin9','pin9','pin9','pin5'],naki:false},
+   ],
+   note:'筒子のみで 1112345678999 ＋ ⑤ の形',
+   conds:[{label:'1種の数牌で111〜999＋任意1枚',gold:true},{label:'門前のみ・役満',gold:true}],
    answer:'九蓮宝燈',kana:'チューレンポウトウ',
    choices:[{name:'九蓮宝燈',kana:'チューレンポウトウ'},{name:'清一色',kana:'チンイツ'},{name:'国士無双',kana:'コクシムソウ'},{name:'一気通貫',kana:'イッキツウカン'}],
-   explanation:'九蓮宝燈（チューレンポウトウ）：1種の数牌で「1112345678999＋任意1枚」の形を作る役満。9面待ちは純正九蓮宝燈としてダブル役満とするルールも。'},
+   explanation:'九蓮宝燈（チューレンポウトウ）：1種の数牌で「1112345678999＋任意1枚」の形を作る役満。門前のみ。'},
+
+  // Q9 二盃口（萬子・筒子の別パターン）
   {difficulty:'hard',
-   text:'この手牌の形はどの役でしょう？',
-   hand:['man1','man2','man3','man1','man2','man3','pin7','pin8','pin9','pin7','pin8','pin9','sou5','sou5'],
-   note:'一萬二萬三萬が2組、七筒八筒九筒が2組の二盃口',
+   text:'この手牌の形はどの役でしょう？（門前）',
+   groups:[
+     {tiles:['man1','man1','man2','man2','man3','man3'],naki:false},
+     {tiles:['pin7','pin7','pin8','pin8','pin9','pin9'],naki:false},
+     {tiles:['sou5','sou5'],naki:false},
+   ],
+   note:'一萬二萬三萬が2組、七筒八筒九筒が2組',
    conds:[{label:'一盃口が2セット',gold:true},{label:'門前3翻',gold:false}],
    answer:'二盃口',kana:'リャンペーコー',
    choices:[{name:'二盃口',kana:'リャンペーコー'},{name:'一盃口',kana:'イーペーコー'},{name:'三色同順',kana:'サンショクドウジュン'},{name:'平和',kana:'ピンフ'}],
-   explanation:'二盃口（リャンペーコー）：異なる2種の順子がそれぞれ2組ある3翻役。この手は萬子の123が2組＋筒子の789が2組。'},
+   explanation:'二盃口（リャンペーコー）：異なる2種の順子がそれぞれ2組ある3翻門前役。'},
+
+  // Q10 小四喜
   {difficulty:'hard',
    text:'この手牌の形はどの役でしょう？',
-   hand:['ton','ton','ton','nan','nan','sya','sya','sya','pei','pei','pei','haku','haku','haku'],
-   note:'東南西北のうち3種が刻子・1種（南）が雀頭',
+   groups:[
+     {tiles:['ton','ton','ton'],naki:true},
+     {tiles:['sya','sya','sya'],naki:true},
+     {tiles:['pei','pei','pei'],naki:false},
+     {tiles:['man3','man4','man5'],naki:false},
+     {tiles:['nan','nan'],naki:false},
+   ],
+   note:'東・西・北の刻子3組＋南の雀頭',
    conds:[{label:'風牌3種が刻子',gold:true},{label:'残り1種が雀頭',gold:true},{label:'役満',gold:true}],
    answer:'小四喜',kana:'ショウスーシー',
    choices:[{name:'小四喜',kana:'ショウスーシー'},{name:'大四喜',kana:'ダイスーシー'},{name:'字一色',kana:'ツーイーソー'},{name:'混老頭',kana:'ホンロウトウ'}],
@@ -453,24 +679,39 @@ const QUESTIONS_HARD = [
 ];
 
 function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-
-let qList=[], qIdx=0, correctCount=0, answered=false;
+let qList=[],qIdx=0,correctCount=0,answered=false;
 
 function startQuiz(mode){
   document.getElementById('mode-screen').style.display='none';
   document.getElementById('progress-area').style.display='block';
   document.getElementById('quiz-area').style.display='block';
   document.getElementById('result-screen').style.display='none';
-
   if(mode==='easy') qList=shuffle([...QUESTIONS_EASY]);
   else if(mode==='mid') qList=shuffle([...QUESTIONS_MID]);
   else if(mode==='hard') qList=shuffle([...QUESTIONS_HARD]);
   else qList=shuffle([...QUESTIONS_EASY,...QUESTIONS_MID,...QUESTIONS_HARD]).slice(0,20);
-
   qIdx=0; correctCount=0; answered=false;
   document.getElementById('nav-correct').textContent=0;
   document.getElementById('nav-total').textContent=0;
   showQuestion();
+}
+
+function renderHand(q){
+  const el=document.getElementById('q-tiles');
+  el.innerHTML='';
+  q.groups.forEach((grp,gi)=>{
+    if(gi>0){
+      const sep=document.createElement('span');
+      sep.className='group-sep'; el.appendChild(sep);
+    }
+    const div=document.createElement('div');
+    div.className='meld-group'+(grp.naki?' naki':'');
+    grp.tiles.forEach((key,ti)=>{
+      const isYoko=grp.naki&&ti===0;
+      div.appendChild(makeTile(key,isYoko));
+    });
+    el.appendChild(div);
+  });
 }
 
 function showQuestion(){
@@ -484,21 +725,9 @@ function showQuestion(){
   const badge=document.getElementById('q-badge');
   badge.textContent=dm[q.difficulty][0]; badge.className='badge '+dm[q.difficulty][1];
   document.getElementById('q-text').textContent=q.text;
-
-  // 手牌表示
-  const tilesEl=document.getElementById('q-tiles');
-  tilesEl.innerHTML='';
-  if(q.hand){
-    q.hand.forEach(k=>{
-      tilesEl.appendChild(makeTileEl(k));
-    });
-  }
+  renderHand(q);
   document.getElementById('q-note').textContent=q.note||'';
-
-  // 条件ピル
-  document.getElementById('q-cond').innerHTML=(q.conds||[]).map(c=>`<span class="cond-pill${c.gold?' gold':''}">${c.label}</span>`).join('');
-
-  // 選択肢をシャッフル
+  document.getElementById('q-cond').innerHTML=(q.conds||[]).map(c=>'<span class="cond-pill'+(c.gold?' gold':'')+'">'+c.label+'</span>').join('');
   const shuffled=shuffle([...q.choices]);
   const choicesEl=document.getElementById('q-choices');
   choicesEl.innerHTML='';
@@ -510,11 +739,9 @@ function showQuestion(){
     b.onclick=()=>selectAnswer(ch.name,q);
     choicesEl.appendChild(b);
   });
-
   document.getElementById('feedback').style.display='none';
   document.getElementById('feedback').className='feedback';
   document.getElementById('next-btn').style.display='none';
-
   const card=document.getElementById('q-card');
   card.style.animation='none'; void card.offsetWidth; card.style.animation='fadeIn 0.35s ease';
 }
@@ -525,31 +752,22 @@ function selectAnswer(name,q){
   if(isCorrect)correctCount++;
   document.getElementById('nav-correct').textContent=correctCount;
   document.getElementById('nav-total').textContent=qIdx+1;
-
   document.querySelectorAll('.choice-btn').forEach(b=>{
     b.disabled=true;
     if(b.dataset.name===q.answer) b.classList.add('correct');
     else if(b.dataset.name===name&&!isCorrect) b.classList.add('wrong');
   });
-
   const fb=document.getElementById('feedback');
-  fb.style.display='block';
-  fb.className='feedback '+(isCorrect?'correct-fb':'wrong-fb');
+  fb.style.display='block'; fb.className='feedback '+(isCorrect?'correct-fb':'wrong-fb');
   const title=document.getElementById('fb-title');
   title.className='fb-title '+(isCorrect?'fb-correct':'fb-wrong');
   title.textContent=isCorrect?'✓ 正解！':'✗ 不正解　正解は「'+q.answer+'（'+q.kana+'）」';
   document.getElementById('fb-body').textContent=q.explanation;
-
   const nb=document.getElementById('next-btn');
-  nb.style.display='block';
-  nb.textContent=(qIdx+1<qList.length)?'次の問題 →':'結果を見る';
+  nb.style.display='block'; nb.textContent=(qIdx+1<qList.length)?'次の問題 →':'結果を見る';
 }
 
-function nextQuestion(){
-  qIdx++;
-  if(qIdx>=qList.length) showResult();
-  else showQuestion();
-}
+function nextQuestion(){qIdx++;if(qIdx>=qList.length)showResult();else showQuestion();}
 
 function showResult(){
   document.getElementById('quiz-area').style.display='none';
