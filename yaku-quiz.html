@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
+<!-- saved from url=(0047)file:///C:/Users/shoum/Downloads/yaku-quiz.html -->
+<html lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>役名クイズ — 麻雀道場</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&family=Noto+Serif+JP:wght@400;700&family=Zen+Antique&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="./yaku-quiz_files/css2" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
@@ -100,7 +100,7 @@ body{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.008) 0p
 <body>
 <nav class="nav">
   <div class="nav-left">
-    <a class="nav-back" href="index.html">← 道場へ戻る</a>
+    <a class="nav-back" href="file:///C:/Users/shoum/Downloads/index.html">← 道場へ戻る</a>
     <span style="color:var(--text-dim)">|</span>
     <span class="nav-title">役名クイズ</span>
   </div>
@@ -111,28 +111,28 @@ body{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.008) 0p
     <div class="mode-title">役名クイズ</div>
     <div class="mode-sub">手牌の形を見て役名を当てましょう。<br>横向きの牌は鳴き（ポン・チー）した牌です。</div>
     <div class="mode-grid">
-      <button class="mode-btn" onclick="startQuiz('easy')">
+      <button class="mode-btn" onclick="startQuiz(&#39;easy&#39;)">
         <span class="mode-btn-badge badge badge-easy">初級</span>
         <div class="mode-btn-title">初級モード</div>
         <div class="mode-btn-sub">頻出役10問</div>
       </button>
-      <button class="mode-btn" onclick="startQuiz('mid')">
+      <button class="mode-btn" onclick="startQuiz(&#39;mid&#39;)">
         <span class="mode-btn-badge badge badge-mid">中級</span>
         <div class="mode-btn-title">中級モード</div>
         <div class="mode-btn-sub">やや難しい役10問</div>
       </button>
-      <button class="mode-btn" onclick="startQuiz('hard')">
+      <button class="mode-btn" onclick="startQuiz(&#39;hard&#39;)">
         <span class="mode-btn-badge badge badge-hard">上級</span>
         <div class="mode-btn-title">上級モード</div>
         <div class="mode-btn-sub">難役・役満10問</div>
       </button>
-      <button class="mode-btn" onclick="startQuiz('all')">
+      <button class="mode-btn" onclick="startQuiz(&#39;all&#39;)">
         <span class="mode-btn-badge" style="background:rgba(212,175,55,0.15);color:var(--gold);border:0.5px solid rgba(212,175,55,0.3);">全問</span>
         <div class="mode-btn-title">全問モード</div>
         <div class="mode-btn-sub">全難易度混合20問</div>
       </button>
     </div>
-    <a class="home-btn" href="yaku.html">役一覧を見る →</a>
+    <a class="home-btn" href="file:///C:/Users/shoum/Downloads/yaku.html">役一覧を見る →</a>
   </div>
   <div id="progress-area" style="display:none">
     <div class="progress-wrap">
@@ -163,7 +163,7 @@ body{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.008) 0p
     <div class="res-comment" id="res-comment"></div>
     <div class="btn-row">
       <button class="retry-btn" onclick="backToMode()">モード選択へ</button>
-      <a class="home-btn" href="yaku.html">役一覧を見る</a>
+      <a class="home-btn" href="file:///C:/Users/shoum/Downloads/yaku.html">役一覧を見る</a>
     </div>
   </div>
 </div>
@@ -412,12 +412,13 @@ const QUESTIONS_MID = [
    explanation:'純全帯幺九（ジュンチャン）：全ての面子と雀頭に数牌の1か9を含める3翻役（鳴き2翻）。字牌を使わないのがチャンタとの違い。'},
 
   // Q4 混一色: 1種の数牌＋字牌。役牌複合しないよう字牌は風牌の雀頭だけ
+  // 清一色複合しないよう筒子＋萬子（2種）で混一色
   {difficulty:'mid',
    text:'この手牌の形はどの役でしょう？',
    groups:[
      {tiles:['man2','man3','man4'],naki:true},
      {tiles:['man5','man6','man7'],naki:true},
-     {tiles:['man1','man2','man3'],naki:false},
+     {tiles:['pin4','pin5','pin6'],naki:true},
      {tiles:['man6','man7','man8'],naki:false},
      {tiles:['sya','sya'],naki:false},
    ],
@@ -425,7 +426,7 @@ const QUESTIONS_MID = [
    conds:[{label:'1種の数牌＋字牌のみ',gold:true},{label:'鳴き2翻',gold:false}],
    answer:'混一色',kana:'ホンイツ',
    choices:[{name:'混一色',kana:'ホンイツ'},{name:'清一色',kana:'チンイツ'},{name:'断么九',kana:'タンヤオ'},{name:'混全帯幺九',kana:'チャンタ'}],
-   explanation:'混一色（ホンイツ）：1種の数牌と字牌だけで揃える役。門前3翻・鳴き2翻。役牌複合しないよう字牌は刻子にしていない。'},
+   explanation:'混一色（ホンイツ）：1種の数牌と字牌だけで揃える役。門前3翻・鳴き2翻。役牌複合しないよう字牌は雀頭にしている。'},
 
   // Q5 混老頭: 1・9・字牌のみ。必ずトイトイ複合（問題として「混老頭」を問う）
   // 対々和との区別がポイントなので問題文で強調
@@ -460,17 +461,17 @@ const QUESTIONS_MID = [
    choices:[{name:'三色同刻',kana:'サンショクドウコウ'},{name:'三色同順',kana:'サンショクドウジュン'},{name:'対々和',kana:'トイトイ'},{name:'三暗刻',kana:'サンアンコウ'}],
    explanation:'三色同刻（サンショクドウコウ）：萬・筒・索の3種で同じ数字の刻子を作る2翻役。3つ全て暗刻なら三暗刻も複合する。'},
 
-  // Q7 混一色（字牌雀頭版で役牌不成立）- 索子系
+  // Q7 混一色（筒子＋字牌版）：一気通貫複合しないよう索子を避け筒子を使用
   {difficulty:'mid',
    text:'この手牌の形はどの役でしょう？',
    groups:[
-     {tiles:['sou1','sou2','sou3'],naki:true},
-     {tiles:['sou4','sou5','sou6'],naki:true},
-     {tiles:['sou7','sou8','sou9'],naki:false},
-     {tiles:['sou2','sou3','sou4'],naki:false},
+     {tiles:['man2','man3','man4'],naki:true},
+     {tiles:['man5','man6','man7'],naki:true},
+     {tiles:['pin1','pin2','pin3'],naki:false},
+     {tiles:['pin6','pin7','pin8'],naki:false},
      {tiles:['sya','sya'],naki:false},
    ],
-   note:'索子と西（字牌）のみ。西は雀頭',
+   note:'筒子と西（字牌）のみ。西は雀頭',
    conds:[{label:'1種の数牌＋字牌のみ',gold:true},{label:'鳴き2翻',gold:false}],
    answer:'混一色',kana:'ホンイツ',
    choices:[{name:'混一色',kana:'ホンイツ'},{name:'一気通貫',kana:'イッキツウカン'},{name:'清一色',kana:'チンイツ'},{name:'断么九',kana:'タンヤオ'}],
@@ -483,7 +484,7 @@ const QUESTIONS_MID = [
      {tiles:['hatu','hatu','hatu'],naki:true},
      {tiles:['tyun','tyun','tyun'],naki:true},
      {tiles:['man2','man3','man4'],naki:false},
-     {tiles:['man6','man7','man8'],naki:false},
+     {tiles:['sou4','sou5','sou6'],naki:false},
      {tiles:['haku','haku'],naki:false},
    ],
    note:'白を雀頭、發・中を刻子（横は鳴き）',
@@ -527,19 +528,20 @@ const QUESTIONS_MID = [
 
 const QUESTIONS_HARD = [
 
-  // Q1 二盃口: 門前3翻・平和複合しないよう刻子雀頭
+  // Q1 二盃口: 門前3翻。七対子と見えるが雀頭+4面子の形
+  // ②③④が2組、⑤⑥⑦が2組、雀頭は索子5sで14枚
   {difficulty:'hard',
-   text:'この手牌の形はどの役でしょう？（門前）',
+   text:'この手牌の形はどの役でしょう？（七対子ではありません）',
    groups:[
      {tiles:['pin2','pin2','pin3','pin3','pin4','pin4'],naki:false},
      {tiles:['pin5','pin5','pin6','pin6','pin7','pin7'],naki:false},
-     {tiles:['man5','man5'],naki:false},
+     {tiles:['sou7','sou7'],naki:false},
    ],
-   note:'②②③③④④ と ⑤⑤⑥⑥⑦⑦ — 一盃口が2セット',
-   conds:[{label:'一盃口が2セット',gold:true},{label:'門前のみ3翻',gold:false}],
+   note:'②③④が2組＋⑤⑥⑦が2組（一盃口×2）。雀頭は7索',
+   conds:[{label:'一盃口が2セット',gold:true},{label:'門前のみ3翻',gold:false},{label:'七対子ではない',gold:false}],
    answer:'二盃口',kana:'リャンペーコー',
    choices:[{name:'二盃口',kana:'リャンペーコー'},{name:'一盃口',kana:'イーペーコー'},{name:'七対子',kana:'チートイツ'},{name:'清一色',kana:'チンイツ'}],
-   explanation:'二盃口（リャンペーコー）：一盃口を2セット揃える3翻門前役。七対子に見えるが別の役で、雀頭1組＋4面子の形。'},
+   explanation:'二盃口（リャンペーコー）：一盃口を2セット揃える3翻門前役。七対子に見えるが、雀頭1組＋4面子（各3枚ではなく同順子2組ずつ）の形。七対子と区別するポイントは雀頭が別色（ここでは索子）の点。'},
 
   // Q2 国士無双: 1・9・字牌13種
   {difficulty:'hard',
@@ -585,7 +587,7 @@ const QUESTIONS_HARD = [
    choices:[{name:'緑一色',kana:'リューイーソー'},{name:'清一色',kana:'チンイツ'},{name:'混一色',kana:'ホンイツ'},{name:'字一色',kana:'ツーイーソー'}],
    explanation:'緑一色（リューイーソー）：發・索子の2・3・4・6・8だけで揃える役満。これらはすべて緑色の牌。鳴いてもOK。'},
 
-  // Q5 大四喜
+  // Q5 大四喜: 雀頭を数牌にして字一色複合を防ぐ
   {difficulty:'hard',
    text:'この手牌の形はどの役でしょう？',
    groups:[
@@ -593,13 +595,13 @@ const QUESTIONS_HARD = [
      {tiles:['nan','nan','nan'],naki:true},
      {tiles:['sya','sya','sya'],naki:false},
      {tiles:['pei','pei','pei'],naki:false},
-     {tiles:['haku','haku'],naki:false},
+     {tiles:['sou5','sou5'],naki:false},
    ],
-   note:'東・南・西・北の刻子4組＋白の雀頭',
+   note:'東・南・西・北の刻子4組＋⑤索の雀頭',
    conds:[{label:'東南西北を全て刻子',gold:true},{label:'役満',gold:true}],
    answer:'大四喜',kana:'ダイスーシー',
    choices:[{name:'大四喜',kana:'ダイスーシー'},{name:'小四喜',kana:'ショウスーシー'},{name:'字一色',kana:'ツーイーソー'},{name:'対々和',kana:'トイトイ'}],
-   explanation:'大四喜（ダイスーシー）：東・南・西・北の4種すべてを刻子で揃える役満。ルールによってはダブル役満。'},
+   explanation:'大四喜（ダイスーシー）：東・南・西・北の4種すべてを刻子で揃える役満。雀頭を数牌にすることで字一色にはならない。ルールによってはダブル役満。'},
 
   // Q6 字一色（七対子形）
   {difficulty:'hard',
@@ -653,9 +655,9 @@ const QUESTIONS_HARD = [
    groups:[
      {tiles:['man1','man1','man2','man2','man3','man3'],naki:false},
      {tiles:['pin7','pin7','pin8','pin8','pin9','pin9'],naki:false},
-     {tiles:['sou5','sou5'],naki:false},
+     {tiles:['sou3','sou3'],naki:false},
    ],
-   note:'一萬二萬三萬が2組、七筒八筒九筒が2組',
+   note:'一萬二萬三萬が2組、七筒八筒九筒が2組。雀頭は3索（別色）',
    conds:[{label:'一盃口が2セット',gold:true},{label:'門前3翻',gold:false}],
    answer:'二盃口',kana:'リャンペーコー',
    choices:[{name:'二盃口',kana:'リャンペーコー'},{name:'一盃口',kana:'イーペーコー'},{name:'三色同順',kana:'サンショクドウジュン'},{name:'平和',kana:'ピンフ'}],
@@ -791,5 +793,6 @@ function backToMode(){
   document.getElementById('nav-total').textContent=0;
 }
 </script>
-</body>
-</html>
+
+
+</body></html>
