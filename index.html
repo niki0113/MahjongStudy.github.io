@@ -202,6 +202,13 @@
     to   { opacity: 1; transform: translateY(0); }
   }
 </style>
+  <meta http-equiv="Cache-Control" content="no-store">
+<script>
+// bfcache無効化: 前後ページキャッシュから復元された場合に強制リロード
+window.addEventListener('pageshow', function(e) {
+  if (e.persisted) { window.location.reload(); }
+});
+</script>
 </head>
 <body>
 <div class="border-frame"></div>

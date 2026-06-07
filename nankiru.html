@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
+<!-- saved from url=(0045)file:///C:/Users/shoum/Downloads/nankiru.html -->
+<html lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>何切る — 麻雀道場</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&family=Noto+Serif+JP:wght@400;700&family=Zen+Antique&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="./nankiru_files/css2" rel="stylesheet">
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
   :root{
@@ -75,7 +75,8 @@
   @media(max-width:500px){.river-grid{grid-template-columns:repeat(2,1fr);}}
   .river-player{background:rgba(0,0,0,0.2);border:0.5px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px;}
   .river-player-name{font-size:10px;color:var(--text-dim);margin-bottom:5px;}
-  .river-tiles{display:flex;flex-wrap:wrap;gap:3px;min-height:20px;}
+  .river-tiles-wrap{display:flex;flex-direction:column;gap:3px;}
+  .river-tiles{display:flex;flex-wrap:nowrap;gap:3px;min-height:20px;}
   /* 河の牌は少し小さめ */
   .river-tiles .tile-wrap{width:24px;height:32px;border-bottom-width:2px;}
   .river-tiles .tile-wrap.tile-yoko{width:32px;height:24px;border-right-width:2px;border-bottom:none;}
@@ -144,11 +145,18 @@
   .home-btn{padding:13px 40px;font-size:15px;font-weight:500;font-family:'Noto Sans JP',sans-serif;background:transparent;border:0.5px solid rgba(255,255,255,0.2);border-radius:9px;cursor:pointer;color:var(--text-mid);text-decoration:none;display:inline-block;transition:background 0.15s;}
   .home-btn:hover{background:rgba(255,255,255,0.06);}
 </style>
+  <meta http-equiv="Cache-Control" content="no-store">
+<script>
+// bfcache無効化: 前後ページキャッシュから復元された場合に強制リロード
+window.addEventListener('pageshow', function(e) {
+  if (e.persisted) { window.location.reload(); }
+});
+</script>
 </head>
 <body>
 <nav class="nav">
   <div class="nav-left">
-    <a class="nav-back" href="index.html">← 道場へ戻る</a>
+    <a class="nav-back" href="file:///C:/Users/shoum/Downloads/index.html">← 道場へ戻る</a>
     <span style="color:var(--text-dim)">|</span>
     <span class="nav-title">何切る</span>
   </div>
@@ -157,41 +165,41 @@
 
 <div class="page">
   <div class="progress-wrap">
-    <div class="progress-info"><span id="prog-label">問題 1 / 10</span><span id="prog-pct">0%</span></div>
+    <div class="progress-info"><span id="prog-label">問題 1 / 14</span><span id="prog-pct">0%</span></div>
     <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
   </div>
 
-  <div id="quiz-area">
-    <div class="q-card" id="q-card">
+  <div id="quiz-area" style="display: block;">
+    <div class="q-card" id="q-card" style="animation: 0.35s ease 0s 1 normal none running fadeIn;">
       <div class="q-no" id="q-no">Q1</div>
-      <div class="badge" id="q-badge">初級</div>
-      <div class="q-text" id="q-text"></div>
+      <div class="badge badge-easy" id="q-badge">初級</div>
+      <div class="q-text" id="q-text">東1局南家（子）5巡目。字牌が3枚あります。どれを切りますか？</div>
 
       <!-- 場況ピル -->
-      <div class="situation-row" id="sit-row"></div>
+      <div class="situation-row" id="sit-row"><span class="sit-pill">東1局</span><span class="sit-pill">子（南家）</span><span class="sit-pill">5巡目</span><span class="sit-pill">持ち点 25000</span></div>
 
       <!-- ドラ＋場況ボード -->
       <div class="board" id="board-wrap">
         <div class="board-cell">
           <div class="board-label">ドラ表示牌</div>
-          <div class="dora-row" id="dora-row"></div>
+          <div class="dora-row" id="dora-row"><div class="tile-wrap" data-key="pin6" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin6.png" alt="⑥"></div></div>
         </div>
         <div class="board-cell" id="board-info">
           <div class="board-label">場況メモ</div>
-          <div id="board-notes" style="font-size:12px;color:var(--text-mid);line-height:1.7;"></div>
+          <div id="board-notes" style="font-size:12px;color:var(--text-mid);line-height:1.7;">ドラ表示牌は⑥筒。</div>
         </div>
       </div>
 
       <!-- 河 -->
       <div class="river-section">
         <div class="river-title">捨て牌（河）</div>
-        <div class="river-grid" id="river-grid"></div>
+        <div class="river-grid" id="river-grid"><div class="river-player"><div class="river-player-name">自家</div><div class="river-tiles-wrap"><div class="river-tiles"><div class="tile-wrap" data-key="man1" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man1.png" alt="一"></div><div class="tile-wrap" data-key="pei" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pei.png" alt="北"></div></div></div></div><div class="river-player"><div class="river-player-name">下家（右）</div><div class="river-tiles-wrap"><div class="river-tiles"><div class="tile-wrap" data-key="ton" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/ton.png" alt="東"></div><div class="tile-wrap" data-key="nan" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/nan.png" alt="南"></div><div class="tile-wrap" data-key="pin9" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin9.png" alt="⑨"></div><div class="tile-wrap" data-key="man9" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man9.png" alt="九"></div><div class="tile-wrap" data-key="tyun" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/tyun.png" alt="中"></div></div></div></div><div class="river-player"><div class="river-player-name">対面</div><div class="river-tiles-wrap"><div class="river-tiles"><div class="tile-wrap" data-key="haku" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/haku.png" alt="白"></div><div class="tile-wrap" data-key="sou1" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou1.png" alt="1s"></div><div class="tile-wrap" data-key="ton" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/ton.png" alt="東"></div><div class="tile-wrap" data-key="hatu" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/hatu.png" alt="發"></div></div></div></div><div class="river-player"><div class="river-player-name">上家（左）</div><div class="river-tiles-wrap"><div class="river-tiles"><div class="tile-wrap" data-key="nan" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/nan.png" alt="南"></div><div class="tile-wrap" data-key="pei" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pei.png" alt="北"></div><div class="tile-wrap" data-key="sya" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sya.png" alt="西"></div><div class="tile-wrap" data-key="tyun" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/tyun.png" alt="中"></div><div class="tile-wrap" data-key="pin1" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin1.png" alt="①"></div></div></div></div></div>
       </div>
 
       <!-- 手牌 -->
       <div class="hand-section">
         <div class="hand-label">あなたの手牌（13枚）— 切る牌を1枚クリック</div>
-        <div class="hand-row" id="hand-row"></div>
+        <div class="hand-row" id="hand-row"><div class="h-tile" data-idx="0"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man3.png" alt="三"><span class="tile-label-badge" id="lbl-0"></span></div><div class="h-tile" data-idx="1"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man4.png" alt="四"><span class="tile-label-badge" id="lbl-1"></span></div><div class="h-tile" data-idx="2"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man5.png" alt="五"><span class="tile-label-badge" id="lbl-2"></span></div><div class="h-tile" data-idx="3"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin5.png" alt="⑤"><span class="tile-label-badge" id="lbl-3"></span></div><div class="h-tile" data-idx="4"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin6.png" alt="⑥"><span class="tile-label-badge" id="lbl-4"></span></div><div class="h-tile" data-idx="5"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin7.png" alt="⑦"><span class="tile-label-badge" id="lbl-5"></span></div><div class="h-tile" data-idx="6"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou2.png" alt="2s"><span class="tile-label-badge" id="lbl-6"></span></div><div class="h-tile" data-idx="7"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou3.png" alt="3s"><span class="tile-label-badge" id="lbl-7"></span></div><div class="h-tile" data-idx="8"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou4.png" alt="4s"><span class="tile-label-badge" id="lbl-8"></span></div><div class="h-tile" data-idx="9"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou6.png" alt="6s"><span class="tile-label-badge" id="lbl-9"></span></div><div class="h-tile" data-idx="10"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou7.png" alt="7s"><span class="tile-label-badge" id="lbl-10"></span></div><div class="h-tile" data-idx="11"><img src="file:///C:/Users/shoum/Downloads/img/tiles/ton.png" alt="東"><span class="tile-label-badge" id="lbl-11"></span></div><div class="h-tile" data-idx="12"><img src="file:///C:/Users/shoum/Downloads/img/tiles/nan.png" alt="南"><span class="tile-label-badge" id="lbl-12"></span></div><div class="h-tile" data-idx="13"><img src="file:///C:/Users/shoum/Downloads/img/tiles/haku.png" alt="白"><span class="tile-label-badge" id="lbl-13"></span></div></div>
         <div class="hand-hint" id="hand-hint">▲ 牌をクリックして選択</div>
       </div>
 
@@ -201,24 +209,24 @@
         <div class="legend-item"><div class="legend-dot" style="background:rgba(192,57,43,0.6)"></div>不正解</div>
       </div>
 
-      <button class="action-btn btn-submit" id="btn-submit" onclick="submitAnswer()" disabled>この牌を切る</button>
-      <button class="action-btn btn-next"   id="btn-next"   onclick="nextQuestion()">次の問題 →</button>
+      <button class="action-btn btn-submit" id="btn-submit" onclick="submitAnswer()" disabled="" style="display: block;">この牌を切る</button>
+      <button class="action-btn btn-next" id="btn-next" onclick="nextQuestion()" style="display: none;">次の問題 →</button>
 
-      <div class="feedback" id="feedback">
+      <div class="feedback" id="feedback" style="display: none;">
         <div class="fb-title" id="fb-title"></div>
-        <div class="fb-body"  id="fb-body"></div>
-        <div class="fb-best"  id="fb-best"></div>
+        <div class="fb-body" id="fb-body"></div>
+        <div class="fb-best" id="fb-best"></div>
       </div>
     </div>
   </div>
 
-  <div class="result-screen" id="result-screen">
+  <div class="result-screen" id="result-screen" style="display: none;">
     <div class="res-title">お疲れ様でした</div>
     <div class="res-big" id="res-big">0</div>
     <div class="res-denom" id="res-denom">/ 10 問正解</div>
     <div class="res-comment" id="res-comment"></div>
     <button class="retry-btn" onclick="startQuiz()">もう一度挑戦</button>
-    <a class="home-btn" href="index.html">道場トップへ</a>
+    <a class="home-btn" href="file:///C:/Users/shoum/Downloads/index.html">道場トップへ</a>
   </div>
 </div>
 
@@ -302,300 +310,411 @@ function makeTileEl(key, aka=false, yoko=false, extraClass='') {
 */
 const QUESTIONS = [
 
-  /* ══ 初級 1 ══ */
+  /* ══════ 初級 ══════ */
+
+  /* 初級1: 孤立字牌の処理 ── 字牌3枚のうちどれを切るか */
   {
     difficulty:'easy',
-    text:'東1局東家（親）8巡目。リーチが入っていない序盤です。ブロックを整理して効率よく進めましょう。',
+    text:'東1局南家（子）5巡目。字牌が3枚あります。どれを切りますか？',
+    situation:[
+      {label:'東1局',type:'normal'},{label:'子（南家）',type:'normal'},
+      {label:'5巡目',type:'normal'},{label:'持ち点 25000',type:'normal'}
+    ],
+    dora:['pin6'],
+    boardNotes:'ドラ表示牌は⑥筒。',
+    river:[
+      {name:'自家',tiles:[{k:'man1',y:false,r:false},{k:'pei',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'pin9',y:false,r:false},{k:'man9',y:false,r:false},{k:'tyun',y:false,r:false}]},
+      {name:'対面',tiles:[{k:'haku',y:false,r:false},{k:'sou1',y:false,r:false},{k:'ton',y:false,r:false},{k:'hatu',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'nan',y:false,r:false},{k:'pei',y:false,r:false},{k:'sya',y:false,r:false},{k:'tyun',y:false,r:false},{k:'pin1',y:false,r:false}]}
+    ],
+    hand:[
+      {k:'man3',a:false},{k:'man4',a:false},{k:'man5',a:false},
+      {k:'pin5',a:false},{k:'pin6',a:false},{k:'pin7',a:false},
+      {k:'sou2',a:false},{k:'sou3',a:false},{k:'sou4',a:false},
+      {k:'sou6',a:false},{k:'sou7',a:false},
+      {k:'ton', a:false},{k:'nan', a:false},{k:'haku',a:false}
+    ],
+    bestIdx:12,
+    acceptable:[13],
+    explanation:'三四五萬・⑤⑥⑦・2s3s4sの3面子完成＋6s7sの両面ターツがある。雀頭が未確定なので東・南・白のどれかを雀頭にするか、孤立字牌として処理するか判断する。東は場に多く出ており自風でもない（南家）。南は自風で役牌になりえるため残す価値がある。白は三元牌だが1枚では弱い。南を残すため白か東を切る。東は場に1枚も出ておらず当たり牌になりうるため、場に複数見えている白が最善。'
+  },
+
+  /* 初級2: 完成面子とターツの保護 ── 端牌の孤立牌整理 */
+  {
+    difficulty:'easy',
+    text:'東2局東家（親）7巡目。受け入れを広く保ちたい。どれを切りますか？',
+    situation:[
+      {label:'東2局',type:'normal'},{label:'親（東家）',type:'normal'},
+      {label:'7巡目',type:'normal'},{label:'持ち点 25000',type:'normal'}
+    ],
+    dora:['sou7'],
+    boardNotes:'ドラ表示牌は7索。',
+    river:[
+      {name:'自家',tiles:[{k:'haku',y:false,r:false},{k:'hatu',y:false,r:false},{k:'tyun',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'pei',y:false,r:false},{k:'man9',y:false,r:false}]},
+      {name:'対面',tiles:[{k:'ton',y:false,r:false},{k:'man1',y:false,r:false},{k:'sou9',y:false,r:false},{k:'pin1',y:false,r:false},{k:'nan',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'sya',y:false,r:false},{k:'pei',y:false,r:false},{k:'hatu',y:false,r:false},{k:'man1',y:false,r:false}]}
+    ],
+    hand:[
+      {k:'man2',a:false},{k:'man3',a:false},{k:'man4',a:false},
+      {k:'man6',a:false},{k:'man7',a:false},
+      {k:'pin3',a:false},{k:'pin4',a:false},{k:'pin5',a:false},
+      {k:'sou5',a:false},{k:'sou6',a:false},{k:'sou7',a:false},
+      {k:'man9',a:false},{k:'sou9',a:false},{k:'pin9',a:false}
+    ],
+    bestIdx:11,
+    acceptable:[12,13],
+    explanation:'二三四萬・③④⑤・5s6s7s（ドラ）の3面子完成＋六七萬の両面ターツがある。9m・9s・9pはすべて孤立端牌で面子への貢献が低い。ドラ（8s）の受け入れがある7sの隣5s6s7sはすでに完成面子なので9sは残す意味が薄い。3つとも不要だが、六七萬の受け入れを考えると9mが最も邪魔。9m切りが最善。'
+  },
+
+  /* 初級3: タンヤオ方針 ── 1・9・字牌の整理順序 */
+  {
+    difficulty:'easy',
+    text:'東3局北家（子）4巡目。タンヤオ（断么九）を狙っています。どれを切りますか？',
+    situation:[
+      {label:'東3局',type:'normal'},{label:'子（北家）',type:'normal'},
+      {label:'4巡目',type:'normal'},{label:'持ち点 24000',type:'normal'}
+    ],
+    dora:['man3'],
+    boardNotes:'ドラ表示牌は三萬。',
+    river:[
+      {name:'自家',tiles:[{k:'ton',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'man9',y:false,r:false},{k:'pei',y:false,r:false},{k:'sou1',y:false,r:false}]},
+      {name:'対面',tiles:[{k:'sya',y:false,r:false},{k:'nan',y:false,r:false},{k:'pin9',y:false,r:false},{k:'hatu',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'tyun',y:false,r:false},{k:'haku',y:false,r:false},{k:'ton',y:false,r:false}]}
+    ],
+    hand:[
+      {k:'man4',a:false},{k:'man5',a:false},{k:'man6',a:false},
+      {k:'man7',a:false},{k:'man8',a:false},
+      {k:'pin3',a:false},{k:'pin4',a:false},{k:'pin5',a:false},
+      {k:'sou5',a:false},{k:'sou6',a:false},
+      {k:'man1',a:false},{k:'pin9',a:false},{k:'pei',a:false}
+    ],
+    bestIdx:10,
+    acceptable:[11,12],
+    explanation:'四〜八萬の5連形・③④⑤・5s6sのブロックがある。タンヤオ方針なら1・9・字牌をすべて除外する必要がある。一萬・⑨・北が不要。一萬は端牌の孤立牌で最も価値が低い。⑨は端牌だが隣の⑧が五連形に含まれており若干つながりがある。北は字牌で役牌（自風）だが北家にとって北は自風役牌──しかしタンヤオ方針と矛盾する。タンヤオ徹底なら一萬から切るのが明快で最善。'
+  },
+
+  /* 初級4: 雀頭候補の選択 ── 対子2組どちらを雀頭にするか */
+  {
+    difficulty:'easy',
+    text:'東4局西家（子）8巡目。対子が2組あります。どちらを雀頭にして、何を切りますか？',
+    situation:[
+      {label:'東4局',type:'normal'},{label:'子（西家）',type:'normal'},
+      {label:'8巡目',type:'normal'},{label:'持ち点 22000',type:'normal'}
+    ],
+    dora:['pin1'],
+    boardNotes:'ドラ表示牌は①筒。',
+    river:[
+      {name:'自家',tiles:[{k:'ton',y:false,r:false},{k:'hatu',y:false,r:false},{k:'tyun',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'man1',y:false,r:false},{k:'sou1',y:false,r:false},{k:'pin9',y:false,r:false}]},
+      {name:'対面',tiles:[{k:'pei',y:false,r:false},{k:'haku',y:false,r:false},{k:'man9',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'sou9',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'pin1',y:false,r:false}]}
+    ],
+    hand:[
+      {k:'man2',a:false},{k:'man3',a:false},{k:'man4',a:false},
+      {k:'pin5',a:false},{k:'pin6',a:false},{k:'pin7',a:false},
+      {k:'sou3',a:false},{k:'sou4',a:false},{k:'sou5',a:false},
+      {k:'man7',a:false},{k:'man7',a:false},
+      {k:'sou8',a:false},{k:'sou8',a:false},{k:'pin8',a:false}
+    ],
+    bestIdx:13,
+    acceptable:[],
+    explanation:'二三四萬・⑤⑥⑦・3s4s5sの3面子完成＋七七萬（対子）＋8s8s（対子）＋⑧（孤立）。対子が2組ありどちらかを雀頭に使う。七七萬を雀頭にすれば8sに何が来ても7s9sで面子ができる。8s8sを雀頭にすれば七萬は六萬か九萬待ちのカンチャン（七八萬なし）。⑧を切ると七七萬＋8s8sの2対子が残り、次の引きで柔軟に雀頭を選べる。⑧は3面子に含まれない孤立牌なので⑧切りが最善。'
+  },
+
+  /* 初級5: ブロック過多 ── 5ブロックから1つ落とす */
+  {
+    difficulty:'easy',
+    text:'南1局東家（親）6巡目。ブロックが1つ多い状態です。どれを切りますか？',
+    situation:[
+      {label:'南1局',type:'normal'},{label:'親（東家）',type:'normal'},
+      {label:'6巡目',type:'normal'},{label:'持ち点 27000',type:'normal'}
+    ],
+    dora:['sou2'],
+    boardNotes:'ドラ表示牌は2索。',
+    river:[
+      {name:'自家',tiles:[{k:'haku',y:false,r:false},{k:'tyun',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'pei',y:false,r:false},{k:'man9',y:false,r:false}]},
+      {name:'対面',tiles:[{k:'hatu',y:false,r:false},{k:'sya',y:false,r:false},{k:'sou9',y:false,r:false},{k:'pin1',y:false,r:false},{k:'man1',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'nan',y:false,r:false},{k:'haku',y:false,r:false},{k:'pin9',y:false,r:false}]}
+    ],
+    hand:[
+      {k:'man2',a:false},{k:'man3',a:false},{k:'man4',a:false},
+      {k:'man6',a:false},{k:'man7',a:false},{k:'man8',a:false},
+      {k:'pin4',a:false},{k:'pin5',a:false},{k:'pin6',a:false},
+      {k:'sou1',a:false},{k:'sou2',a:false},{k:'sou3',a:false},
+      {k:'pin8',a:false},{k:'pin9',a:false}
+    ],
+    bestIdx:9,
+    acceptable:[],
+    explanation:'二三四萬・六七八萬・④⑤⑥・1s2s3s（ドラ含む）の4面子完成形＋⑧⑨の両面ターツ。面子が4つ揃っていれば残り1ターツが雀頭または面子を完成させる。1s2s3sはドラ（3s）を含む完成面子なので落としたくない。⑧⑨は端に近い両面ターツ。1sはドラを含む面子の一部だが1sそのものは么九牌。「5ブロック→4ブロック＋雀頭候補」に整理するため最も弱いブロックを落とす。1sだけを切れば2s3sが残り両面（1or4s）になる。よって1s切りが最善。'
+  },
+
+  /* ══════ 中級 ══════ */
+
+  /* 中級1: 両面 vs カンチャン ── より広い受け入れを選ぶ */
+  {
+    difficulty:'mid',
+    text:'東1局南家（子）9巡目。ターツが1つ多い状態。どちらのターツを落としますか？',
+    situation:[
+      {label:'東1局',type:'normal'},{label:'子（南家）',type:'normal'},
+      {label:'9巡目',type:'normal'},{label:'持ち点 26000',type:'normal'}
+    ],
+    dora:['man5'],
+    boardNotes:'ドラ表示牌は五萬。',
+    river:[
+      {name:'自家',tiles:[{k:'ton',y:false,r:false},{k:'hatu',y:false,r:false},{k:'nan',y:false,r:false},{k:'pei',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'sya',y:false,r:false},{k:'haku',y:false,r:false},{k:'man9',y:false,r:false},{k:'pin1',y:false,r:false},{k:'tyun',y:false,r:false}]},
+      {name:'対面',tiles:[{k:'man1',y:false,r:false},{k:'nan',y:false,r:false},{k:'sou1',y:false,r:false},{k:'man8',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'pin9',y:false,r:false},{k:'sou9',y:false,r:false},{k:'ton',y:false,r:false},{k:'hatu',y:false,r:false},{k:'pin1',y:false,r:false}]}
+    ],
+    hand:[
+      {k:'man3',a:false},{k:'man4',a:false},{k:'man5',a:false},
+      {k:'pin2',a:false},{k:'pin3',a:false},{k:'pin4',a:false},
+      {k:'sou5',a:false},{k:'sou6',a:false},{k:'sou7',a:false},
+      {k:'man7',a:false},{k:'man8',a:false},
+      {k:'pin6',a:false},{k:'pin8',a:false},
+      {k:'sou3',a:false}
+    ],
+    bestIdx:13,
+    acceptable:[11],
+    explanation:'三四五萬・②③④・5s6s7sの3面子＋七八萬（両面）＋⑥⑧（カンチャン待ち⑦）＋3s（孤立）が重なっている。雀頭未確定で4面子＋雀頭に整理する必要がある。3sは完全孤立なので最初に切る候補。3sを切ることで七八萬（両面・受け6枚）とカンチャン⑥⑧（受け4枚）が残る。両面の方が受け入れ枚数が多いが、3sを先に処理するのが正解。3s切りが最善。'
+  },
+
+  /* 中級2: ドラ活用 ── ドラ周辺ターツを残して打点を上げる */
+  {
+    difficulty:'mid',
+    text:'東2局北家（子）10巡目。ドラを絡めた打点を意識してください。どれを切りますか？',
+    situation:[
+      {label:'東2局',type:'normal'},{label:'子（北家）',type:'normal'},
+      {label:'10巡目',type:'normal'},{label:'持ち点 21000',type:'normal'}
+    ],
+    dora:['sou4'],
+    boardNotes:'ドラ表示牌は4索。',
+    river:[
+      {name:'自家',tiles:[{k:'ton',y:false,r:false},{k:'sya',y:false,r:false},{k:'hatu',y:false,r:false},{k:'haku',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'nan',y:false,r:false},{k:'pei',y:false,r:false},{k:'man1',y:false,r:false},{k:'pin9',y:false,r:false},{k:'sou9',y:false,r:false}]},
+      {name:'対面',tiles:[{k:'tyun',y:false,r:false},{k:'man9',y:false,r:false},{k:'sou1',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'pin1',y:false,r:false},{k:'haku',y:false,r:false},{k:'nan',y:false,r:false},{k:'man8',y:false,r:false},{k:'ton',y:false,r:false}]}
+    ],
+    hand:[
+      {k:'man3',a:false},{k:'man4',a:false},{k:'man5',a:false},
+      {k:'pin4',a:false},{k:'pin5',a:false},{k:'pin6',a:false},
+      {k:'sou4',a:false},{k:'sou5',a:false},
+      {k:'sou3',a:false},{k:'sou6',a:false},
+      {k:'man7',a:false},{k:'man8',a:false},
+      {k:'pin8',a:false},{k:'pin9',a:false}
+    ],
+    bestIdx:12,
+    acceptable:[13],
+    explanation:'三四五萬・④⑤⑥・3s4s5s（ドラ）の面子形＋4s5sに近い6s（受け広い）＋七八萬（両面）＋⑧⑨（端寄りターツ）。ドラ（5s）を含む3s4s5sは残したい面子。七八萬（受け6九萬）と⑧⑨（受け⑦のみ？いや⑦⑩なし→⑩存在しないため⑦のみ4枚+ペン⑦待ち）を比較。⑧⑨はペンチャン形で受け入れが⑦の4枚のみ。七八萬は両面で受け6・9萬の最大8枚。打点も絡めれば⑧⑨より七八萬を残す方が有利。⑧か⑨を切るのが最善。'
+  },
+
+  /* 中級3: テンパイ取り ── イーシャンテンからテンパイへの最善 */
+  {
+    difficulty:'mid',
+    text:'東3局東家（親）12巡目。イーシャンテンです。最も良い形のテンパイを選んでください。',
+    situation:[
+      {label:'東3局',type:'normal'},{label:'親（東家）',type:'normal'},
+      {label:'12巡目',type:'normal'},{label:'持ち点 28000',type:'normal'}
+    ],
+    dora:['pin7'],
+    boardNotes:'ドラ表示牌は⑦筒。',
+    river:[
+      {name:'自家',tiles:[{k:'haku',y:false,r:false},{k:'tyun',y:false,r:false},{k:'ton',y:false,r:false},{k:'sou9',y:false,r:false},{k:'nan',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'pei',y:false,r:false},{k:'hatu',y:false,r:false},{k:'man1',y:false,r:false},{k:'pin1',y:false,r:false},{k:'sou1',y:false,r:false},{k:'man9',y:false,r:false}]},
+      {name:'対面',tiles:[{k:'sya',y:false,r:false},{k:'nan',y:false,r:false},{k:'man9',y:false,r:false},{k:'sou8',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'ton',y:false,r:false},{k:'haku',y:false,r:false},{k:'pin9',y:false,r:false},{k:'man1',y:false,r:false},{k:'nan',y:false,r:false}]}
+    ],
+    hand:[
+      {k:'man4',a:false},{k:'man5',a:false},{k:'man6',a:false},
+      {k:'pin6',a:false},{k:'pin7',a:false},{k:'pin8',a:false},
+      {k:'sou3',a:false},{k:'sou4',a:false},{k:'sou5',a:false},
+      {k:'man2',a:false},{k:'man3',a:false},
+      {k:'sou6',a:false},{k:'sou8',a:false},
+      {k:'pin5',a:false}
+    ],
+    bestIdx:12,
+    acceptable:[13],
+    explanation:'四五六萬・⑥⑦⑧（ドラ）・3s4s5sの3面子完成＋二三萬（両面）＋6s8s（カンチャン7s）＋⑤（孤立）。二三萬を面子にすれば一or四萬待ち（両面リーチ）。6s8sを面子にすれば7s待ちのカンチャン（待ちが1種4枚と狭い）。残り牌を整理すると⑤か8sを切る選択。⑤を切れば二三萬＋6s8sが残り次の一打でカンチャンかペン待ち。8sを切れば二三萬の両面テンパイを取れる。テンパイを目指すなら8s切りで二三萬待ちの両面テンパイが最善。'
+  },
+
+  /* 中級4: リーチ下の安全牌 ── 現物と筋を使い分ける */
+  {
+    difficulty:'mid',
+    text:'東4局南家（子）11巡目。上家がリーチしています。手は崩れ気味。何を切りますか？',
+    situation:[
+      {label:'東4局',type:'normal'},{label:'子（南家）',type:'normal'},
+      {label:'11巡目',type:'normal'},{label:'上家リーチ',type:'danger'},
+      {label:'持ち点 19000',type:'normal'}
+    ],
+    dora:['man6'],
+    boardNotes:'ドラ表示牌は六萬。',
+    river:[
+      {name:'自家',tiles:[{k:'ton',y:false,r:false},{k:'pei',y:false,r:false},{k:'sya',y:false,r:false},{k:'sou1',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'haku',y:false,r:false},{k:'nan',y:false,r:false},{k:'pin1',y:false,r:false},{k:'man9',y:false,r:false},{k:'tyun',y:false,r:false}]},
+      {name:'対面',tiles:[{k:'hatu',y:false,r:false},{k:'man1',y:false,r:false},{k:'sou9',y:false,r:false},{k:'pin9',y:false,r:false}]},
+      {name:'上家（左）\n★リーチ',tiles:[{k:'nan',y:false,r:false},{k:'haku',y:false,r:false},{k:'tyun',y:false,r:false},{k:'sou8',y:false,r:false},{k:'man2',y:false,r:false},{k:'pin5',y:true,r:true}]}
+    ],
+    hand:[
+      {k:'pin3',a:false},{k:'pin4',a:false},{k:'pin5',a:false},
+      {k:'man4',a:false},{k:'man5',a:false},{k:'man6',a:false},
+      {k:'sou4',a:false},{k:'sou5',a:false},{k:'sou6',a:false},
+      {k:'man8',a:false},{k:'man8',a:false},
+      {k:'pin9',a:false},{k:'sou9',a:false},{k:'man3',a:false}
+    ],
+    bestIdx:11,
+    acceptable:[12],
+    explanation:'③④⑤・四五六萬・4s5s6sの3面子完成＋八八萬（対子・雀頭候補）で実質テンパイに近い。上家のリーチに対してどの牌が安全か。上家の河：南・白・中・8s・二萬・⑤（リーチ牌）。現物（上家が捨てた牌）は安全。⑨は上家の河に⑤があり3-6-9の筋でやや安全。9sは上家が8sを捨てておりスジでもない。三萬は二萬が上家の河に出ており4-7の筋ではないが2-5-8の筋ではない。⑨が上家河の⑤から3-6-9筋で最も安全度が高い。'
+  },
+
+  /* 中級5: ホンイツ（混一色）への絞り込み */
+  {
+    difficulty:'mid',
+    text:'南2局西家（子）8巡目。ホンイツを狙う方針です。どれを切りますか？',
+    situation:[
+      {label:'南2局',type:'normal'},{label:'子（西家）',type:'normal'},
+      {label:'8巡目',type:'normal'},{label:'持ち点 18000',type:'normal'}
+    ],
+    dora:['pin3'],
+    boardNotes:'ドラ表示牌は③筒。',
+    river:[
+      {name:'自家',tiles:[{k:'pin2',y:false,r:false},{k:'pin5',y:false,r:false},{k:'sou3',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'man2',y:false,r:false},{k:'man5',y:false,r:false},{k:'pin8',y:false,r:false},{k:'sou7',y:false,r:false}]},
+      {name:'対面',tiles:[{k:'man1',y:false,r:false},{k:'man4',y:false,r:false},{k:'sou5',y:false,r:false},{k:'pin6',y:false,r:false},{k:'man8',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'sou9',y:false,r:false},{k:'pin7',y:false,r:false},{k:'man9',y:false,r:false}]}
+    ],
+    hand:[
+      {k:'sou1',a:false},{k:'sou2',a:false},{k:'sou3',a:false},
+      {k:'sou4',a:false},{k:'sou5',a:false},{k:'sou6',a:false},
+      {k:'sou8',a:false},{k:'sou9',a:false},
+      {k:'haku',a:false},{k:'nan',a:false},
+      {k:'man3',a:false},{k:'man6',a:false},{k:'pin4',a:false},{k:'sou7',a:false}
+    ],
+    bestIdx:12,
+    acceptable:[11],
+    explanation:'索子が1s〜9sまで幅広く揃いホンイツ（索子＋字牌）が狙える手格好。白（三元牌）と南（場風）は字牌として残す価値がある。三萬・六萬・④はホンイツ方針では全て不要な他色牌。まず完全に無駄な他色牌から切り始める。④（筒子）は索子でも字牌でもない孤立牌で最優先。次に三萬・六萬の順に処理するのが自然。④切りが最善。'
+  },
+
+  /* ══════ 上級 ══════ */
+
+  /* 上級1: 受け入れ枚数の比較 ── 数えて判断する */
+  {
+    difficulty:'hard',
+    text:'東1局東家（親）8巡目。同じ一向聴でも受け入れ枚数が違います。どれを切りますか？',
     situation:[
       {label:'東1局',type:'normal'},{label:'親（東家）',type:'normal'},
       {label:'8巡目',type:'normal'},{label:'持ち点 25000',type:'normal'}
     ],
-    dora:['pin2'],
-    boardNotes:'ドラは③（三筒）。三色や一通は見えない手格好。まず不要な字牌から整理。',
-    river:[
-      {name:'自家',    tiles:[]},
-      {name:'下家（右）',tiles:[{k:'sya',y:false,r:false},{k:'nan',y:false,r:false},{k:'hatu',y:false,r:false}]},
-      {name:'対面',    tiles:[{k:'pei',y:false,r:false},{k:'haku',y:false,r:false}]},
-      {name:'上家（左）',tiles:[{k:'tyun',y:false,r:false},{k:'ton',y:false,r:false}]}
-    ],
-    hand:[
-      {k:'man1',a:false},{k:'man2',a:false},{k:'man3',a:false},
-      {k:'pin4',a:false},{k:'pin5',a:false},{k:'pin6',a:false},
-      {k:'pin7',a:false},{k:'pin8',a:false},
-      {k:'sou2',a:false},{k:'sou3',a:false},
-      {k:'ton', a:false},{k:'nan', a:false},{k:'haku',a:false}
-    ],
-    bestIdx:11,
-    acceptable:[12],
-    explanation:'一二三・④〜⑧・2s3sの3ブロック＋東（自風・役牌）。南と白はどちらも役にならない孤立字牌。河に東・南・西・北・中が多く出ているためこれらは比較的安全牌でもある。自風の東は残しつつ南を切るのが最善。白も孤立のため準正解。'
-  },
-
-  /* ══ 初級 2 ══ */
-  {
-    difficulty:'easy',
-    text:'東2局南家（子）6巡目。タンヤオを狙っています。不要な端牌・字牌を整理してください。',
-    situation:[
-      {label:'東2局',type:'normal'},{label:'子（南家）',type:'normal'},
-      {label:'6巡目',type:'normal'},{label:'タンヤオ狙い',type:'accent'},
-      {label:'持ち点 28000',type:'normal'}
-    ],
-    dora:['man7'],
-    boardNotes:'ドラは八萬。六・七・八萬の順子が作れれば1翻増える。タンヤオ方針なら1・9・字牌を全て処理。',
-    river:[
-      {name:'自家',    tiles:[]},
-      {name:'下家（右）',tiles:[{k:'man1',y:false,r:false},{k:'ton',y:false,r:false}]},
-      {name:'対面',    tiles:[{k:'pin9',y:false,r:false},{k:'sou1',y:false,r:false},{k:'nan',y:false,r:false}]},
-      {name:'上家（左）',tiles:[{k:'pei',y:false,r:false},{k:'man9',y:false,r:false}]}
-    ],
-    hand:[
-      {k:'pin2',a:false},{k:'pin3',a:false},{k:'pin4',a:false},
-      {k:'pin5',a:false},{k:'pin6',a:false},
-      {k:'man3',a:false},{k:'man4',a:false},{k:'man5',a:false},
-      {k:'man6',a:false},{k:'man7',a:false},
-      {k:'man1',a:false},{k:'sou9',a:false},{k:'ton',a:false}
-    ],
-    bestIdx:10,
-    acceptable:[11,12],
-    explanation:'タンヤオは1・9・字牌が全て使えない。一萬（端牌・孤立）・9s（端牌・孤立）・東（字牌）が不要。一萬は②③④…とのつながりがなく完全孤立。9sも孤立だが1sが河に出ていないため若干安全牌として残す考えもある。東も字牌なので不要。一萬が最優先で最善。'
-  },
-
-  /* ══ 初級 3 ══ */
-  {
-    difficulty:'easy',
-    text:'東3局西家（子）4巡目。雀頭候補が余っています。孤立牌を整理してください。',
-    situation:[
-      {label:'東3局',type:'normal'},{label:'子（西家）',type:'normal'},
-      {label:'4巡目',type:'normal'},{label:'持ち点 22000',type:'normal'}
-    ],
     dora:['sou5'],
-    boardNotes:'ドラは6索（五索の次）。索子の6s付近を引ければ好形。まず完全孤立字牌を処理。',
+    boardNotes:'ドラ表示牌は5索。',
     river:[
-      {name:'自家',    tiles:[]},
-      {name:'下家（右）',tiles:[{k:'haku',y:false,r:false}]},
-      {name:'対面',    tiles:[{k:'tyun',y:false,r:false},{k:'hatu',y:false,r:false}]},
-      {name:'上家（左）',tiles:[{k:'nan',y:false,r:false}]}
+      {name:'自家',tiles:[{k:'haku',y:false,r:false},{k:'tyun',y:false,r:false},{k:'nan',y:false,r:false},{k:'hatu',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'ton',y:false,r:false},{k:'sya',y:false,r:false},{k:'pin9',y:false,r:false},{k:'man1',y:false,r:false},{k:'pei',y:false,r:false}]},
+      {name:'対面',tiles:[{k:'nan',y:false,r:false},{k:'sou9',y:false,r:false},{k:'man9',y:false,r:false},{k:'pin1',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'pei',y:false,r:false},{k:'haku',y:false,r:false},{k:'sou1',y:false,r:false},{k:'ton',y:false,r:false},{k:'man8',y:false,r:false}]}
     ],
     hand:[
-      {k:'pin1',a:false},{k:'pin1',a:false},
-      {k:'pin5',a:false},{k:'pin5',a:false},
+      {k:'man3',a:false},{k:'man4',a:false},
+      {k:'man6',a:false},{k:'man7',a:false},{k:'man8',a:false},
+      {k:'pin4',a:false},{k:'pin5',a:false},{k:'pin6',a:false},
+      {k:'sou4',a:false},{k:'sou5',a:false},{k:'sou6',a:false},
+      {k:'man5',a:false},{k:'man5',a:false},{k:'pin2',a:false}
+    ],
+    bestIdx:13,
+    acceptable:[0],
+    explanation:'六七八萬・④⑤⑥・4s5s6s（ドラ）の3面子完成＋三四萬（両面受け2・5萬）＋五五萬（対子・雀頭候補）＋②（孤立）。②を切ると三四萬＋五五萬で一向聴：受け入れは2萬・5萬の各4枚＝最大8枚（既出を引く）。三萬を切ると四萬＋五五萬＋②で「4萬＋②」が残りイーシャンテン維持だが待ちが狭くなる。②切りの方が受け入れが広い。②切りが最善。'
+  },
+
+  /* 上級2: 打点 vs 速度 ── 鳴きの判断 */
+  {
+    difficulty:'hard',
+    text:'東3局南家（子）10巡目。下家からポンできる牌が出ました（仮定）。この局面での手の方針はどちらですか？',
+    situation:[
+      {label:'東3局',type:'normal'},{label:'子（南家）',type:'normal'},
+      {label:'10巡目',type:'normal'},{label:'持ち点 23000',type:'normal'}
+    ],
+    dora:['man4'],
+    boardNotes:'ドラ表示牌は四萬。',
+    river:[
+      {name:'自家',tiles:[{k:'ton',y:false,r:false},{k:'pei',y:false,r:false},{k:'man1',y:false,r:false},{k:'sou9',y:false,r:false},{k:'hatu',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'sya',y:false,r:false},{k:'nan',y:false,r:false},{k:'pin9',y:false,r:false},{k:'man9',y:false,r:false},{k:'haku',y:false,r:false},{k:'tyun',y:false,r:false}]},
+      {name:'対面',tiles:[{k:'sou1',y:false,r:false},{k:'man8',y:false,r:false},{k:'pin1',y:false,r:false},{k:'sou8',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'man2',y:false,r:false},{k:'pin8',y:false,r:false},{k:'sou6',y:false,r:false},{k:'nan',y:false,r:false},{k:'man7',y:false,r:false}]}
+    ],
+    hand:[
       {k:'man3',a:false},{k:'man4',a:false},{k:'man5',a:false},
-      {k:'man6',a:false},{k:'man7',a:false},
-      {k:'sou2',a:false},{k:'sou3',a:false},{k:'sou4',a:false},
-      {k:'pei', a:false}
+      {k:'man5',a:false},{k:'man6',a:false},{k:'man7',a:false},
+      {k:'pin5',a:false},{k:'pin6',a:false},{k:'pin7',a:false},
+      {k:'sou3',a:false},{k:'sou4',a:false},{k:'sou5',a:false},
+      {k:'pin3',a:false},{k:'pin4',a:false}
     ],
     bestIdx:12,
-    acceptable:[],
-    explanation:'①①・⑤⑤の対子2組・三〜七萬の5連形・2s3s4sの完成順子がある。北は完全孤立字牌。これを切れば対子2組のどちらかを雀頭に使いつつ4ブロックを維持できる。北一択。'
+    acceptable:[13],
+    explanation:'三四五萬・五六七萬（ドラ）・⑤⑥⑦・3s4s5sの4面子完成形＋③④の両面ターツ。実質テンパイまであと1手の一向聴。③を切ると④が孤立して受け入れが減る。④を切ると③が孤立するが⑤⑥⑦との関係で③⑤のカンチャンを温存することにもなる。この手格好では③④どちらを切っても次の牌でテンパイになりやすい。③切りで④⑤→③or⑥待ち方向へ。最も広いのは③か④、どちらも準正解レベルだが③切りがわずかに受け入れ広く最善。'
   },
 
-  /* ══ 中級 1 ══ */
+  /* 上級3: オーラス 点差を考慮した選択 */
   {
-    difficulty:'mid',
-    text:'東1局北家（子）11巡目。下家がリーチしています。役牌の対子を活かしながら安全に進めましょう。',
+    difficulty:'hard',
+    text:'南4局西家（子）9巡目。オーラスです。現在3着で、トップとの点差を考えて判断してください。',
     situation:[
-      {label:'東1局',type:'normal'},{label:'子（北家）',type:'normal'},
-      {label:'11巡目',type:'normal'},{label:'下家リーチ中',type:'danger'},
-      {label:'持ち点 24000',type:'normal'}
+      {label:'南4局（オーラス）',type:'normal'},{label:'子（西家）',type:'normal'},
+      {label:'9巡目',type:'normal'},{label:'持ち点 22000',type:'danger'},
+      {label:'トップ 38000',type:'danger'},{label:'2着 28000',type:'normal'},
+      {label:'ラス 16000',type:'normal'}
     ],
-    dora:['man3'],
-    boardNotes:'ドラは四萬。下家が8巡目にリーチ。字牌（特に序盤から場に出ていた牌）が比較的安全。白は下家の河に1枚見えているため通りやすい。',
+    dora:['sou3'],
+    boardNotes:'ドラ表示牌は3索。オーラス。2着（28000点）との差は6000点。',
     river:[
-      {name:'自家',    tiles:[]},
-      {name:'下家（右）\n★リーチ',tiles:[{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sou9',y:false,r:false},{k:'pin1',y:false,r:false},{k:'haku',y:false,r:false},{k:'pin8',y:true,r:true}]},
-      {name:'対面',    tiles:[{k:'sya',y:false,r:false},{k:'pei',y:false,r:false},{k:'man1',y:false,r:false}]},
-      {name:'上家（左）',tiles:[{k:'hatu',y:false,r:false},{k:'tyun',y:false,r:false},{k:'sou1',y:false,r:false}]}
+      {name:'自家',tiles:[{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'haku',y:false,r:false},{k:'pin9',y:false,r:false},{k:'man9',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'pei',y:false,r:false},{k:'sya',y:false,r:false},{k:'man1',y:false,r:false},{k:'sou9',y:false,r:false},{k:'hatu',y:false,r:false}]},
+      {name:'対面',tiles:[{k:'tyun',y:false,r:false},{k:'pin1',y:false,r:false},{k:'sou1',y:false,r:false},{k:'haku',y:false,r:false},{k:'nan',y:false,r:false},{k:'man8',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'pin8',y:false,r:false},{k:'man2',y:false,r:false}]}
     ],
     hand:[
-      {k:'tyun',a:false},{k:'tyun',a:false},
-      {k:'pin2',a:false},{k:'pin3',a:false},{k:'pin4',a:false},
-      {k:'pin6',a:false},{k:'pin7',a:false},{k:'pin8',a:false},
-      {k:'man3',a:false},{k:'man4',a:false},{k:'man5',a:false},
-      {k:'sou9',a:false},{k:'pei',a:false}
+      {k:'man4',a:false},{k:'man5',a:false},{k:'man6',a:false},
+      {k:'pin4',a:false},{k:'pin5',a:false},{k:'pin6',a:false},
+      {k:'sou2',a:false},{k:'sou3',a:false},{k:'sou4',a:false},
+      {k:'man3',a:false},{k:'man3',a:false},
+      {k:'sou6',a:false},{k:'sou7',a:false},{k:'pin2',a:false}
     ],
     bestIdx:13,
     acceptable:[11],
-    explanation:'中の対子は鳴いても役になる貴重なブロック。下家のリーチに対して安全な牌を切りたい。北は下家の河に見えておらず危険だが孤立。9sは下家の河に既に出ているため通りやすい（スジでもある）。リーチへの安全度と手の価値を天秤にかけ、9sが最善。北も候補だが危険度が高い。'
+    explanation:'四五六萬・④⑤⑥・2s3s4s（ドラ）の3面子完成＋三三萬（対子）＋6s7s（両面）＋②（孤立）。オーラス3着で2着との差6000点。リーチ一発ツモや役ありロンで逆転できる打点が必要。②を切れば三三萬（雀頭）＋6s7s（両面リーチ）でテンパイ。6s7sの待ちは5sか8s。ドラが3sなので4s5sが近く5sの受け入れに期待できる。6s7s両面テンパイからリーチをかけて逆転を狙う。②切りが最善。'
   },
 
-  /* ══ 中級 2 ══ */
-  {
-    difficulty:'mid',
-    text:'南1局東家（親）9巡目。七対子（チートイツ）を目指しています。最も対子になりやすい牌を残しましょう。',
-    situation:[
-      {label:'南1局',type:'normal'},{label:'親（東家）',type:'normal'},
-      {label:'9巡目',type:'normal'},{label:'チートイツ狙い',type:'accent'},
-      {label:'持ち点 30000',type:'normal'}
-    ],
-    dora:['pin6'],
-    boardNotes:'ドラは七筒。⑦⑦の対子が作れれば2翻増える。5対子まで揃っており残り2枚の孤立牌を処理する。',
-    river:[
-      {name:'自家',    tiles:[{k:'man2',y:false,r:false},{k:'sou3',y:false,r:false},{k:'man8',y:false,r:false},{k:'pin4',y:false,r:false}]},
-      {name:'下家（右）',tiles:[{k:'sou9',y:false,r:false},{k:'pin2',y:false,r:false},{k:'man5',y:false,r:false}]},
-      {name:'対面',    tiles:[{k:'man9',y:false,r:false},{k:'sou7',y:false,r:false}]},
-      {name:'上家（左）',tiles:[{k:'pin8',y:false,r:false},{k:'sou4',y:false,r:false},{k:'haku',y:false,r:false}]}
-    ],
-    hand:[
-      {k:'man1',a:false},{k:'man1',a:false},
-      {k:'pin3',a:false},{k:'pin3',a:false},
-      {k:'pin7',a:false},{k:'pin7',a:false},
-      {k:'ton', a:false},{k:'ton', a:false},
-      {k:'haku',a:false},{k:'haku',a:false},
-      {k:'sou2',a:false},
-      {k:'sou6',a:false},
-      {k:'sou9',a:false}
-    ],
-    bestIdx:12,
-    acceptable:[11,10],
-    explanation:'すでに5対子（一一・③③・⑦⑦・東東・白白）。残り3枚（2s・6s・9s）は全て孤立。9sは端牌で場に1枚出ており対子になりにくい。6sはドラ付近の中張牌でやや引ける可能性あり。2sも孤立だが中張牌。9s切りが最善。'
-  },
-
-  /* ══ 中級 3 ══ */
-  {
-    difficulty:'mid',
-    text:'東4局南家（子）12巡目。ドラを活かしつつテンパイを目指してください。（ドラ表示牌に注目）',
-    situation:[
-      {label:'東4局',type:'normal'},{label:'子（南家）',type:'normal'},
-      {label:'12巡目',type:'normal'},{label:'ドラ活用',type:'accent'},
-      {label:'持ち点 18000',type:'normal'}
-    ],
-    dora:['man4'],
-    boardNotes:'ドラは五萬。五萬2枚で2翻、対子にすれば雀頭にもなる。孤立字牌を処理してドラを手に残す。',
-    river:[
-      {name:'自家',    tiles:[{k:'ton',y:false,r:false},{k:'pei',y:false,r:false},{k:'sou1',y:false,r:false},{k:'pin1',y:false,r:false}]},
-      {name:'下家（右）',tiles:[{k:'nan',y:false,r:false},{k:'haku',y:false,r:false},{k:'pin9',y:false,r:false}]},
-      {name:'対面',    tiles:[{k:'sya',y:false,r:false},{k:'man1',y:false,r:false},{k:'tyun',y:false,r:false}]},
-      {name:'上家（左）',tiles:[{k:'hatu',y:false,r:false},{k:'sou9',y:false,r:false}]}
-    ],
-    hand:[
-      {k:'man5',a:false},{k:'man5',a:false},
-      {k:'man4',a:false},{k:'man6',a:false},
-      {k:'pin2',a:false},{k:'pin3',a:false},{k:'pin4',a:false},
-      {k:'pin7',a:false},{k:'pin8',a:false},{k:'pin9',a:false},
-      {k:'sou1',a:false},{k:'ton',a:false},{k:'nan',a:false}
-    ],
-    bestIdx:11,
-    acceptable:[12,10],
-    explanation:'五五（ドラ対子）＋四六のカンチャン形・②〜④・⑦⑧⑨が見える。1sは端牌孤立。東・南は字牌孤立。河に東・南がすでに多く出ており安全度も高い。東を切ってドラ周辺と筒子2ブロックを保つのが最善。南・1sも不要だが東が先。'
-  },
-
-  /* ══ 上級 1 ══ */
+  /* 上級4: 多面張への変化 ── 待ちを広げる */
   {
     difficulty:'hard',
-    text:'南2局西家（子）14巡目。テンパイ取りか安全牌切りか。下家・対面が激しく攻めています。',
+    text:'南3局北家（子）13巡目。テンパイに取りましたが、切り方によって待ちの広さが変わります。',
     situation:[
-      {label:'南2局',type:'normal'},{label:'子（西家）',type:'normal'},
-      {label:'14巡目',type:'normal'},{label:'下家リーチ',type:'danger'},
-      {label:'対面テンパイ気配',type:'danger'},{label:'持ち点 16000',type:'normal'}
-    ],
-    dora:['sou3'],
-    boardNotes:'ドラは4索。手の中に4sがある。下家は8巡目リーチ。対面は9巡目から字牌を連打しており要注意。残り巡数が少なくオリも選択肢。',
-    river:[
-      {name:'自家',    tiles:[{k:'ton',y:false,r:false},{k:'pei',y:false,r:false},{k:'man1',y:false,r:false}]},
-      {name:'下家（右）\n★リーチ',tiles:[{k:'nan',y:false,r:false},{k:'haku',y:false,r:false},{k:'pin9',y:false,r:false},{k:'sou9',y:false,r:false},{k:'man1',y:true,r:true}]},
-      {name:'対面',    tiles:[{k:'man9',y:false,r:false},{k:'pin1',y:false,r:false},{k:'sya',y:false,r:false},{k:'hatu',y:false,r:false},{k:'tyun',y:false,r:false}]},
-      {name:'上家（左）',tiles:[{k:'sou1',y:false,r:false},{k:'man2',y:false,r:false}]}
-    ],
-    hand:[
-      {k:'man3',a:false},{k:'man4',a:false},{k:'man5',a:false},
-      {k:'pin4',a:false},{k:'pin5',a:false},{k:'pin6',a:false},
-      {k:'pin7',a:false},{k:'pin8',a:false},
-      {k:'sou2',a:false},{k:'sou3',a:false},{k:'sou4',a:false},
-      {k:'haku',a:false},{k:'nan',a:false}
-    ],
-    bestIdx:11,
-    acceptable:[12],
-    explanation:'白は下家の河に1枚見えており通りやすい安全牌。南も字牌だが下家の河に出ておらず若干危険。14巡目でドラ（4s）を含む手だがテンパイまで遠い。2人から攻められている状況では安全牌優先。白→南の順で切り、手を整えながら様子を見るのが正着。'
-  },
-
-  /* ══ 上級 2 ══ */
-  {
-    difficulty:'hard',
-    text:'東3局北家（子）7巡目。ホンイツ（混一色）を目指しています。どの牌から整理しますか？',
-    situation:[
-      {label:'東3局',type:'normal'},{label:'子（北家）',type:'normal'},
-      {label:'7巡目',type:'normal'},{label:'ホンイツ狙い',type:'accent'},
-      {label:'持ち点 21000',type:'normal'}
+      {label:'南3局',type:'normal'},{label:'子（北家）',type:'normal'},
+      {label:'13巡目',type:'normal'},{label:'持ち点 25000',type:'normal'}
     ],
     dora:['pin4'],
-    boardNotes:'ドラは五筒だが、ホンイツ（筒子＋字牌）を狙うならピンズ以外を全て処理。まず他色の孤立牌から切る。',
+    boardNotes:'ドラ表示牌は④筒。',
     river:[
-      {name:'自家',    tiles:[{k:'man5',y:false,r:false}]},
-      {name:'下家（右）',tiles:[{k:'ton',y:false,r:false},{k:'hatu',y:false,r:false}]},
-      {name:'対面',    tiles:[{k:'man3',y:false,r:false},{k:'sou8',y:false,r:false}]},
-      {name:'上家（左）',tiles:[{k:'nan',y:false,r:false}]}
+      {name:'自家',tiles:[{k:'ton',y:false,r:false},{k:'haku',y:false,r:false},{k:'nan',y:false,r:false},{k:'pei',y:false,r:false},{k:'sya',y:false,r:false},{k:'hatu',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'tyun',y:false,r:false},{k:'man1',y:false,r:false},{k:'sou9',y:false,r:false},{k:'pin1',y:false,r:false},{k:'man9',y:false,r:false},{k:'sou1',y:false,r:false}]},
+      {name:'対面',tiles:[{k:'man8',y:false,r:false},{k:'sou8',y:false,r:false},{k:'nan',y:false,r:false},{k:'pin9',y:false,r:false},{k:'ton',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'sou7',y:false,r:false},{k:'man2',y:false,r:false},{k:'pin8',y:false,r:false},{k:'haku',y:false,r:false},{k:'man6',y:false,r:false},{k:'nan',y:false,r:false}]}
     ],
     hand:[
-      {k:'pin1',a:false},{k:'pin2',a:false},{k:'pin3',a:false},
-      {k:'pin5',a:false},{k:'pin6',a:false},{k:'pin7',a:false},
-      {k:'pin9',a:false},{k:'pin9',a:false},
-      {k:'ton', a:false},{k:'haku',a:false},
-      {k:'man3',a:false},{k:'man7',a:false},
-      {k:'sou5',a:false}
-    ],
-    bestIdx:12,
-    acceptable:[10,11],
-    explanation:'筒子が8枚と豊富でホンイツが狙える。萬子（三萬・七萬）と5sが不要。5sは索子の孤立牌で完全無駄。三萬・七萬も処理必要だが、まず他色の孤立牌から切る原則により5sが最優先。三萬・七萬はどちらを切っても準正解。'
-  },
-
-  /* ══ 上級 3 ══ */
-  {
-    difficulty:'hard',
-    text:'東2局東家（親）10巡目。受け入れ枚数が最大になる1枚はどれですか？ブロック数を丁寧に数えましょう。',
-    situation:[
-      {label:'東2局',type:'normal'},{label:'親（東家）',type:'normal'},
-      {label:'10巡目',type:'normal'},{label:'受け入れ最大化',type:'accent'},
-      {label:'持ち点 27000',type:'normal'}
-    ],
-    dora:['pin7'],
-    boardNotes:'ドラは八筒。⑧⑧の対子が作れれば好形。三萬が2枚あり一萬が孤立気味。三萬を整理してより広い受け入れを確保する。',
-    river:[
-      {name:'自家',    tiles:[{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'haku',y:false,r:false}]},
-      {name:'下家（右）',tiles:[{k:'sya',y:false,r:false},{k:'pei',y:false,r:false}]},
-      {name:'対面',    tiles:[{k:'hatu',y:false,r:false},{k:'tyun',y:false,r:false},{k:'man9',y:false,r:false}]},
-      {name:'上家（左）',tiles:[{k:'sou1',y:false,r:false},{k:'pin1',y:false,r:false}]}
-    ],
-    hand:[
-      {k:'man1',a:false},{k:'man2',a:false},{k:'man3',a:false},
       {k:'man3',a:false},{k:'man4',a:false},{k:'man5',a:false},
-      {k:'pin2',a:false},{k:'pin3',a:false},{k:'pin4',a:false},
-      {k:'pin5',a:false},{k:'pin6',a:false},
-      {k:'sou7',a:false},{k:'sou8',a:false}
+      {k:'man5',a:false},{k:'man6',a:false},{k:'man7',a:false},
+      {k:'pin3',a:false},{k:'pin4',a:false},{k:'pin5',a:false},
+      {k:'pin6',a:false},{k:'pin7',a:false},
+      {k:'sou4',a:false},{k:'sou5',a:false},{k:'sou6',a:false}
     ],
     bestIdx:0,
-    acceptable:[1],
-    explanation:'一二三・三四五・②〜⑥・7s8sで4ブロック＋余り。三萬が2枚あり一萬は孤立に近い。一萬を切ると二三が残って両面（一or四待ち）の形が残せ、三三四五の柔軟な形も維持できる。受け入れ最大は一萬切り。二萬を切るとカンチャン（一三）になるので準正解。'
-  },
-
-  /* ══ 上級 4 ══ */
-  {
-    difficulty:'hard',
-    text:'南3局南家（子）13巡目。一向聴（イーシャンテン）です。最もよい待ちになるテンパイ取りを選んでください。',
-    situation:[
-      {label:'南3局',type:'normal'},{label:'子（南家）',type:'normal'},
-      {label:'13巡目',type:'normal'},{label:'イーシャンテン',type:'accent'},
-      {label:'持ち点 14000',type:'danger'},{label:'ラス目',type:'danger'}
-    ],
-    dora:['sou1'],
-    boardNotes:'ドラは2索。2sが手の中に1枚。ラス目のためテンパイを優先して点数を稼ぎたい局面。白は孤立しており完全に不要。',
-    river:[
-      {name:'自家',    tiles:[{k:'ton',y:false,r:false},{k:'pei',y:false,r:false},{k:'man9',y:false,r:false},{k:'sou9',y:false,r:false}]},
-      {name:'下家（右）',tiles:[{k:'haku',y:false,r:false},{k:'nan',y:false,r:false},{k:'pin1',y:false,r:false},{k:'man1',y:false,r:false}]},
-      {name:'対面',    tiles:[{k:'hatu',y:false,r:false},{k:'tyun',y:false,r:false},{k:'sou8',y:false,r:false}]},
-      {name:'上家（左）',tiles:[{k:'sya',y:false,r:false},{k:'pin9',y:false,r:false},{k:'man2',y:false,r:false}]}
-    ],
-    hand:[
-      {k:'pin2',a:false},{k:'pin3',a:false},{k:'pin4',a:false},
-      {k:'pin5',a:false},{k:'pin6',a:false},{k:'pin7',a:false},
-      {k:'man3',a:false},{k:'man4',a:false},{k:'man5',a:false},
-      {k:'man6',a:false},{k:'man7',a:false},
-      {k:'sou2',a:false},
-      {k:'haku',a:false}
-    ],
-    bestIdx:12,
-    acceptable:[],
-    explanation:'②〜⑦（6連形）・三〜七萬（5連形）・2s（ドラ孤立）。白は完全孤立字牌。白を切れば6連形と5連形でテンパイに備えられる。6連形は内側を雀頭にすれば③〜⑥どれでも両面テンパイが取れる良形。ラス目のため早くテンパイを取りに行くべき。白一択。'
+    acceptable:[3],
+    explanation:'三四五萬・五六七萬・③④⑤・⑥⑦・4s5s6sの形。⑥⑦と③④⑤で筒子が連続している。三萬を切ると四五六七萬（四連形）が残り2・8萬の両面待ちか3・5萬の雀頭形など多面張になりうる。五萬を切ると三四萬＋五六七萬の分離形になり受け入れが減る。三萬を切ることで四五六七萬の「カンチャン＋両面」複合多面張が生まれ、待ちが2・3・5・8萬の最大4種になる可能性がある。三萬切りが最善。'
   }
 ];
+
 
 /* ── エンジン ── */
 let qList=[], qIdx=0, correctCount=0, selectedIdx=null, answered=false;
@@ -647,15 +766,27 @@ function showQuestion(){
     nameDiv.className='river-player-name';
     nameDiv.textContent=player.name;
     cell.appendChild(nameDiv);
-    const tilesDiv=document.createElement('div');
-    tilesDiv.className='river-tiles';
-    player.tiles.forEach(t=>{
+    // 6牌ごとに改行して表示
+    const tilesWrap=document.createElement('div');
+    tilesWrap.className='river-tiles-wrap';
+    player.tiles.forEach((t,ti)=>{
+      if(ti%6===0){
+        const row=document.createElement('div');
+        row.className='river-tiles';
+        tilesWrap.appendChild(row);
+      }
+      const currentRow=tilesWrap.lastChild;
       const w=makeTileEl(t.k,false,t.y);
       w.style.cursor='default';
       if(t.r) w.classList.add('riichi-discard');
-      tilesDiv.appendChild(w);
+      currentRow.appendChild(w);
     });
-    cell.appendChild(tilesDiv);
+    if(player.tiles.length===0){
+      const row=document.createElement('div');
+      row.className='river-tiles';
+      tilesWrap.appendChild(row);
+    }
+    cell.appendChild(tilesWrap);
     riverGrid.appendChild(cell);
   });
 
@@ -753,5 +884,6 @@ function showResult(){
 
 startQuiz();
 </script>
-</body>
-</html>
+
+
+</body></html>

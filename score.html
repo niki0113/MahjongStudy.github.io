@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<!-- saved from url=(0045)file:///C:/Users/shoum/Downloads/score_5.html -->
-<html lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>点数計算 — 麻雀道場</title>
-<link rel="preconnect" href="https://fonts.googleapis.com/">
-<link href="./score_files/css2" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&family=Noto+Serif+JP:wght@400;700&family=Zen+Antique&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
@@ -104,10 +104,17 @@ body{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.01) 0px
 .reset-btn{font-size:12px;padding:5px 14px;border-radius:7px;border:0.5px solid rgba(255,255,255,0.15);background:transparent;color:var(--text-dim);cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:all 0.12s;margin-left:auto;display:block;}
 .reset-btn:hover{color:rgba(220,100,80,0.8);border-color:rgba(192,57,43,0.4);}
 </style>
+  <meta http-equiv="Cache-Control" content="no-store">
+<script>
+// bfcache無効化: 前後ページキャッシュから復元された場合に強制リロード
+window.addEventListener('pageshow', function(e) {
+  if (e.persisted) { window.location.reload(); }
+});
+</script>
 </head>
 <body>
 <nav class="nav">
-  <a class="nav-back" href="file:///C:/Users/shoum/Downloads/index.html">← 道場へ戻る</a>
+  <a class="nav-back" href="index.html">← 道場へ戻る</a>
   <span style="color:var(--text-dim)">|</span>
   <span class="nav-title">点数計算</span>
 </nav>
@@ -117,8 +124,8 @@ body{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.01) 0px
 <div class="sec">
   <div class="sec-title">① 手牌の形を選択</div>
   <div class="mode-tabs">
-    <button class="mode-tab on" onclick="setMode(&#39;normal&#39;)">通常形</button>
-    <button class="mode-tab" onclick="setMode(&#39;chiitoi&#39;)">七対子</button>
+    <button class="mode-tab on" onclick="setMode('normal')">通常形</button>
+    <button class="mode-tab" onclick="setMode('chiitoi')">七対子</button>
     </div>
   <div class="hint" id="mode-hint">面子4組＋雀頭1組の通常形。パレットから牌を選んで面子スロットに追加してください。</div>
 </div>
@@ -126,10 +133,10 @@ body{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.01) 0px
 <!-- ② 牌パレット -->
 <div class="sec">
   <div class="sec-title">② 牌パレット <button class="reset-btn" onclick="resetAll()">リセット</button></div>
-  <div class="suit-label">萬子</div><div class="tile-grid" id="pal-man"><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man1.png" alt="一" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man2.png" alt="二" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man3.png" alt="三" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man4.png" alt="四" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man5.png" alt="五" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man6.png" alt="六" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man7.png" alt="七" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man8.png" alt="八" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man9.png" alt="九" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div></div>
-  <div class="suit-label">筒子</div><div class="tile-grid" id="pal-pin"><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin1.png" alt="①" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin2.png" alt="②" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin3.png" alt="③" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin4.png" alt="④" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin5.png" alt="⑤" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin6.png" alt="⑥" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin7.png" alt="⑦" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin8.png" alt="⑧" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin9.png" alt="⑨" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div></div>
-  <div class="suit-label">索子</div><div class="tile-grid" id="pal-sou"><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou1.png" alt="1s" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou2.png" alt="2s" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou3.png" alt="3s" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou4.png" alt="4s" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou5.png" alt="5s" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou6.png" alt="6s" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou7.png" alt="7s" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou8.png" alt="8s" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou9.png" alt="9s" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div></div>
-  <div class="suit-label">字牌</div><div class="tile-grid" id="pal-ji"><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/ton.png" alt="東" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/nan.png" alt="南" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sya.png" alt="西" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pei.png" alt="北" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/haku.png" alt="白" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/hatu.png" alt="發" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div><div class="pal-tile"><img src="file:///C:/Users/shoum/Downloads/img/tiles/tyun.png" alt="中" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div></div>
+  <div class="suit-label">萬子</div><div class="tile-grid" id="pal-man"></div>
+  <div class="suit-label">筒子</div><div class="tile-grid" id="pal-pin"></div>
+  <div class="suit-label">索子</div><div class="tile-grid" id="pal-sou"></div>
+  <div class="suit-label">字牌</div><div class="tile-grid" id="pal-ji"></div>
 </div>
 
 <!-- ③ 手牌入力 -->
@@ -137,8 +144,8 @@ body{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.01) 0px
   <div class="sec-title" id="hand-sec-title">③ 面子入力（アクティブな枠に牌が追加されます）</div>
   <!-- 通常形 -->
   <div id="normal-input">
-    <div class="meld-builder" id="meld-builder"><div class="meld-slot active"><div class="meld-slot-label">面子1（3枚）</div><div class="meld-tiles"><div class="tile-empty"></div><div class="tile-empty"></div><div class="tile-empty"></div></div><button class="meld-naki-btn">鳴きなし</button><button class="meld-del">✕</button></div><div class="meld-slot"><div class="meld-slot-label">面子2（3枚）</div><div class="meld-tiles"><div class="tile-empty"></div><div class="tile-empty"></div><div class="tile-empty"></div></div><button class="meld-naki-btn">鳴きなし</button><button class="meld-del">✕</button></div><div class="meld-slot"><div class="meld-slot-label">面子3（3枚）</div><div class="meld-tiles"><div class="tile-empty"></div><div class="tile-empty"></div><div class="tile-empty"></div></div><button class="meld-naki-btn">鳴きなし</button><button class="meld-del">✕</button></div><div class="meld-slot"><div class="meld-slot-label">面子4（3枚）</div><div class="meld-tiles"><div class="tile-empty"></div><div class="tile-empty"></div><div class="tile-empty"></div></div><button class="meld-naki-btn">鳴きなし</button><button class="meld-del">✕</button></div><div class="meld-slot jantai-slot"><div class="meld-slot-label">雀頭（2枚）</div><div class="meld-tiles"><div class="tile-empty"></div><div class="tile-empty"></div></div></div></div>
-    <button onclick="addMentsu()" style="font-size:12px;padding:5px 14px;border-radius:7px;border:0.5px solid rgba(255,255,255,0.18);background:transparent;color:var(--text-mid);cursor:pointer;font-family:&#39;Noto Sans JP&#39;,sans-serif;margin-right:6px;">＋ 面子を追加</button>
+    <div class="meld-builder" id="meld-builder"></div>
+    <button onclick="addMentsu()" style="font-size:12px;padding:5px 14px;border-radius:7px;border:0.5px solid rgba(255,255,255,0.18);background:transparent;color:var(--text-mid);cursor:pointer;font-family:'Noto Sans JP',sans-serif;margin-right:6px;">＋ 面子を追加</button>
   </div>
   <!-- 七対子・国士（自由入力） -->
   <div id="free-input" style="display:none;">
@@ -161,11 +168,11 @@ body{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.01) 0px
     <div style="margin-top:12px;">
       <div style="font-size:12px;color:var(--text-mid);margin-bottom:6px;">待ちの種類（符計算に影響します）</div>
       <div class="machi-wrap">
-        <button class="machi-btn on" onclick="setMachi(&#39;ryamen&#39;)" data-machi="ryamen">両面待ち +0符</button>
-        <button class="machi-btn" onclick="setMachi(&#39;shanpon&#39;)" data-machi="shanpon">シャンポン待ち +0符</button>
-        <button class="machi-btn" onclick="setMachi(&#39;kanchan&#39;)" data-machi="kanchan">カンチャン待ち +2符</button>
-        <button class="machi-btn" onclick="setMachi(&#39;penchan&#39;)" data-machi="penchan">ペンチャン待ち +2符</button>
-        <button class="machi-btn" onclick="setMachi(&#39;tanki&#39;)" data-machi="tanki">単騎待ち +2符</button>
+        <button class="machi-btn on" onclick="setMachi('ryamen')">両面待ち +0符</button>
+        <button class="machi-btn" onclick="setMachi('shanpon')">シャンポン待ち +0符</button>
+        <button class="machi-btn" onclick="setMachi('kanchan')">カンチャン待ち +2符</button>
+        <button class="machi-btn" onclick="setMachi('penchan')">ペンチャン待ち +2符</button>
+        <button class="machi-btn" onclick="setMachi('tanki')">単騎待ち +2符</button>
       </div>
     </div>
   </div>
@@ -177,19 +184,19 @@ body{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.01) 0px
 <!-- ⑤ 場況 -->
 <div class="sec">
   <div class="sec-title">⑤ 場況・役</div>
-  <div class="row"><span class="lbl">自風</span><div id="jikaze-group" style="display:flex;gap:6px;flex-wrap:wrap;"><button class="rbtn on" data-val="1">東</button><button class="rbtn" data-val="2">南</button><button class="rbtn" data-val="3">西</button><button class="rbtn" data-val="4">北</button></div></div>
-  <div class="row"><span class="lbl">場風</span><div id="bakaze-group" style="display:flex;gap:6px;flex-wrap:wrap;"><button class="rbtn on" data-val="1">東</button><button class="rbtn" data-val="2">南</button><button class="rbtn" data-val="3">西</button><button class="rbtn" data-val="4">北</button></div></div>
+  <div class="row"><span class="lbl">自風</span><div id="jikaze-group" style="display:flex;gap:6px;flex-wrap:wrap;"></div></div>
+  <div class="row"><span class="lbl">場風</span><div id="bakaze-group" style="display:flex;gap:6px;flex-wrap:wrap;"></div></div>
   <div class="row">
     <span class="lbl">特殊役</span>
-    <button class="chip" id="chip-riichi" onclick="toggleChip(&#39;riichi&#39;)">立直</button>
-    <button class="chip" id="chip-ippatsu" onclick="toggleChip(&#39;ippatsu&#39;)">一発</button>
-    <button class="chip" id="chip-dbl-riichi" onclick="toggleChip(&#39;dbl-riichi&#39;)">ダブル立直</button>
-    <button class="chip" id="chip-haitei" onclick="toggleChip(&#39;haitei&#39;)">海底/河底</button>
-    <button class="chip" id="chip-rinshan" onclick="toggleChip(&#39;rinshan&#39;)">嶺上開花</button>
+    <button class="chip" id="chip-riichi" onclick="toggleChip('riichi')">立直</button>
+    <button class="chip" id="chip-ippatsu" onclick="toggleChip('ippatsu')">一発</button>
+    <button class="chip" id="chip-dbl-riichi" onclick="toggleChip('dbl-riichi')">ダブル立直</button>
+    <button class="chip" id="chip-haitei" onclick="toggleChip('haitei')">海底/河底</button>
+    <button class="chip" id="chip-rinshan" onclick="toggleChip('rinshan')">嶺上開花</button>
   </div>
   <div class="row">
     <span class="lbl" style="color:rgba(220,100,80,0.8);">役満</span>
-    <button class="chip" id="chip-yakuman" onclick="toggleChip(&#39;yakuman&#39;)" style="border-color:rgba(192,57,43,0.3);color:rgba(220,100,80,0.7);">役満あがり</button>
+    <button class="chip" id="chip-yakuman" onclick="toggleChip('yakuman')" style="border-color:rgba(192,57,43,0.3);color:rgba(220,100,80,0.7);">役満あがり</button>
     <span style="font-size:11px;color:var(--text-dim);">選択すると符・翻計算をスキップして親48,000 / 子32,000点を表示</span>
   </div>
   <div class="row">
@@ -759,6 +766,5 @@ document.querySelectorAll('.machi-btn').forEach(b=>{
 });
 initNormalMelds();
 </script>
-
-
-</body></html>
+</body>
+</html>
