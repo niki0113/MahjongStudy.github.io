@@ -106,9 +106,15 @@ body{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.01) 0px
 </style>
   <meta http-equiv="Cache-Control" content="no-store">
 <script>
-// bfcache無効化: 前後ページキャッシュから復元された場合に強制リロード
+// bfcache対策: 復元時に画像を再ロードする（リダイレクトなし）
 window.addEventListener('pageshow', function(e) {
-  if (e.persisted) { window.location.reload(); }
+  if (e.persisted) {
+    document.querySelectorAll('img').forEach(function(img) {
+      var src = img.src;
+      img.src = '';
+      img.src = src;
+    });
+  }
 });
 </script>
 </head>

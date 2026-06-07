@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<!-- saved from url=(0049)file:///C:/Users/shoum/Downloads/yaku-quiz_6.html -->
-<html lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>役名クイズ — 麻雀道場</title>
-<link rel="preconnect" href="https://fonts.googleapis.com/">
-<link href="./yaku-quiz_files/css2" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&family=Noto+Serif+JP:wght@400;700&family=Zen+Antique&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
@@ -98,16 +98,22 @@ body{background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.008) 0p
 </style>
   <meta http-equiv="Cache-Control" content="no-store">
 <script>
-// bfcache無効化: 前後ページキャッシュから復元された場合に強制リロード
+// bfcache対策: 復元時に画像を再ロードする（リダイレクトなし）
 window.addEventListener('pageshow', function(e) {
-  if (e.persisted) { window.location.reload(); }
+  if (e.persisted) {
+    document.querySelectorAll('img').forEach(function(img) {
+      var src = img.src;
+      img.src = '';
+      img.src = src;
+    });
+  }
 });
 </script>
 </head>
 <body>
 <nav class="nav">
   <div class="nav-left">
-    <a class="nav-back" href="file:///C:/Users/shoum/Downloads/index.html">← 道場へ戻る</a>
+    <a class="nav-back" href="index.html">← 道場へ戻る</a>
     <span style="color:var(--text-dim)">|</span>
     <span class="nav-title">役名クイズ</span>
   </div>
@@ -118,28 +124,28 @@ window.addEventListener('pageshow', function(e) {
     <div class="mode-title">役名クイズ</div>
     <div class="mode-sub">手牌の形を見て役名を当てましょう。<br>横向きの牌は鳴き（ポン・チー）した牌です。</div>
     <div class="mode-grid">
-      <button class="mode-btn" onclick="startQuiz(&#39;easy&#39;)">
+      <button class="mode-btn" onclick="startQuiz('easy')">
         <span class="mode-btn-badge badge badge-easy">初級</span>
         <div class="mode-btn-title">初級モード</div>
         <div class="mode-btn-sub">頻出役10問</div>
       </button>
-      <button class="mode-btn" onclick="startQuiz(&#39;mid&#39;)">
+      <button class="mode-btn" onclick="startQuiz('mid')">
         <span class="mode-btn-badge badge badge-mid">中級</span>
         <div class="mode-btn-title">中級モード</div>
         <div class="mode-btn-sub">やや難しい役10問</div>
       </button>
-      <button class="mode-btn" onclick="startQuiz(&#39;hard&#39;)">
+      <button class="mode-btn" onclick="startQuiz('hard')">
         <span class="mode-btn-badge badge badge-hard">上級</span>
         <div class="mode-btn-title">上級モード</div>
         <div class="mode-btn-sub">難役・役満10問</div>
       </button>
-      <button class="mode-btn" onclick="startQuiz(&#39;all&#39;)">
+      <button class="mode-btn" onclick="startQuiz('all')">
         <span class="mode-btn-badge" style="background:rgba(212,175,55,0.15);color:var(--gold);border:0.5px solid rgba(212,175,55,0.3);">全問</span>
         <div class="mode-btn-title">全問モード</div>
         <div class="mode-btn-sub">全難易度混合20問</div>
       </button>
     </div>
-    <a class="home-btn" href="file:///C:/Users/shoum/Downloads/yaku.html">役一覧を見る →</a>
+    <a class="home-btn" href="yaku.html">役一覧を見る →</a>
   </div>
   <div id="progress-area" style="display:none">
     <div class="progress-wrap">
@@ -170,7 +176,7 @@ window.addEventListener('pageshow', function(e) {
     <div class="res-comment" id="res-comment"></div>
     <div class="btn-row">
       <button class="retry-btn" onclick="backToMode()">モード選択へ</button>
-      <a class="home-btn" href="file:///C:/Users/shoum/Downloads/yaku.html">役一覧を見る</a>
+      <a class="home-btn" href="yaku.html">役一覧を見る</a>
     </div>
   </div>
 </div>
@@ -799,6 +805,5 @@ function backToMode(){
   document.getElementById('nav-total').textContent=0;
 }
 </script>
-
-
-</body></html>
+</body>
+</html>
