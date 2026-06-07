@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0045)file:///C:/Users/shoum/Downloads/nankiru.html -->
+<!-- saved from url=(0047)file:///C:/Users/shoum/Downloads/nankiru_3.html -->
 <html lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -53,35 +53,63 @@
   /* 横向き牌（鳴き用・河の横向き） */
   .tile-wrap.tile-yoko{width:46px;height:34px;border-bottom:none;border-right:3px solid #b8a888;}
 
-  /* ── 場況ボード ── */
-  .board{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
-  @media(max-width:500px){.board{grid-template-columns:1fr;}}
-  .board-cell{background:rgba(0,0,0,0.2);border:0.5px solid rgba(255,255,255,0.1);border-radius:8px;padding:10px 12px;}
-  .board-label{font-size:11px;color:var(--text-dim);margin-bottom:6px;letter-spacing:0.05em;}
-
-  /* ドラ表示 */
+  /* ── 場況ボード（ドラ＋メモ） ── */
+  .info-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+  .info-cell{background:rgba(0,0,0,0.2);border:0.5px solid rgba(255,255,255,0.1);border-radius:8px;padding:9px 12px;flex:1;min-width:120px;}
+  .info-label{font-size:10px;color:var(--text-dim);margin-bottom:5px;letter-spacing:0.05em;}
   .dora-row{display:flex;gap:4px;flex-wrap:wrap;}
-
   /* 場況テキスト行 */
-  .situation-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
-  .sit-pill{padding:3px 10px;border-radius:20px;background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);color:var(--text-mid);font-size:12px;}
+  .situation-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;}
+  .sit-pill{padding:3px 9px;border-radius:20px;background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);color:var(--text-mid);font-size:11px;}
   .sit-pill.accent{background:rgba(212,175,55,0.12);border-color:rgba(212,175,55,0.3);color:var(--gold);}
   .sit-pill.danger{background:rgba(192,57,43,0.12);border-color:rgba(192,57,43,0.3);color:rgba(220,110,90,0.9);}
 
-  /* 河（捨て牌） */
-  .river-section{margin-bottom:14px;}
-  .river-title{font-size:11px;color:var(--text-dim);margin-bottom:6px;letter-spacing:0.05em;}
-  .river-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
-  @media(max-width:500px){.river-grid{grid-template-columns:repeat(2,1fr);}}
-  .river-player{background:rgba(0,0,0,0.2);border:0.5px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px;}
-  .river-player-name{font-size:10px;color:var(--text-dim);margin-bottom:5px;}
-  .river-tiles-wrap{display:flex;flex-direction:column;gap:3px;}
-  .river-tiles{display:flex;flex-wrap:nowrap;gap:3px;min-height:20px;}
-  /* 河の牌は少し小さめ */
-  .river-tiles .tile-wrap{width:24px;height:32px;border-bottom-width:2px;}
-  .river-tiles .tile-wrap.tile-yoko{width:32px;height:24px;border-right-width:2px;border-bottom:none;}
+  /* ── 卓レイアウト（4名の持ち点・河・副露） ── */
+  .table-layout{
+    display:grid;
+    grid-template-areas:
+      ". kaimen ."
+      "kamiya center shimoya"
+      ". jika .";
+    grid-template-columns:1fr 2fr 1fr;
+    grid-template-rows:auto auto auto;
+    gap:6px;
+    margin-bottom:14px;
+  }
+  .player-cell{background:rgba(0,0,0,0.22);border:0.5px solid rgba(255,255,255,0.1);border-radius:8px;padding:8px 10px;}
+  .player-cell.jika{grid-area:jika;border-color:rgba(212,175,55,0.25);}
+  .player-cell.kaimen{grid-area:kaimen;}
+  .player-cell.kamiya{grid-area:kamiya;}
+  .player-cell.shimoya{grid-area:shimoya;}
+  .table-center{grid-area:center;background:rgba(0,60,20,0.3);border:0.5px solid rgba(39,120,60,0.2);border-radius:8px;display:flex;align-items:center;justify-content:center;min-height:60px;}
+  .table-center-inner{text-align:center;}
+  .table-center-kyoku{font-size:13px;font-weight:500;color:var(--gold);letter-spacing:0.08em;}
+  .table-center-honba{font-size:11px;color:var(--text-dim);margin-top:2px;}
+
+  /* プレイヤー情報ヘッダー */
+  .player-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;}
+  .player-name{font-size:11px;font-weight:500;color:var(--text-mid);}
+  .player-name.jika-name{color:var(--gold);}
+  .player-name.riichi-name{color:rgba(220,100,80,0.9);}
+  .player-score{font-size:14px;font-weight:500;color:var(--text-bright);}
+  .player-score.jika-score{font-size:16px;color:var(--gold);}
+  .player-score.danger-score{color:rgba(220,100,80,0.9);}
+  .riichi-badge{font-size:9px;padding:1px 5px;border-radius:6px;background:rgba(192,57,43,0.2);color:rgba(220,100,80,0.9);border:0.5px solid rgba(192,57,43,0.4);margin-left:4px;}
+
+  /* 河牌 */
+  .river-tiles-wrap{display:flex;flex-direction:column;gap:2px;}
+  .river-tiles{display:flex;flex-wrap:nowrap;gap:2px;min-height:18px;}
+  .river-tiles .tile-wrap{width:22px;height:30px;border-bottom-width:2px;}
+  .river-tiles .tile-wrap.tile-yoko{width:30px;height:22px;border-right-width:2px;border-bottom:none;}
+
+  /* 副露（鳴き） */
+  .meld-row{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;}
+  .meld-group{display:flex;gap:1px;align-items:flex-end;background:rgba(212,175,55,0.07);border:0.5px solid rgba(212,175,55,0.2);border-radius:3px;padding:2px 3px;}
+  .meld-group .tile-wrap{width:20px;height:28px;border-bottom-width:2px;}
+  .meld-group .tile-wrap.tile-yoko{width:28px;height:20px;border-bottom:none;border-right:2px solid #b8a888;}
+
   /* リーチ後の牌を薄く */
-  .tile-wrap.riichi-discard{opacity:0.5;}
+  .tile-wrap.riichi-discard{opacity:0.45;}
 
   /* ── 手牌（クリック選択） ── */
   .hand-section{margin-bottom:6px;}
@@ -172,34 +200,47 @@ window.addEventListener('pageshow', function(e) {
   <div id="quiz-area" style="display: block;">
     <div class="q-card" id="q-card" style="animation: 0.35s ease 0s 1 normal none running fadeIn;">
       <div class="q-no" id="q-no">Q1</div>
-      <div class="badge badge-easy" id="q-badge">初級</div>
-      <div class="q-text" id="q-text">東1局南家（子）5巡目。字牌が3枚あります。どれを切りますか？</div>
+      <div class="badge badge-hard" id="q-badge">上級</div>
+      <div class="q-text" id="q-text">東1局東家（親）8巡目。同じ一向聴でも受け入れ枚数が違います。どれを切りますか？</div>
 
       <!-- 場況ピル -->
-      <div class="situation-row" id="sit-row"><span class="sit-pill">東1局</span><span class="sit-pill">子（南家）</span><span class="sit-pill">5巡目</span><span class="sit-pill">持ち点 25000</span></div>
+      <div class="situation-row" id="sit-row"><span class="sit-pill">東1局</span><span class="sit-pill">親（東家）</span><span class="sit-pill">8巡目</span><span class="sit-pill">持ち点 25000</span></div>
 
-      <!-- ドラ＋場況ボード -->
-      <div class="board" id="board-wrap">
-        <div class="board-cell">
-          <div class="board-label">ドラ表示牌</div>
-          <div class="dora-row" id="dora-row"><div class="tile-wrap" data-key="pin6" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin6.png" alt="⑥"></div></div>
+      <!-- ドラ＋場況メモ -->
+      <div class="info-row">
+        <div class="info-cell">
+          <div class="info-label">ドラ表示牌</div>
+          <div class="dora-row" id="dora-row"><div class="tile-wrap" data-key="sou5" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou5.png" alt="5s"></div></div>
         </div>
-        <div class="board-cell" id="board-info">
-          <div class="board-label">場況メモ</div>
-          <div id="board-notes" style="font-size:12px;color:var(--text-mid);line-height:1.7;">ドラ表示牌は⑥筒。</div>
+        <div class="info-cell" style="flex:2;">
+          <div class="info-label">場況メモ</div>
+          <div id="board-notes" style="font-size:12px;color:var(--text-mid);line-height:1.6;">ドラ表示牌は5索。</div>
         </div>
       </div>
 
-      <!-- 河 -->
-      <div class="river-section">
-        <div class="river-title">捨て牌（河）</div>
-        <div class="river-grid" id="river-grid"><div class="river-player"><div class="river-player-name">自家</div><div class="river-tiles-wrap"><div class="river-tiles"><div class="tile-wrap" data-key="man1" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man1.png" alt="一"></div><div class="tile-wrap" data-key="pei" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pei.png" alt="北"></div></div></div></div><div class="river-player"><div class="river-player-name">下家（右）</div><div class="river-tiles-wrap"><div class="river-tiles"><div class="tile-wrap" data-key="ton" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/ton.png" alt="東"></div><div class="tile-wrap" data-key="nan" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/nan.png" alt="南"></div><div class="tile-wrap" data-key="pin9" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin9.png" alt="⑨"></div><div class="tile-wrap" data-key="man9" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man9.png" alt="九"></div><div class="tile-wrap" data-key="tyun" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/tyun.png" alt="中"></div></div></div></div><div class="river-player"><div class="river-player-name">対面</div><div class="river-tiles-wrap"><div class="river-tiles"><div class="tile-wrap" data-key="haku" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/haku.png" alt="白"></div><div class="tile-wrap" data-key="sou1" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou1.png" alt="1s"></div><div class="tile-wrap" data-key="ton" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/ton.png" alt="東"></div><div class="tile-wrap" data-key="hatu" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/hatu.png" alt="發"></div></div></div></div><div class="river-player"><div class="river-player-name">上家（左）</div><div class="river-tiles-wrap"><div class="river-tiles"><div class="tile-wrap" data-key="nan" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/nan.png" alt="南"></div><div class="tile-wrap" data-key="pei" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pei.png" alt="北"></div><div class="tile-wrap" data-key="sya" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sya.png" alt="西"></div><div class="tile-wrap" data-key="tyun" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/tyun.png" alt="中"></div><div class="tile-wrap" data-key="pin1" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin1.png" alt="①"></div></div></div></div></div>
+      <!-- 卓レイアウト：持ち点・河・副露 -->
+      <div class="table-layout" id="table-layout">
+        <!-- 対面 -->
+        <div class="player-cell kaimen" id="cell-kaimen"><div class="player-header"><span class="player-name">対面</span><span class="player-score">28,000点</span></div><div class="river-tiles-wrap"><div class="river-tiles"><div class="tile-wrap" data-key="nan" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/nan.png" alt="南"></div><div class="tile-wrap" data-key="sou9" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou9.png" alt="9s"></div><div class="tile-wrap" data-key="man9" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man9.png" alt="九"></div><div class="tile-wrap" data-key="pin1" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin1.png" alt="①"></div><div class="tile-wrap" data-key="ton" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/ton.png" alt="東"></div><div class="tile-wrap" data-key="nan" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/nan.png" alt="南"></div></div><div class="river-tiles"><div class="tile-wrap" data-key="sya" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sya.png" alt="西"></div></div></div></div>
+        <!-- 中央（局・本場） -->
+        <div class="table-center" id="table-center">
+          <div class="table-center-inner">
+            <div class="table-center-kyoku" id="center-kyoku">東1局</div>
+            <div class="table-center-honba" id="center-honba"></div>
+          </div>
+        </div>
+        <!-- 上家（左） -->
+        <div class="player-cell kamiya" id="cell-kamiya"><div class="player-header"><span class="player-name">上家（左）</span><span class="player-score">25,000点</span></div><div class="river-tiles-wrap"><div class="river-tiles"><div class="tile-wrap" data-key="pei" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pei.png" alt="北"></div><div class="tile-wrap" data-key="haku" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/haku.png" alt="白"></div><div class="tile-wrap" data-key="sou1" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou1.png" alt="1s"></div><div class="tile-wrap" data-key="ton" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/ton.png" alt="東"></div><div class="tile-wrap" data-key="man8" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man8.png" alt="八"></div><div class="tile-wrap" data-key="ton" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/ton.png" alt="東"></div></div><div class="river-tiles"><div class="tile-wrap" data-key="nan" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/nan.png" alt="南"></div></div></div></div>
+        <!-- 下家（右） -->
+        <div class="player-cell shimoya" id="cell-shimoya"><div class="player-header"><span class="player-name">下家（右）</span><span class="player-score">22,000点</span></div><div class="river-tiles-wrap"><div class="river-tiles"><div class="tile-wrap" data-key="ton" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/ton.png" alt="東"></div><div class="tile-wrap" data-key="sya" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sya.png" alt="西"></div><div class="tile-wrap" data-key="pin9" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin9.png" alt="⑨"></div><div class="tile-wrap" data-key="man1" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man1.png" alt="一"></div><div class="tile-wrap" data-key="pei" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pei.png" alt="北"></div><div class="tile-wrap" data-key="ton" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/ton.png" alt="東"></div></div><div class="river-tiles"><div class="tile-wrap" data-key="nan" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/nan.png" alt="南"></div></div></div></div>
+        <!-- 自家（下） -->
+        <div class="player-cell jika" id="cell-jika"><div class="player-header"><span class="player-name jika-name">自家</span><span class="player-score jika-score">25,000点</span></div><div class="river-tiles-wrap"><div class="river-tiles"><div class="tile-wrap" data-key="haku" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/haku.png" alt="白"></div><div class="tile-wrap" data-key="tyun" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/tyun.png" alt="中"></div><div class="tile-wrap" data-key="nan" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/nan.png" alt="南"></div><div class="tile-wrap" data-key="hatu" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/hatu.png" alt="發"></div><div class="tile-wrap" data-key="ton" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/ton.png" alt="東"></div><div class="tile-wrap" data-key="nan" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/nan.png" alt="南"></div></div><div class="river-tiles"><div class="tile-wrap" data-key="sya" style="cursor: default;"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sya.png" alt="西"></div></div></div></div>
       </div>
 
       <!-- 手牌 -->
       <div class="hand-section">
         <div class="hand-label">あなたの手牌（13枚）— 切る牌を1枚クリック</div>
-        <div class="hand-row" id="hand-row"><div class="h-tile" data-idx="0"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man3.png" alt="三"><span class="tile-label-badge" id="lbl-0"></span></div><div class="h-tile" data-idx="1"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man4.png" alt="四"><span class="tile-label-badge" id="lbl-1"></span></div><div class="h-tile" data-idx="2"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man5.png" alt="五"><span class="tile-label-badge" id="lbl-2"></span></div><div class="h-tile" data-idx="3"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin5.png" alt="⑤"><span class="tile-label-badge" id="lbl-3"></span></div><div class="h-tile" data-idx="4"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin6.png" alt="⑥"><span class="tile-label-badge" id="lbl-4"></span></div><div class="h-tile" data-idx="5"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin7.png" alt="⑦"><span class="tile-label-badge" id="lbl-5"></span></div><div class="h-tile" data-idx="6"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou2.png" alt="2s"><span class="tile-label-badge" id="lbl-6"></span></div><div class="h-tile" data-idx="7"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou3.png" alt="3s"><span class="tile-label-badge" id="lbl-7"></span></div><div class="h-tile" data-idx="8"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou4.png" alt="4s"><span class="tile-label-badge" id="lbl-8"></span></div><div class="h-tile" data-idx="9"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou6.png" alt="6s"><span class="tile-label-badge" id="lbl-9"></span></div><div class="h-tile" data-idx="10"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou7.png" alt="7s"><span class="tile-label-badge" id="lbl-10"></span></div><div class="h-tile" data-idx="11"><img src="file:///C:/Users/shoum/Downloads/img/tiles/ton.png" alt="東"><span class="tile-label-badge" id="lbl-11"></span></div><div class="h-tile" data-idx="12"><img src="file:///C:/Users/shoum/Downloads/img/tiles/nan.png" alt="南"><span class="tile-label-badge" id="lbl-12"></span></div><div class="h-tile" data-idx="13"><img src="file:///C:/Users/shoum/Downloads/img/tiles/haku.png" alt="白"><span class="tile-label-badge" id="lbl-13"></span></div></div>
+        <div class="hand-row" id="hand-row"><div class="h-tile" data-idx="0"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man3.png" alt="三"><span class="tile-label-badge" id="lbl-0"></span></div><div class="h-tile" data-idx="1"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man4.png" alt="四"><span class="tile-label-badge" id="lbl-1"></span></div><div class="h-tile" data-idx="2"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man6.png" alt="六"><span class="tile-label-badge" id="lbl-2"></span></div><div class="h-tile" data-idx="3"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man7.png" alt="七"><span class="tile-label-badge" id="lbl-3"></span></div><div class="h-tile" data-idx="4"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man8.png" alt="八"><span class="tile-label-badge" id="lbl-4"></span></div><div class="h-tile" data-idx="5"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin4.png" alt="④"><span class="tile-label-badge" id="lbl-5"></span></div><div class="h-tile" data-idx="6"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin5.png" alt="⑤"><span class="tile-label-badge" id="lbl-6"></span></div><div class="h-tile" data-idx="7"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin6.png" alt="⑥"><span class="tile-label-badge" id="lbl-7"></span></div><div class="h-tile" data-idx="8"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou4.png" alt="4s"><span class="tile-label-badge" id="lbl-8"></span></div><div class="h-tile" data-idx="9"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou5.png" alt="5s"><span class="tile-label-badge" id="lbl-9"></span></div><div class="h-tile" data-idx="10"><img src="file:///C:/Users/shoum/Downloads/img/tiles/sou6.png" alt="6s"><span class="tile-label-badge" id="lbl-10"></span></div><div class="h-tile" data-idx="11"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man5.png" alt="五"><span class="tile-label-badge" id="lbl-11"></span></div><div class="h-tile" data-idx="12"><img src="file:///C:/Users/shoum/Downloads/img/tiles/man5.png" alt="五"><span class="tile-label-badge" id="lbl-12"></span></div><div class="h-tile" data-idx="13"><img src="file:///C:/Users/shoum/Downloads/img/tiles/pin2.png" alt="②"><span class="tile-label-badge" id="lbl-13"></span></div></div>
         <div class="hand-hint" id="hand-hint">▲ 牌をクリックして選択</div>
       </div>
 
@@ -297,10 +338,10 @@ function makeTileEl(key, aka=false, yoko=false, extraClass='') {
   dora       : ['man5',...]      ドラ表示牌のkeyリスト
   boardNotes : '場況メモ文字列'
   river      : [                 各家の河
-    { name:'自家', tiles:[{k:'man1', yoko:false, riichi:false}, ...] },
-    { name:'下家(右)', tiles:[...] },
-    { name:'対面', tiles:[...] },
-    { name:'上家(左)', tiles:[...] },
+    { name:'自家', tiles:[{k:'man1', yoko:false, riichi:false}, ...],melds:[]},
+    { name:'下家(右)', tiles:[...],melds:[]},
+    { name:'対面', tiles:[...],melds:[]},
+    { name:'上家(左)', tiles:[...],melds:[]},
   ]
   hand       : [{k:'man1', aka:false}]  手牌13枚
   best       : 'man1'               最善切り牌key（ユニークidxが必要な場合はhand配列のindex番号を使う）
@@ -323,10 +364,10 @@ const QUESTIONS = [
     dora:['pin6'],
     boardNotes:'ドラ表示牌は⑥筒。',
     river:[
-      {name:'自家',tiles:[{k:'man1',y:false,r:false},{k:'pei',y:false,r:false}]},
-      {name:'下家（右）',tiles:[{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'pin9',y:false,r:false},{k:'man9',y:false,r:false},{k:'tyun',y:false,r:false}]},
+      {name:'自家',tiles:[{k:'man1',y:false,r:false},{k:'pei',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'pin9',y:false,r:false},{k:'man9',y:false,r:false}]},
       {name:'対面',tiles:[{k:'haku',y:false,r:false},{k:'sou1',y:false,r:false},{k:'ton',y:false,r:false},{k:'hatu',y:false,r:false}]},
-      {name:'上家（左）',tiles:[{k:'nan',y:false,r:false},{k:'pei',y:false,r:false},{k:'sya',y:false,r:false},{k:'tyun',y:false,r:false},{k:'pin1',y:false,r:false}]}
+      {name:'上家（左）',tiles:[{k:'nan',y:false,r:false},{k:'pei',y:false,r:false},{k:'sya',y:false,r:false},{k:'tyun',y:false,r:false}]}
     ],
     hand:[
       {k:'man3',a:false},{k:'man4',a:false},{k:'man5',a:false},
@@ -335,6 +376,7 @@ const QUESTIONS = [
       {k:'sou6',a:false},{k:'sou7',a:false},
       {k:'ton', a:false},{k:'nan', a:false},{k:'haku',a:false}
     ],
+    scores:[25000, 24000, 26000, 25000],
     bestIdx:12,
     acceptable:[13],
     explanation:'三四五萬・⑤⑥⑦・2s3s4sの3面子完成＋6s7sの両面ターツがある。雀頭が未確定なので東・南・白のどれかを雀頭にするか、孤立字牌として処理するか判断する。東は場に多く出ており自風でもない（南家）。南は自風で役牌になりえるため残す価値がある。白は三元牌だが1枚では弱い。南を残すため白か東を切る。東は場に1枚も出ておらず当たり牌になりうるため、場に複数見えている白が最善。'
@@ -351,10 +393,10 @@ const QUESTIONS = [
     dora:['sou7'],
     boardNotes:'ドラ表示牌は7索。',
     river:[
-      {name:'自家',tiles:[{k:'haku',y:false,r:false},{k:'hatu',y:false,r:false},{k:'tyun',y:false,r:false}]},
-      {name:'下家（右）',tiles:[{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'pei',y:false,r:false},{k:'man9',y:false,r:false}]},
-      {name:'対面',tiles:[{k:'ton',y:false,r:false},{k:'man1',y:false,r:false},{k:'sou9',y:false,r:false},{k:'pin1',y:false,r:false},{k:'nan',y:false,r:false}]},
-      {name:'上家（左）',tiles:[{k:'sya',y:false,r:false},{k:'pei',y:false,r:false},{k:'hatu',y:false,r:false},{k:'man1',y:false,r:false}]}
+      {name:'自家',tiles:[{k:'haku',y:false,r:false},{k:'hatu',y:false,r:false},{k:'tyun',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'pei',y:false,r:false},{k:'man9',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false}]},
+      {name:'対面',tiles:[{k:'ton',y:false,r:false},{k:'man1',y:false,r:false},{k:'sou9',y:false,r:false},{k:'pin1',y:false,r:false},{k:'nan',y:false,r:false},{k:'ton',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'sya',y:false,r:false},{k:'pei',y:false,r:false},{k:'hatu',y:false,r:false},{k:'man1',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false}]}
     ],
     hand:[
       {k:'man2',a:false},{k:'man3',a:false},{k:'man4',a:false},
@@ -363,6 +405,7 @@ const QUESTIONS = [
       {k:'sou5',a:false},{k:'sou6',a:false},{k:'sou7',a:false},
       {k:'man9',a:false},{k:'sou9',a:false},{k:'pin9',a:false}
     ],
+    scores:[25000, 23000, 27000, 25000],
     bestIdx:11,
     acceptable:[12,13],
     explanation:'二三四萬・③④⑤・5s6s7s（ドラ）の3面子完成＋六七萬の両面ターツがある。9m・9s・9pはすべて孤立端牌で面子への貢献が低い。ドラ（8s）の受け入れがある7sの隣5s6s7sはすでに完成面子なので9sは残す意味が薄い。3つとも不要だが、六七萬の受け入れを考えると9mが最も邪魔。9m切りが最善。'
@@ -379,9 +422,9 @@ const QUESTIONS = [
     dora:['man3'],
     boardNotes:'ドラ表示牌は三萬。',
     river:[
-      {name:'自家',tiles:[{k:'ton',y:false,r:false}]},
+      {name:'自家',tiles:[{k:'ton',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false}]},
       {name:'下家（右）',tiles:[{k:'man9',y:false,r:false},{k:'pei',y:false,r:false},{k:'sou1',y:false,r:false}]},
-      {name:'対面',tiles:[{k:'sya',y:false,r:false},{k:'nan',y:false,r:false},{k:'pin9',y:false,r:false},{k:'hatu',y:false,r:false}]},
+      {name:'対面',tiles:[{k:'sya',y:false,r:false},{k:'nan',y:false,r:false},{k:'pin9',y:false,r:false}]},
       {name:'上家（左）',tiles:[{k:'tyun',y:false,r:false},{k:'haku',y:false,r:false},{k:'ton',y:false,r:false}]}
     ],
     hand:[
@@ -391,6 +434,7 @@ const QUESTIONS = [
       {k:'sou5',a:false},{k:'sou6',a:false},
       {k:'man1',a:false},{k:'pin9',a:false},{k:'pei',a:false}
     ],
+    scores:[24000, 26000, 25000, 25000],
     bestIdx:10,
     acceptable:[11,12],
     explanation:'四〜八萬の5連形・③④⑤・5s6sのブロックがある。タンヤオ方針なら1・9・字牌をすべて除外する必要がある。一萬・⑨・北が不要。一萬は端牌の孤立牌で最も価値が低い。⑨は端牌だが隣の⑧が五連形に含まれており若干つながりがある。北は字牌で役牌（自風）だが北家にとって北は自風役牌──しかしタンヤオ方針と矛盾する。タンヤオ徹底なら一萬から切るのが明快で最善。'
@@ -407,10 +451,10 @@ const QUESTIONS = [
     dora:['pin1'],
     boardNotes:'ドラ表示牌は①筒。',
     river:[
-      {name:'自家',tiles:[{k:'ton',y:false,r:false},{k:'hatu',y:false,r:false},{k:'tyun',y:false,r:false}]},
-      {name:'下家（右）',tiles:[{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'man1',y:false,r:false},{k:'sou1',y:false,r:false},{k:'pin9',y:false,r:false}]},
-      {name:'対面',tiles:[{k:'pei',y:false,r:false},{k:'haku',y:false,r:false},{k:'man9',y:false,r:false}]},
-      {name:'上家（左）',tiles:[{k:'sou9',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'pin1',y:false,r:false}]}
+      {name:'自家',tiles:[{k:'ton',y:false,r:false},{k:'hatu',y:false,r:false},{k:'tyun',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'pei',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'man1',y:false,r:false},{k:'sou1',y:false,r:false},{k:'pin9',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false}]},
+      {name:'対面',tiles:[{k:'pei',y:false,r:false},{k:'haku',y:false,r:false},{k:'man9',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'pei',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'sou9',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'pin1',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false}]}
     ],
     hand:[
       {k:'man2',a:false},{k:'man3',a:false},{k:'man4',a:false},
@@ -419,6 +463,7 @@ const QUESTIONS = [
       {k:'man7',a:false},{k:'man7',a:false},
       {k:'sou8',a:false},{k:'sou8',a:false},{k:'pin8',a:false}
     ],
+    scores:[22000, 26000, 28000, 24000],
     bestIdx:13,
     acceptable:[],
     explanation:'二三四萬・⑤⑥⑦・3s4s5sの3面子完成＋七七萬（対子）＋8s8s（対子）＋⑧（孤立）。対子が2組ありどちらかを雀頭に使う。七七萬を雀頭にすれば8sに何が来ても7s9sで面子ができる。8s8sを雀頭にすれば七萬は六萬か九萬待ちのカンチャン（七八萬なし）。⑧を切ると七七萬＋8s8sの2対子が残り、次の引きで柔軟に雀頭を選べる。⑧は3面子に含まれない孤立牌なので⑧切りが最善。'
@@ -435,10 +480,10 @@ const QUESTIONS = [
     dora:['sou2'],
     boardNotes:'ドラ表示牌は2索。',
     river:[
-      {name:'自家',tiles:[{k:'haku',y:false,r:false},{k:'tyun',y:false,r:false}]},
-      {name:'下家（右）',tiles:[{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'pei',y:false,r:false},{k:'man9',y:false,r:false}]},
+      {name:'自家',tiles:[{k:'haku',y:false,r:false},{k:'tyun',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'pei',y:false,r:false},{k:'man9',y:false,r:false},{k:'ton',y:false,r:false}]},
       {name:'対面',tiles:[{k:'hatu',y:false,r:false},{k:'sya',y:false,r:false},{k:'sou9',y:false,r:false},{k:'pin1',y:false,r:false},{k:'man1',y:false,r:false}]},
-      {name:'上家（左）',tiles:[{k:'nan',y:false,r:false},{k:'haku',y:false,r:false},{k:'pin9',y:false,r:false}]}
+      {name:'上家（左）',tiles:[{k:'nan',y:false,r:false},{k:'haku',y:false,r:false},{k:'pin9',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false}]}
     ],
     hand:[
       {k:'man2',a:false},{k:'man3',a:false},{k:'man4',a:false},
@@ -447,6 +492,7 @@ const QUESTIONS = [
       {k:'sou1',a:false},{k:'sou2',a:false},{k:'sou3',a:false},
       {k:'pin8',a:false},{k:'pin9',a:false}
     ],
+    scores:[27000, 22000, 27000, 24000],
     bestIdx:9,
     acceptable:[],
     explanation:'二三四萬・六七八萬・④⑤⑥・1s2s3s（ドラ含む）の4面子完成形＋⑧⑨の両面ターツ。面子が4つ揃っていれば残り1ターツが雀頭または面子を完成させる。1s2s3sはドラ（3s）を含む完成面子なので落としたくない。⑧⑨は端に近い両面ターツ。1sはドラを含む面子の一部だが1sそのものは么九牌。「5ブロック→4ブロック＋雀頭候補」に整理するため最も弱いブロックを落とす。1sだけを切れば2s3sが残り両面（1or4s）になる。よって1s切りが最善。'
@@ -465,10 +511,10 @@ const QUESTIONS = [
     dora:['man5'],
     boardNotes:'ドラ表示牌は五萬。',
     river:[
-      {name:'自家',tiles:[{k:'ton',y:false,r:false},{k:'hatu',y:false,r:false},{k:'nan',y:false,r:false},{k:'pei',y:false,r:false}]},
-      {name:'下家（右）',tiles:[{k:'sya',y:false,r:false},{k:'haku',y:false,r:false},{k:'man9',y:false,r:false},{k:'pin1',y:false,r:false},{k:'tyun',y:false,r:false}]},
-      {name:'対面',tiles:[{k:'man1',y:false,r:false},{k:'nan',y:false,r:false},{k:'sou1',y:false,r:false},{k:'man8',y:false,r:false}]},
-      {name:'上家（左）',tiles:[{k:'pin9',y:false,r:false},{k:'sou9',y:false,r:false},{k:'ton',y:false,r:false},{k:'hatu',y:false,r:false},{k:'pin1',y:false,r:false}]}
+      {name:'自家',tiles:[{k:'ton',y:false,r:false},{k:'hatu',y:false,r:false},{k:'nan',y:false,r:false},{k:'pei',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'pei',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'sya',y:false,r:false},{k:'haku',y:false,r:false},{k:'man9',y:false,r:false},{k:'pin1',y:false,r:false},{k:'tyun',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false}]},
+      {name:'対面',tiles:[{k:'man1',y:false,r:false},{k:'nan',y:false,r:false},{k:'sou1',y:false,r:false},{k:'man8',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'pei',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'pin9',y:false,r:false},{k:'sou9',y:false,r:false},{k:'ton',y:false,r:false},{k:'hatu',y:false,r:false},{k:'pin1',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false}]}
     ],
     hand:[
       {k:'man3',a:false},{k:'man4',a:false},{k:'man5',a:false},
@@ -478,6 +524,7 @@ const QUESTIONS = [
       {k:'pin6',a:false},{k:'pin8',a:false},
       {k:'sou3',a:false}
     ],
+    scores:[26000, 25000, 27000, 22000],
     bestIdx:13,
     acceptable:[11],
     explanation:'三四五萬・②③④・5s6s7sの3面子＋七八萬（両面）＋⑥⑧（カンチャン待ち⑦）＋3s（孤立）が重なっている。雀頭未確定で4面子＋雀頭に整理する必要がある。3sは完全孤立なので最初に切る候補。3sを切ることで七八萬（両面・受け6枚）とカンチャン⑥⑧（受け4枚）が残る。両面の方が受け入れ枚数が多いが、3sを先に処理するのが正解。3s切りが最善。'
@@ -494,10 +541,10 @@ const QUESTIONS = [
     dora:['sou4'],
     boardNotes:'ドラ表示牌は4索。',
     river:[
-      {name:'自家',tiles:[{k:'ton',y:false,r:false},{k:'sya',y:false,r:false},{k:'hatu',y:false,r:false},{k:'haku',y:false,r:false}]},
-      {name:'下家（右）',tiles:[{k:'nan',y:false,r:false},{k:'pei',y:false,r:false},{k:'man1',y:false,r:false},{k:'pin9',y:false,r:false},{k:'sou9',y:false,r:false}]},
-      {name:'対面',tiles:[{k:'tyun',y:false,r:false},{k:'man9',y:false,r:false},{k:'sou1',y:false,r:false}]},
-      {name:'上家（左）',tiles:[{k:'pin1',y:false,r:false},{k:'haku',y:false,r:false},{k:'nan',y:false,r:false},{k:'man8',y:false,r:false},{k:'ton',y:false,r:false}]}
+      {name:'自家',tiles:[{k:'ton',y:false,r:false},{k:'sya',y:false,r:false},{k:'hatu',y:false,r:false},{k:'haku',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'pei',y:false,r:false},{k:'haku',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'nan',y:false,r:false},{k:'pei',y:false,r:false},{k:'man1',y:false,r:false},{k:'pin9',y:false,r:false},{k:'sou9',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'pei',y:false,r:false}]},
+      {name:'対面',tiles:[{k:'tyun',y:false,r:false},{k:'man9',y:false,r:false},{k:'sou1',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'pei',y:false,r:false},{k:'haku',y:false,r:false},{k:'hatu',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'pin1',y:false,r:false},{k:'haku',y:false,r:false},{k:'nan',y:false,r:false},{k:'man8',y:false,r:false},{k:'ton',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'pei',y:false,r:false}]}
     ],
     hand:[
       {k:'man3',a:false},{k:'man4',a:false},{k:'man5',a:false},
@@ -507,6 +554,7 @@ const QUESTIONS = [
       {k:'man7',a:false},{k:'man8',a:false},
       {k:'pin8',a:false},{k:'pin9',a:false}
     ],
+    scores:[21000, 24000, 28000, 27000],
     bestIdx:12,
     acceptable:[13],
     explanation:'三四五萬・④⑤⑥・3s4s5s（ドラ）の面子形＋4s5sに近い6s（受け広い）＋七八萬（両面）＋⑧⑨（端寄りターツ）。ドラ（5s）を含む3s4s5sは残したい面子。七八萬（受け6九萬）と⑧⑨（受け⑦のみ？いや⑦⑩なし→⑩存在しないため⑦のみ4枚+ペン⑦待ち）を比較。⑧⑨はペンチャン形で受け入れが⑦の4枚のみ。七八萬は両面で受け6・9萬の最大8枚。打点も絡めれば⑧⑨より七八萬を残す方が有利。⑧か⑨を切るのが最善。'
@@ -523,10 +571,10 @@ const QUESTIONS = [
     dora:['pin7'],
     boardNotes:'ドラ表示牌は⑦筒。',
     river:[
-      {name:'自家',tiles:[{k:'haku',y:false,r:false},{k:'tyun',y:false,r:false},{k:'ton',y:false,r:false},{k:'sou9',y:false,r:false},{k:'nan',y:false,r:false}]},
-      {name:'下家（右）',tiles:[{k:'pei',y:false,r:false},{k:'hatu',y:false,r:false},{k:'man1',y:false,r:false},{k:'pin1',y:false,r:false},{k:'sou1',y:false,r:false},{k:'man9',y:false,r:false}]},
-      {name:'対面',tiles:[{k:'sya',y:false,r:false},{k:'nan',y:false,r:false},{k:'man9',y:false,r:false},{k:'sou8',y:false,r:false}]},
-      {name:'上家（左）',tiles:[{k:'ton',y:false,r:false},{k:'haku',y:false,r:false},{k:'pin9',y:false,r:false},{k:'man1',y:false,r:false},{k:'nan',y:false,r:false}]}
+      {name:'自家',tiles:[{k:'haku',y:false,r:false},{k:'tyun',y:false,r:false},{k:'ton',y:false,r:false},{k:'sou9',y:false,r:false},{k:'nan',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'pei',y:false,r:false},{k:'haku',y:false,r:false},{k:'hatu',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'pei',y:false,r:false},{k:'hatu',y:false,r:false},{k:'man1',y:false,r:false},{k:'pin1',y:false,r:false},{k:'sou1',y:false,r:false},{k:'man9',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'pei',y:false,r:false},{k:'haku',y:false,r:false}]},
+      {name:'対面',tiles:[{k:'sya',y:false,r:false},{k:'nan',y:false,r:false},{k:'man9',y:false,r:false},{k:'sou8',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'pei',y:false,r:false},{k:'haku',y:false,r:false},{k:'hatu',y:false,r:false},{k:'tyun',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'ton',y:false,r:false},{k:'haku',y:false,r:false},{k:'pin9',y:false,r:false},{k:'man1',y:false,r:false},{k:'nan',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'pei',y:false,r:false},{k:'haku',y:false,r:false},{k:'hatu',y:false,r:false}]}
     ],
     hand:[
       {k:'man4',a:false},{k:'man5',a:false},{k:'man6',a:false},
@@ -536,6 +584,7 @@ const QUESTIONS = [
       {k:'sou6',a:false},{k:'sou8',a:false},
       {k:'pin5',a:false}
     ],
+    scores:[28000, 25000, 23000, 24000],
     bestIdx:12,
     acceptable:[13],
     explanation:'四五六萬・⑥⑦⑧（ドラ）・3s4s5sの3面子完成＋二三萬（両面）＋6s8s（カンチャン7s）＋⑤（孤立）。二三萬を面子にすれば一or四萬待ち（両面リーチ）。6s8sを面子にすれば7s待ちのカンチャン（待ちが1種4枚と狭い）。残り牌を整理すると⑤か8sを切る選択。⑤を切れば二三萬＋6s8sが残り次の一打でカンチャンかペン待ち。8sを切れば二三萬の両面テンパイを取れる。テンパイを目指すなら8s切りで二三萬待ちの両面テンパイが最善。'
@@ -553,10 +602,10 @@ const QUESTIONS = [
     dora:['man6'],
     boardNotes:'ドラ表示牌は六萬。',
     river:[
-      {name:'自家',tiles:[{k:'ton',y:false,r:false},{k:'pei',y:false,r:false},{k:'sya',y:false,r:false},{k:'sou1',y:false,r:false}]},
-      {name:'下家（右）',tiles:[{k:'haku',y:false,r:false},{k:'nan',y:false,r:false},{k:'pin1',y:false,r:false},{k:'man9',y:false,r:false},{k:'tyun',y:false,r:false}]},
-      {name:'対面',tiles:[{k:'hatu',y:false,r:false},{k:'man1',y:false,r:false},{k:'sou9',y:false,r:false},{k:'pin9',y:false,r:false}]},
-      {name:'上家（左）\n★リーチ',tiles:[{k:'nan',y:false,r:false},{k:'haku',y:false,r:false},{k:'tyun',y:false,r:false},{k:'sou8',y:false,r:false},{k:'man2',y:false,r:false},{k:'pin5',y:true,r:true}]}
+      {name:'自家',tiles:[{k:'ton',y:false,r:false},{k:'pei',y:false,r:false},{k:'sya',y:false,r:false},{k:'sou1',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'pei',y:false,r:false},{k:'haku',y:false,r:false},{k:'hatu',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'haku',y:false,r:false},{k:'nan',y:false,r:false},{k:'pin1',y:false,r:false},{k:'man9',y:false,r:false},{k:'tyun',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'pei',y:false,r:false},{k:'haku',y:false,r:false}]},
+      {name:'対面',tiles:[{k:'hatu',y:false,r:false},{k:'man1',y:false,r:false},{k:'sou9',y:false,r:false},{k:'pin9',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'pei',y:false,r:false},{k:'haku',y:false,r:false},{k:'hatu',y:false,r:false}]},
+      {name:'上家（左）\n★リーチ',tiles:[{k:'nan',y:false,r:false},{k:'haku',y:false,r:false},{k:'tyun',y:false,r:false},{k:'sou8',y:false,r:false},{k:'man2',y:false,r:false},{k:'pin5',y:true,r:true},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'pei',y:false,r:false}]}
     ],
     hand:[
       {k:'pin3',a:false},{k:'pin4',a:false},{k:'pin5',a:false},
@@ -565,6 +614,7 @@ const QUESTIONS = [
       {k:'man8',a:false},{k:'man8',a:false},
       {k:'pin9',a:false},{k:'sou9',a:false},{k:'man3',a:false}
     ],
+    scores:[19000, 27000, 26000, 28000],
     bestIdx:11,
     acceptable:[12],
     explanation:'③④⑤・四五六萬・4s5s6sの3面子完成＋八八萬（対子・雀頭候補）で実質テンパイに近い。上家のリーチに対してどの牌が安全か。上家の河：南・白・中・8s・二萬・⑤（リーチ牌）。現物（上家が捨てた牌）は安全。⑨は上家の河に⑤があり3-6-9の筋でやや安全。9sは上家が8sを捨てておりスジでもない。三萬は二萬が上家の河に出ており4-7の筋ではないが2-5-8の筋ではない。⑨が上家河の⑤から3-6-9筋で最も安全度が高い。'
@@ -581,10 +631,10 @@ const QUESTIONS = [
     dora:['pin3'],
     boardNotes:'ドラ表示牌は③筒。',
     river:[
-      {name:'自家',tiles:[{k:'pin2',y:false,r:false},{k:'pin5',y:false,r:false},{k:'sou3',y:false,r:false}]},
-      {name:'下家（右）',tiles:[{k:'man2',y:false,r:false},{k:'man5',y:false,r:false},{k:'pin8',y:false,r:false},{k:'sou7',y:false,r:false}]},
-      {name:'対面',tiles:[{k:'man1',y:false,r:false},{k:'man4',y:false,r:false},{k:'sou5',y:false,r:false},{k:'pin6',y:false,r:false},{k:'man8',y:false,r:false}]},
-      {name:'上家（左）',tiles:[{k:'sou9',y:false,r:false},{k:'pin7',y:false,r:false},{k:'man9',y:false,r:false}]}
+      {name:'自家',tiles:[{k:'pin2',y:false,r:false},{k:'pin5',y:false,r:false},{k:'sou3',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'pei',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'man2',y:false,r:false},{k:'man5',y:false,r:false},{k:'pin8',y:false,r:false},{k:'sou7',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false}]},
+      {name:'対面',tiles:[{k:'man1',y:false,r:false},{k:'man4',y:false,r:false},{k:'sou5',y:false,r:false},{k:'pin6',y:false,r:false},{k:'man8',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'sou9',y:false,r:false},{k:'pin7',y:false,r:false},{k:'man9',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'pei',y:false,r:false}]}
     ],
     hand:[
       {k:'sou1',a:false},{k:'sou2',a:false},{k:'sou3',a:false},
@@ -593,6 +643,7 @@ const QUESTIONS = [
       {k:'haku',a:false},{k:'nan',a:false},
       {k:'man3',a:false},{k:'man6',a:false},{k:'pin4',a:false},{k:'sou7',a:false}
     ],
+    scores:[18000, 24000, 29000, 29000],
     bestIdx:12,
     acceptable:[11],
     explanation:'索子が1s〜9sまで幅広く揃いホンイツ（索子＋字牌）が狙える手格好。白（三元牌）と南（場風）は字牌として残す価値がある。三萬・六萬・④はホンイツ方針では全て不要な他色牌。まず完全に無駄な他色牌から切り始める。④（筒子）は索子でも字牌でもない孤立牌で最優先。次に三萬・六萬の順に処理するのが自然。④切りが最善。'
@@ -611,10 +662,10 @@ const QUESTIONS = [
     dora:['sou5'],
     boardNotes:'ドラ表示牌は5索。',
     river:[
-      {name:'自家',tiles:[{k:'haku',y:false,r:false},{k:'tyun',y:false,r:false},{k:'nan',y:false,r:false},{k:'hatu',y:false,r:false}]},
-      {name:'下家（右）',tiles:[{k:'ton',y:false,r:false},{k:'sya',y:false,r:false},{k:'pin9',y:false,r:false},{k:'man1',y:false,r:false},{k:'pei',y:false,r:false}]},
-      {name:'対面',tiles:[{k:'nan',y:false,r:false},{k:'sou9',y:false,r:false},{k:'man9',y:false,r:false},{k:'pin1',y:false,r:false}]},
-      {name:'上家（左）',tiles:[{k:'pei',y:false,r:false},{k:'haku',y:false,r:false},{k:'sou1',y:false,r:false},{k:'ton',y:false,r:false},{k:'man8',y:false,r:false}]}
+      {name:'自家',tiles:[{k:'haku',y:false,r:false},{k:'tyun',y:false,r:false},{k:'nan',y:false,r:false},{k:'hatu',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'ton',y:false,r:false},{k:'sya',y:false,r:false},{k:'pin9',y:false,r:false},{k:'man1',y:false,r:false},{k:'pei',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false}]},
+      {name:'対面',tiles:[{k:'nan',y:false,r:false},{k:'sou9',y:false,r:false},{k:'man9',y:false,r:false},{k:'pin1',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'pei',y:false,r:false},{k:'haku',y:false,r:false},{k:'sou1',y:false,r:false},{k:'ton',y:false,r:false},{k:'man8',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false}]}
     ],
     hand:[
       {k:'man3',a:false},{k:'man4',a:false},
@@ -623,6 +674,7 @@ const QUESTIONS = [
       {k:'sou4',a:false},{k:'sou5',a:false},{k:'sou6',a:false},
       {k:'man5',a:false},{k:'man5',a:false},{k:'pin2',a:false}
     ],
+    scores:[25000, 22000, 28000, 25000],
     bestIdx:13,
     acceptable:[0],
     explanation:'六七八萬・④⑤⑥・4s5s6s（ドラ）の3面子完成＋三四萬（両面受け2・5萬）＋五五萬（対子・雀頭候補）＋②（孤立）。②を切ると三四萬＋五五萬で一向聴：受け入れは2萬・5萬の各4枚＝最大8枚（既出を引く）。三萬を切ると四萬＋五五萬＋②で「4萬＋②」が残りイーシャンテン維持だが待ちが狭くなる。②切りの方が受け入れが広い。②切りが最善。'
@@ -639,10 +691,10 @@ const QUESTIONS = [
     dora:['man4'],
     boardNotes:'ドラ表示牌は四萬。',
     river:[
-      {name:'自家',tiles:[{k:'ton',y:false,r:false},{k:'pei',y:false,r:false},{k:'man1',y:false,r:false},{k:'sou9',y:false,r:false},{k:'hatu',y:false,r:false}]},
-      {name:'下家（右）',tiles:[{k:'sya',y:false,r:false},{k:'nan',y:false,r:false},{k:'pin9',y:false,r:false},{k:'man9',y:false,r:false},{k:'haku',y:false,r:false},{k:'tyun',y:false,r:false}]},
-      {name:'対面',tiles:[{k:'sou1',y:false,r:false},{k:'man8',y:false,r:false},{k:'pin1',y:false,r:false},{k:'sou8',y:false,r:false}]},
-      {name:'上家（左）',tiles:[{k:'man2',y:false,r:false},{k:'pin8',y:false,r:false},{k:'sou6',y:false,r:false},{k:'nan',y:false,r:false},{k:'man7',y:false,r:false}]}
+      {name:'自家',tiles:[{k:'ton',y:false,r:false},{k:'pei',y:false,r:false},{k:'man1',y:false,r:false},{k:'sou9',y:false,r:false},{k:'hatu',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'pei',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'sya',y:false,r:false},{k:'nan',y:false,r:false},{k:'pin9',y:false,r:false},{k:'man9',y:false,r:false},{k:'haku',y:false,r:false},{k:'tyun',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false}]},
+      {name:'対面',tiles:[{k:'sou1',y:false,r:false},{k:'man8',y:false,r:false},{k:'pin1',y:false,r:false},{k:'sou8',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'pei',y:false,r:false},{k:'haku',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'man2',y:false,r:false},{k:'pin8',y:false,r:false},{k:'sou6',y:false,r:false},{k:'nan',y:false,r:false},{k:'man7',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'pei',y:false,r:false}]}
     ],
     hand:[
       {k:'man3',a:false},{k:'man4',a:false},{k:'man5',a:false},
@@ -651,6 +703,7 @@ const QUESTIONS = [
       {k:'sou3',a:false},{k:'sou4',a:false},{k:'sou5',a:false},
       {k:'pin3',a:false},{k:'pin4',a:false}
     ],
+    scores:[23000, 25000, 27000, 25000],
     bestIdx:12,
     acceptable:[13],
     explanation:'三四五萬・五六七萬（ドラ）・⑤⑥⑦・3s4s5sの4面子完成形＋③④の両面ターツ。実質テンパイまであと1手の一向聴。③を切ると④が孤立して受け入れが減る。④を切ると③が孤立するが⑤⑥⑦との関係で③⑤のカンチャンを温存することにもなる。この手格好では③④どちらを切っても次の牌でテンパイになりやすい。③切りで④⑤→③or⑥待ち方向へ。最も広いのは③か④、どちらも準正解レベルだが③切りがわずかに受け入れ広く最善。'
@@ -669,10 +722,10 @@ const QUESTIONS = [
     dora:['sou3'],
     boardNotes:'ドラ表示牌は3索。オーラス。2着（28000点）との差は6000点。',
     river:[
-      {name:'自家',tiles:[{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'haku',y:false,r:false},{k:'pin9',y:false,r:false},{k:'man9',y:false,r:false}]},
-      {name:'下家（右）',tiles:[{k:'pei',y:false,r:false},{k:'sya',y:false,r:false},{k:'man1',y:false,r:false},{k:'sou9',y:false,r:false},{k:'hatu',y:false,r:false}]},
-      {name:'対面',tiles:[{k:'tyun',y:false,r:false},{k:'pin1',y:false,r:false},{k:'sou1',y:false,r:false},{k:'haku',y:false,r:false},{k:'nan',y:false,r:false},{k:'man8',y:false,r:false}]},
-      {name:'上家（左）',tiles:[{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'pin8',y:false,r:false},{k:'man2',y:false,r:false}]}
+      {name:'自家',tiles:[{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'haku',y:false,r:false},{k:'pin9',y:false,r:false},{k:'man9',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'pei',y:false,r:false},{k:'sya',y:false,r:false},{k:'man1',y:false,r:false},{k:'sou9',y:false,r:false},{k:'hatu',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false}]},
+      {name:'対面',tiles:[{k:'tyun',y:false,r:false},{k:'pin1',y:false,r:false},{k:'sou1',y:false,r:false},{k:'haku',y:false,r:false},{k:'nan',y:false,r:false},{k:'man8',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'pin8',y:false,r:false},{k:'man2',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'pei',y:false,r:false}]}
     ],
     hand:[
       {k:'man4',a:false},{k:'man5',a:false},{k:'man6',a:false},
@@ -681,6 +734,7 @@ const QUESTIONS = [
       {k:'man3',a:false},{k:'man3',a:false},
       {k:'sou6',a:false},{k:'sou7',a:false},{k:'pin2',a:false}
     ],
+    scores:[22000, 38000, 28000, 12000],
     bestIdx:13,
     acceptable:[11],
     explanation:'四五六萬・④⑤⑥・2s3s4s（ドラ）の3面子完成＋三三萬（対子）＋6s7s（両面）＋②（孤立）。オーラス3着で2着との差6000点。リーチ一発ツモや役ありロンで逆転できる打点が必要。②を切れば三三萬（雀頭）＋6s7s（両面リーチ）でテンパイ。6s7sの待ちは5sか8s。ドラが3sなので4s5sが近く5sの受け入れに期待できる。6s7s両面テンパイからリーチをかけて逆転を狙う。②切りが最善。'
@@ -697,10 +751,10 @@ const QUESTIONS = [
     dora:['pin4'],
     boardNotes:'ドラ表示牌は④筒。',
     river:[
-      {name:'自家',tiles:[{k:'ton',y:false,r:false},{k:'haku',y:false,r:false},{k:'nan',y:false,r:false},{k:'pei',y:false,r:false},{k:'sya',y:false,r:false},{k:'hatu',y:false,r:false}]},
-      {name:'下家（右）',tiles:[{k:'tyun',y:false,r:false},{k:'man1',y:false,r:false},{k:'sou9',y:false,r:false},{k:'pin1',y:false,r:false},{k:'man9',y:false,r:false},{k:'sou1',y:false,r:false}]},
-      {name:'対面',tiles:[{k:'man8',y:false,r:false},{k:'sou8',y:false,r:false},{k:'nan',y:false,r:false},{k:'pin9',y:false,r:false},{k:'ton',y:false,r:false}]},
-      {name:'上家（左）',tiles:[{k:'sou7',y:false,r:false},{k:'man2',y:false,r:false},{k:'pin8',y:false,r:false},{k:'haku',y:false,r:false},{k:'man6',y:false,r:false},{k:'nan',y:false,r:false}]}
+      {name:'自家',tiles:[{k:'ton',y:false,r:false},{k:'haku',y:false,r:false},{k:'nan',y:false,r:false},{k:'pei',y:false,r:false},{k:'sya',y:false,r:false},{k:'hatu',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'pei',y:false,r:false},{k:'haku',y:false,r:false},{k:'hatu',y:false,r:false}]},
+      {name:'下家（右）',tiles:[{k:'tyun',y:false,r:false},{k:'man1',y:false,r:false},{k:'sou9',y:false,r:false},{k:'pin1',y:false,r:false},{k:'man9',y:false,r:false},{k:'sou1',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'pei',y:false,r:false},{k:'haku',y:false,r:false},{k:'hatu',y:false,r:false}]},
+      {name:'対面',tiles:[{k:'man8',y:false,r:false},{k:'sou8',y:false,r:false},{k:'nan',y:false,r:false},{k:'pin9',y:false,r:false},{k:'ton',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'pei',y:false,r:false},{k:'haku',y:false,r:false},{k:'hatu',y:false,r:false},{k:'tyun',y:false,r:false}]},
+      {name:'上家（左）',tiles:[{k:'sou7',y:false,r:false},{k:'man2',y:false,r:false},{k:'pin8',y:false,r:false},{k:'haku',y:false,r:false},{k:'man6',y:false,r:false},{k:'nan',y:false,r:false},{k:'ton',y:false,r:false},{k:'nan',y:false,r:false},{k:'sya',y:false,r:false},{k:'pei',y:false,r:false},{k:'haku',y:false,r:false},{k:'hatu',y:false,r:false}]}
     ],
     hand:[
       {k:'man3',a:false},{k:'man4',a:false},{k:'man5',a:false},
@@ -709,6 +763,7 @@ const QUESTIONS = [
       {k:'pin6',a:false},{k:'pin7',a:false},
       {k:'sou4',a:false},{k:'sou5',a:false},{k:'sou6',a:false}
     ],
+    scores:[25000, 24000, 26000, 25000],
     bestIdx:0,
     acceptable:[3],
     explanation:'三四五萬・五六七萬・③④⑤・⑥⑦・4s5s6sの形。⑥⑦と③④⑤で筒子が連続している。三萬を切ると四五六七萬（四連形）が残り2・8萬の両面待ちか3・5萬の雀頭形など多面張になりうる。五萬を切ると三四萬＋五六七萬の分離形になり受け入れが減る。三萬を切ることで四五六七萬の「カンチャン＋両面」複合多面張が生まれ、待ちが2・3・5・8萬の最大4種になる可能性がある。三萬切りが最善。'
@@ -756,38 +811,87 @@ function showQuestion(){
   // 場況メモ
   document.getElementById('board-notes').textContent=q.boardNotes;
 
-  // 河
-  const riverGrid=document.getElementById('river-grid');
-  riverGrid.innerHTML='';
-  q.river.forEach(player=>{
-    const cell=document.createElement('div');
-    cell.className='river-player';
-    const nameDiv=document.createElement('div');
-    nameDiv.className='river-player-name';
-    nameDiv.textContent=player.name;
-    cell.appendChild(nameDiv);
-    // 6牌ごとに改行して表示
-    const tilesWrap=document.createElement('div');
-    tilesWrap.className='river-tiles-wrap';
+  // 中央（局情報）
+  const kyokuEl = document.getElementById('center-kyoku');
+  const sitKyoku = q.situation.find(s => s.label.match(/局/));
+  kyokuEl.textContent = sitKyoku ? sitKyoku.label : '';
+  document.getElementById('center-honba').textContent = '';
+
+  // 卓レイアウト描画
+  // river配列: [0]=自家, [1]=下家, [2]=対面, [3]=上家
+  const cellMap = [
+    {id:'cell-jika',   ri:0, nameClass:'jika-name',   scoreClass:'jika-score'},
+    {id:'cell-shimoya',ri:1, nameClass:'',             scoreClass:''},
+    {id:'cell-kaimen', ri:2, nameClass:'',             scoreClass:''},
+    {id:'cell-kamiya', ri:3, nameClass:'',             scoreClass:''},
+  ];
+
+  cellMap.forEach(({id, ri, nameClass, scoreClass})=>{
+    const cell = document.getElementById(id);
+    cell.innerHTML = '';
+    const player = q.river[ri];
+    if(!player) return;
+
+    const hasRiichi = player.tiles.some(t=>t.r);
+
+    // ヘッダー（名前＋持ち点）
+    const hdr = document.createElement('div');
+    hdr.className = 'player-header';
+
+    const nameSpan = document.createElement('span');
+    nameSpan.className = 'player-name' + (nameClass ? ' '+nameClass : '') + (hasRiichi ? ' riichi-name' : '');
+    nameSpan.textContent = player.name;
+    if(hasRiichi){
+      const rb = document.createElement('span');
+      rb.className = 'riichi-badge';
+      rb.textContent = 'リーチ';
+      nameSpan.appendChild(rb);
+    }
+
+    const scoreSpan = document.createElement('span');
+    const score = q.scores ? q.scores[ri] : null;
+    scoreSpan.className = 'player-score' + (scoreClass ? ' '+scoreClass : '') + (score !== null && score < 10000 ? ' danger-score' : '');
+    scoreSpan.textContent = score !== null ? score.toLocaleString()+'点' : '';
+
+    hdr.appendChild(nameSpan);
+    hdr.appendChild(scoreSpan);
+    cell.appendChild(hdr);
+
+    // 河牌（6枚ごとに改行）
+    const tilesWrap = document.createElement('div');
+    tilesWrap.className = 'river-tiles-wrap';
     player.tiles.forEach((t,ti)=>{
       if(ti%6===0){
-        const row=document.createElement('div');
-        row.className='river-tiles';
+        const row = document.createElement('div');
+        row.className = 'river-tiles';
         tilesWrap.appendChild(row);
       }
-      const currentRow=tilesWrap.lastChild;
-      const w=makeTileEl(t.k,false,t.y);
-      w.style.cursor='default';
+      const w = makeTileEl(t.k,false,t.y);
+      w.style.cursor = 'default';
       if(t.r) w.classList.add('riichi-discard');
-      currentRow.appendChild(w);
+      tilesWrap.lastChild.appendChild(w);
     });
     if(player.tiles.length===0){
-      const row=document.createElement('div');
-      row.className='river-tiles';
+      const row = document.createElement('div');
+      row.className = 'river-tiles';
       tilesWrap.appendChild(row);
     }
     cell.appendChild(tilesWrap);
-    riverGrid.appendChild(cell);
+
+    // 副露
+    if(player.melds && player.melds.length>0){
+      const meldRow = document.createElement('div');
+      meldRow.className = 'meld-row';
+      player.melds.forEach(meld=>{
+        const grp = document.createElement('div');
+        grp.className = 'meld-group';
+        meld.tiles.forEach((t,ti)=>{
+          grp.appendChild(makeTileEl(t.k, false, ti===0&&meld.yoko));
+        });
+        meldRow.appendChild(grp);
+      });
+      cell.appendChild(meldRow);
+    }
   });
 
   // 手牌

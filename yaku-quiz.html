@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
+<!-- saved from url=(0049)file:///C:/Users/shoum/Downloads/yaku-quiz_6.html -->
+<html lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>役名クイズ — 麻雀道場</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&family=Noto+Serif+JP:wght@400;700&family=Zen+Antique&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="./yaku-quiz_files/css2" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
@@ -107,7 +107,7 @@ window.addEventListener('pageshow', function(e) {
 <body>
 <nav class="nav">
   <div class="nav-left">
-    <a class="nav-back" href="index.html">← 道場へ戻る</a>
+    <a class="nav-back" href="file:///C:/Users/shoum/Downloads/index.html">← 道場へ戻る</a>
     <span style="color:var(--text-dim)">|</span>
     <span class="nav-title">役名クイズ</span>
   </div>
@@ -118,28 +118,28 @@ window.addEventListener('pageshow', function(e) {
     <div class="mode-title">役名クイズ</div>
     <div class="mode-sub">手牌の形を見て役名を当てましょう。<br>横向きの牌は鳴き（ポン・チー）した牌です。</div>
     <div class="mode-grid">
-      <button class="mode-btn" onclick="startQuiz('easy')">
+      <button class="mode-btn" onclick="startQuiz(&#39;easy&#39;)">
         <span class="mode-btn-badge badge badge-easy">初級</span>
         <div class="mode-btn-title">初級モード</div>
         <div class="mode-btn-sub">頻出役10問</div>
       </button>
-      <button class="mode-btn" onclick="startQuiz('mid')">
+      <button class="mode-btn" onclick="startQuiz(&#39;mid&#39;)">
         <span class="mode-btn-badge badge badge-mid">中級</span>
         <div class="mode-btn-title">中級モード</div>
         <div class="mode-btn-sub">やや難しい役10問</div>
       </button>
-      <button class="mode-btn" onclick="startQuiz('hard')">
+      <button class="mode-btn" onclick="startQuiz(&#39;hard&#39;)">
         <span class="mode-btn-badge badge badge-hard">上級</span>
         <div class="mode-btn-title">上級モード</div>
         <div class="mode-btn-sub">難役・役満10問</div>
       </button>
-      <button class="mode-btn" onclick="startQuiz('all')">
+      <button class="mode-btn" onclick="startQuiz(&#39;all&#39;)">
         <span class="mode-btn-badge" style="background:rgba(212,175,55,0.15);color:var(--gold);border:0.5px solid rgba(212,175,55,0.3);">全問</span>
         <div class="mode-btn-title">全問モード</div>
         <div class="mode-btn-sub">全難易度混合20問</div>
       </button>
     </div>
-    <a class="home-btn" href="yaku.html">役一覧を見る →</a>
+    <a class="home-btn" href="file:///C:/Users/shoum/Downloads/yaku.html">役一覧を見る →</a>
   </div>
   <div id="progress-area" style="display:none">
     <div class="progress-wrap">
@@ -170,7 +170,7 @@ window.addEventListener('pageshow', function(e) {
     <div class="res-comment" id="res-comment"></div>
     <div class="btn-row">
       <button class="retry-btn" onclick="backToMode()">モード選択へ</button>
-      <a class="home-btn" href="yaku.html">役一覧を見る</a>
+      <a class="home-btn" href="file:///C:/Users/shoum/Downloads/yaku.html">役一覧を見る</a>
     </div>
   </div>
 </div>
@@ -351,21 +351,21 @@ const QUESTIONS_EASY = [
    choices:[{name:'清一色',kana:'チンイツ'},{name:'混一色',kana:'ホンイツ'},{name:'一気通貫',kana:'イッキツウカン'},{name:'断么九',kana:'タンヤオ'}],
    explanation:'清一色（チンイツ）：1種類の数牌だけで面子と雀頭を揃える役。門前6翻・鳴き5翻。'},
 
-  // Q10 三暗刻: 暗刻3組・残り1組は鳴き（明刻）
+  // Q10 三暗刻: 暗刻3組・残り1組は順子（チー）→ 対々和複合なし
   {difficulty:'easy',
    text:'この手牌の形はどの役でしょう？',
    groups:[
-     {tiles:['sou2','sou2','sou2'],naki:true},
+     {tiles:['pin2','pin3','pin4'],naki:true},
      {tiles:['man3','man3','man3'],naki:false},
      {tiles:['pin7','pin7','pin7'],naki:false},
      {tiles:['man7','man7','man7'],naki:false},
      {tiles:['pin5','pin5'],naki:false},
    ],
-   note:'暗刻3組（手の中）＋ポン1組（横向き）',
-   conds:[{label:'暗刻3組',gold:true},{label:'残り1組はポン',gold:false}],
+   note:'暗刻3組（手の中）＋チー1組（横向き・順子）',
+   conds:[{label:'暗刻3組',gold:true},{label:'残り1組はチー（順子）',gold:false}],
    answer:'三暗刻',kana:'サンアンコウ',
    choices:[{name:'三暗刻',kana:'サンアンコウ'},{name:'対々和',kana:'トイトイ'},{name:'四暗刻',kana:'スーアンコウ'},{name:'混老頭',kana:'ホンロウトウ'}],
-   explanation:'三暗刻（サンアンコウ）：3組の刻子をすべて暗刻（手の中）で揃える2翻役。残り1組はポン（鳴き=明刻）してもOK。'},
+   explanation:'三暗刻（サンアンコウ）：3組の刻子をすべて暗刻（手の中）で揃える2翻役。残り1組は鳴き（チー・ポン）してもOK。チーで順子を作っているため対々和（全刻子）は成立しない。'},
 ];
 
 const QUESTIONS_MID = [
@@ -799,5 +799,6 @@ function backToMode(){
   document.getElementById('nav-total').textContent=0;
 }
 </script>
-</body>
-</html>
+
+
+</body></html>
